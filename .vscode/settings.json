@@ -1,0 +1,4 @@
+{
+    "editor.peekWidgetDefaultFocus": "tree",
+    "workbench.tree.renderIndentGuides": "always"
+}
