@@ -7,19 +7,37 @@ import {
   Image,
   KeyboardAvoidingView,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import React, {ReactNode} from 'react';
+import {logout} from '../../utils/localStorage';
+import {useAppDispatch} from '../../redux/hooks';
+import {cleanUpLogin, setAuthState} from '../../redux/Auth/loginReducer';
 
 const LoggedInBackground = ({children}: {children?: ReactNode}) => {
+  const dispatch = useAppDispatch();
   return (
     <SafeAreaView style={styles.mainContainer}>
       <ImageBackground
         style={styles.loggedOutBackground}
         source={require('../../../src/assets/background.png')}>
-        <Image
-          style={styles.logoFull}
-          source={require('../../assets/BLINKFIX.png')}
-        />
+        <View style={styles.logoFull}>
+          <TouchableOpacity>
+            <Text>logout</Text>
+          </TouchableOpacity>
+          <Image
+            style={{flex: 1, resizeMode: 'center'}}
+            source={require('../../assets/BLINKFIX.png')}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              logout();
+              dispatch(cleanUpLogin());
+              dispatch(setAuthState(false));
+            }}>
+            <Text>logout</Text>
+          </TouchableOpacity>
+        </View>
         <KeyboardAvoidingView style={styles.innerContainer}>
           <ScrollView
             style={{
@@ -54,8 +72,9 @@ const styles = StyleSheet.create({
   logoFull: {
     width: '100%',
     height: 40,
-    resizeMode: 'contain',
     marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 
   innerContainer: {

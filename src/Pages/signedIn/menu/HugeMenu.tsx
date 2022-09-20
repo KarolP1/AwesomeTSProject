@@ -1,30 +1,9 @@
-import {
-  StyleSheet,
-  Text,
-  Touchable,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import MenuSquareCartContainer from '../../../components/backgrounds/menuSquareCartContainer';
-import {getTokens, setAuthStatus} from '../../../redux/Auth/loginReducer';
-import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
-import {instance} from '../../../redux/interceptors';
-import {tokenThunk} from '../../../redux/Auth/thunks';
 
 const HugeMenu = () => {
-  const dispatch = useAppDispatch();
-  const tokens = useAppSelector(state => state.login.data);
-
-  const DToken = async () => {
-    try {
-      dispatch(tokenThunk({dispatch}));
-    } catch (e) {
-      console.error({e});
-      return Promise.reject(e);
-    }
-  };
   return (
     <LoggedInBackground>
       <Text
@@ -59,10 +38,6 @@ const HugeMenu = () => {
           />
         </View>
       </View>
-      <Text>{JSON.stringify(tokens)}</Text>
-      <TouchableOpacity onPress={DToken}>
-        <Text>press</Text>
-      </TouchableOpacity>
     </LoggedInBackground>
   );
 };

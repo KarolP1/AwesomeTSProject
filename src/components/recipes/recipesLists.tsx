@@ -4,6 +4,7 @@ import {IRecipe} from '../../redux/recipes/types';
 import SingleRecipe from './SingleRecipe';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {
+  cleanUpLogin,
   getTokens,
   setAuthState,
   setAuthStatus,
@@ -12,45 +13,21 @@ import {getAllRecipes} from '../../redux/recipes/recipesThunks';
 import {useNavigation} from '@react-navigation/native';
 import {RecipesHomePageScreenProp} from '../../navigation/types';
 import {useFocusEffect} from '@react-navigation/native';
-import {instance} from '../../redux/interceptors';
+import {instance, refreshTokenInterveptor} from '../../redux/interceptors';
 import {tokenThunk} from '../../redux/Auth/thunks';
 import Keychain from 'react-native-keychain';
 import {getTokensKeychain, logout} from '../../utils/localStorage';
 import axios from 'axios';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import {setTokensToStorage} from '../../utils/localStorage';
+import {AppDispatch} from '../../redux/store';
 
-const RecipesLists = ({filteredRecipes}: {filteredRecipes?: IRecipe[]}) => {
+const RecipesLists = () => {
   const dispatch = useAppDispatch();
   const data = useAppSelector(state => state.recipes.data);
   const navigation = useNavigation<RecipesHomePageScreenProp>();
 
-  //
-  const refreshAuthLogic = async (failedRequest: {
-    response: {config: {headers: {[x: string]: string}}};
-  }) => {
-    const tokens = await getTokensKeychain();
-    console.log(tokens);
-    await axios
-      .post(
-        '/user/token',
-        {token: tokens?.refresh_token},
-        {headers: {Authorization: 'Bearer ' + tokens?.access_token}},
-      )
-      .then(async tokenRefreshResponse => {
-        console.log({a: tokenRefreshResponse.data});
-        await setTokensToStorage(tokenRefreshResponse.data.token);
-
-        failedRequest.response.config.headers['Authorization'] =
-          'Bearer ' + tokenRefreshResponse.data.data.access_token;
-        return Promise.resolve();
-      })
-      .catch(e => {
-        console.error(e.response.data);
-      });
-  };
-  //
-  createAuthRefreshInterceptor(instance, refreshAuthLogic);
+  refreshTokenInterveptor(dispatch, instance);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -97,3 +74,5 @@ const styles = StyleSheet.create({
 //TODO:metadane zdjęć
 //jpg zdjęcia
 // server components
+
+//"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzJhMzBhZGFiZWU4MDFkNjBjM2YzNTUiLCJpYXQiOjE2NjM3MTQwNDAsImV4cCI6MTY2MzcxNDA1NX0.gTYpS6xNXbj_q02gqr5AMUeCqt4Y72gvO1eeqInOZX8"

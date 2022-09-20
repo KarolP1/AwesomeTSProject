@@ -125,9 +125,8 @@ const SingleRecipe = ({route}: SigneRecipeScreenProps) => {
             <TouchableOpacity
               key={index}
               onPress={async () => {
-                await dispatch(getAllRecipesByTag({access_token: token, tag}));
                 navigation.navigate('Find Recipes', {
-                  recipes: filteredRecipesByTag,
+                  recipesTag: tag,
                 });
               }}>
               <Text style={styles.clasicTextTagSide}>#{tag}</Text>

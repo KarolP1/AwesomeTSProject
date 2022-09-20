@@ -38,7 +38,7 @@ export type RecipesPageScreenProp = NativeStackNavigationProp<
 >;
 export type RecipesHomeStackParamList = {
   'Find Recipes': {
-    recipes?: IRecipe[];
+    recipesTag?: string | undefined;
   };
   'My Recipes': undefined;
   'Add Recipes': undefined;
