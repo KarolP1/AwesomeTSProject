@@ -1,8 +1,12 @@
 import {useDispatch} from 'react-redux';
 import {AnyAction, Dispatch} from 'redux';
+import {IRecipe} from '../recipes/types';
 export interface ILoginForm {
   email?: string;
   password?: string;
+}
+export interface ITokenForm {
+  token?: string | undefined;
 }
 export const initialLoginForm: ILoginForm = {
   email: 'platek549@gmail.com',
@@ -15,6 +19,27 @@ export interface IResponseLoginIResponseLogin {
   data?: {
     access_token?: string;
     refresh_token?: string;
+  };
+  succes: boolean;
+}
+export interface IResponseRecipes {
+  isLoading?: boolean;
+  message?: string;
+  error: any;
+  data?: IRecipe[] | [];
+  succes: boolean;
+}
+export interface IResponseRecipesByTag {
+  isLoading?: boolean;
+  message?: string;
+  error: any;
+  data: {
+    filteredRecipesByTag: IRecipe[];
+    filteredRecipesByOwner: IRecipe[];
+    filteredByRecipeName: IRecipe[];
+    filteredByRecipeDescription: IRecipe[];
+    filteredByRecipeCuisine: IRecipe[];
+    filteredByRecipeDinnerType: IRecipe[];
   };
   succes: boolean;
 }

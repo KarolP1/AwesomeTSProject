@@ -7,15 +7,18 @@ import {
 } from '@react-navigation/native-stack';
 import {StackDefaultOptions} from '../options/stackDefaultOptions';
 import RegisterPage from '../Pages/signedOut/registerPage/registerPage';
-import {AuthScreenProp, RootStackParamList} from './types';
+import {AuthScreenProp, HomeStackParamList, RootStackParamList} from './types';
+import HugeMenu from '../Pages/signedIn/menu/HugeMenu';
+
 const AuthNavigation = ({isAuth}: {isAuth: boolean}) => {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator<HomeStackParamList>();
   const Stack2 = createNativeStackNavigator<RootStackParamList>();
 
   if (isAuth) {
     return (
       <Stack.Navigator screenOptions={StackDefaultOptions}>
-        <Stack.Screen name="homepage" component={HomePage} />
+        <Stack.Screen name="HugeMenu2x2" component={HugeMenu} />
+        <Stack.Screen name="Home Page" component={HomePage} />
       </Stack.Navigator>
     );
   } else {

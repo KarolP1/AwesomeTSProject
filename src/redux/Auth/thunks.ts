@@ -1,13 +1,21 @@
+import {
+  getTokensKeychain,
+  logout,
+  setTokensToStorage,
+} from './../../utils/localStorage/index';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {
   ILoginForm,
   IRegisterForm,
   IResponseLoginIResponseLogin,
   IResponseRegisterResponse,
+  ITokenForm,
 } from './AuthTypes';
 import axios from 'axios';
 import * as Keychain from 'react-native-keychain';
-axios.defaults.baseURL = 'http://146.59.13.245:3000/api/v1/user';
+import {instance} from '../interceptors';
+import {setAuthState, setAuthStatus} from './loginReducer';
+axios.defaults.baseURL = 'http://146.59.13.245:3000/api/v1';
 
 export const loginThunk = createAsyncThunk<
   IResponseLoginIResponseLogin,
@@ -23,22 +31,70 @@ export const loginThunk = createAsyncThunk<
       });
     }
     const res = await axios
-      .post('/login', {
+      .post('/user/login', {
         login: state.email,
         password: state.password,
       })
-      .then(response => {
+      .then(async response => {
+        const tokens = JSON.stringify(response.data.data);
+        await Keychain.setGenericPassword('token', tokens);
         return response.data;
       })
       .catch(error => {
         return rejectWithValue(error.response.data);
       });
 
+    if (state.email !== undefined && state.password !== undefined) {
+    }
+
     return res;
   } catch (error: any) {
     return rejectWithValue({
       message: error.message,
       error: 'login failed',
+      data: null,
+    });
+  }
+});
+export const tokenThunk = createAsyncThunk<
+  IResponseLoginIResponseLogin,
+  {dispatch: any}
+>('user/token', async ({dispatch}, {rejectWithValue}) => {
+  try {
+    const tokens = await getTokensKeychain();
+    if (tokens) {
+      const res = await instance
+        .post(
+          '/user/token',
+          {
+            token: tokens.refresh_token,
+          },
+          {headers: {Authorization: 'Bearer ' + tokens.access_token}},
+        )
+        .then(async response => {
+          await Keychain.resetGenericPassword();
+          await setTokensToStorage(response.data.data);
+          await dispatch(setAuthState(response.data.data));
+          return response.data;
+        })
+        .catch(async error => {
+          console.log(error.response.data);
+          await dispatch(setAuthStatus(false));
+          logout();
+          return rejectWithValue(error.response.data);
+        });
+      console.log(res);
+      return res.data;
+    }
+  } catch (error: any) {
+    if (
+      error.response.data.message ===
+      'Invalid request. Token is not same in store.'
+    )
+      logout();
+    return rejectWithValue({
+      message: error.message,
+      error: 'tokens failed: ' + JSON.stringify(error.response.data.message),
       data: null,
     });
   }
@@ -50,9 +106,9 @@ export const registerThunk = createAsyncThunk<
 >('user/register', async (state, {rejectWithValue}) => {
   try {
     const res = await axios
-      .post('/register', state)
+      .post('/user/register', state)
       .then(response => {
-        return response.data;
+        return response.data.data;
       })
       .catch(error => {
         return rejectWithValue(error.response.data.message);
@@ -67,3 +123,8 @@ export const registerThunk = createAsyncThunk<
     });
   }
 });
+
+/**
+ *
+ * eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzI3YjI5NDFiNmFjN2M4ZDQ4YTljZWMiLCJpYXQiOjE2NjM1ODUyODYsImV4cCI6MTY2MzU4NTU4Nn0.9yhtA00MwARjaW9imJwYsCwncMmgiSKMzppbwguJBwo
+ */

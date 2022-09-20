@@ -1,21 +1,19 @@
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  ScrollView,
-} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import LoggedOutBackground from '../../components/background/loggedOutBackground';
 import {TextInputCustom} from '../../components/TextInputs';
 import {ILoginForm, initialLoginForm} from '../../redux/Auth/AuthTypes';
 import {useEffect} from 'react';
 import {loginThunk} from '../../redux/Auth/thunks';
-import {getAuthStateState, getLoginErrors} from '../../redux/Auth/loginReducer';
+import {
+  cleanUpLogin,
+  getAuthStateState,
+  getLoginErrors,
+  setAuthState,
+  setAuthStatus,
+} from '../../redux/Auth/loginReducer';
 import Spinner from 'react-native-spinkit';
 import * as Keychain from 'react-native-keychain';
-import {getIsAuth} from '../../redux/rootReducer';
 import {useNavigation} from '@react-navigation/native';
 import {AuthScreenProp} from '../../navigation/types';
 import {useAppDispatch} from '../../redux/hooks';
@@ -23,7 +21,6 @@ import {useAppDispatch} from '../../redux/hooks';
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<AuthScreenProp>();
-
   const [loginForm, setLoginForm] = useState<ILoginForm>(initialLoginForm);
   const loginState = getAuthStateState();
   const errors = getLoginErrors();
@@ -32,22 +29,26 @@ const LoginPage = () => {
       try {
         await Keychain.getGenericPassword().then(data => {
           if (data) {
-            dispatch(
-              loginThunk({email: data.username, password: data.password}),
-            );
+            const v = data.password;
+            const jwt = JSON.parse(v);
+            dispatch(setAuthState(jwt));
+            dispatch(setAuthStatus(true));
           } else {
-            // setLoginForm({
-            //   email: '',
-            //   password: '',
-            // });
+            dispatch(cleanUpLogin());
+            dispatch(setAuthStatus(false));
           }
         });
       } catch (error) {
         console.log("Keychain couldn't be accessed!", error);
+        dispatch(setAuthStatus(false));
+        dispatch(cleanUpLogin());
       }
     })();
   }, []);
 
+  const LoginFunc = () => {
+    dispatch(loginThunk(loginForm));
+  };
   return (
     <LoggedOutBackground>
       {loginState === true ? (
@@ -91,11 +92,7 @@ const LoginPage = () => {
             </Text>
           </TouchableOpacity>
           <View style={styles.DumbContainer}>
-            <TouchableOpacity
-              style={styles.LoginButton}
-              onPress={() => {
-                dispatch(loginThunk(loginForm));
-              }}>
+            <TouchableOpacity style={styles.LoginButton} onPress={LoginFunc}>
               <Text style={styles.textButton}>Login</Text>
             </TouchableOpacity>
           </View>

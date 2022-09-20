@@ -14,11 +14,26 @@ import axios from 'axios';
 
 import AuthNavigation from './src/navigation/authNavigation';
 import {StatusBar} from 'react-native';
-import {getIsAuth, setIsAuth} from './src/redux/rootReducer';
-import {getStatus} from './src/redux/Auth/loginReducer';
+import {
+  getStatus,
+  getTokens,
+  setAuthStatus,
+} from './src/redux/Auth/loginReducer';
+import {logout} from './src/utils/localStorage';
+import {useAppDispatch} from './src/redux/hooks';
+import {instance} from './src/redux/interceptors';
+import {tokenThunk} from './src/redux/Auth/thunks';
 
 const App = () => {
   const authSucces = getStatus();
+  const tokens = getTokens();
+
+  axios.interceptors.request.use((request: any) => {
+    if (!request.headers.Authorization) {
+      request.headers.Authorization = `Bearer ${tokens?.access_token}`;
+    }
+    return request;
+  });
 
   return (
     <>

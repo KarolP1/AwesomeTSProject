@@ -4,21 +4,13 @@ import {logout} from '../../utils/localStorage';
 import {setIsAuth} from '../../redux/rootReducer';
 import {useAppDispatch} from '../../redux/hooks';
 import {cleanUpLogin} from '../../redux/Auth/loginReducer';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import HomepageNavigation from '../../navigation/homepageNavigation';
+import BottomTabNavigator from '../../navigation/bottomTabNavigator';
 
 const HomePage = () => {
   const dispatch = useAppDispatch();
-  return (
-    <View>
-      <Text>HomePage</Text>
-      <TouchableOpacity
-        onPress={async () => {
-          await logout();
-          dispatch(cleanUpLogin());
-        }}>
-        <Text>logout</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  return <BottomTabNavigator />;
 };
 
 export default HomePage;
