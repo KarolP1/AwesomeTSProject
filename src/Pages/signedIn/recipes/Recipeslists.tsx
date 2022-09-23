@@ -14,7 +14,7 @@ const Recipeslists = () => {
   useEffect(() => {
     const run = async () => {
       if (token) {
-        await dispatch(getAllRecipes({access_token: token.access_token}));
+        await dispatch(getAllRecipes());
       }
     };
     run();

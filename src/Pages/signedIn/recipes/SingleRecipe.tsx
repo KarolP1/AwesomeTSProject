@@ -3,24 +3,16 @@ import React, {useEffect, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import {
   RecipesHomePageScreenProp,
-  RecipesHomeStackParamList,
   SigneRecipeScreenProps,
 } from '../../../navigation/types';
-import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
-import {getAllRecipesByTag} from '../../../redux/recipes/recipesThunks';
-import {getTokens} from '../../../redux/Auth/loginReducer';
 import {useNavigation} from '@react-navigation/native';
 
 const SingleRecipe = ({route}: SigneRecipeScreenProps) => {
   const recipe = route.params.recipe;
   let ingNumber = 0;
   let ingNumberTips = 0;
-  const dispatch = useAppDispatch();
-  const token = getTokens()?.access_token;
   const navigation = useNavigation<RecipesHomePageScreenProp>();
-  const filteredRecipesByTag = useAppSelector(
-    state => state.recipesByTag.data?.filteredRecipesByTag,
-  );
+
   return (
     <LoggedInBackground>
       <View style={{flexGrow: 1, width: '100%', paddingHorizontal: 10}}>

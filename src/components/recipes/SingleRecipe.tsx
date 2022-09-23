@@ -48,7 +48,7 @@ const SingleRecipe = ({Recipe}: {Recipe: IRecipe}) => {
           <SmallIconBG>
             <Image
               style={styles.imageIcon}
-              source={require('../../static/icons/serves.png')}
+              source={require('../../static/icons/Untitled/vegan.png')}
             />
             <Text style={styles.titleIcon}>Vegan</Text>
           </SmallIconBG>
@@ -57,7 +57,7 @@ const SingleRecipe = ({Recipe}: {Recipe: IRecipe}) => {
           <SmallIconBG>
             <Image
               style={styles.imageIcon}
-              source={require('../../static/icons/serves.png')}
+              source={require('../../static/icons/Untitled/halal.png')}
             />
             <Text style={styles.titleIcon}>Halal</Text>
           </SmallIconBG>
@@ -66,7 +66,7 @@ const SingleRecipe = ({Recipe}: {Recipe: IRecipe}) => {
           <SmallIconBG>
             <Image
               style={styles.imageIcon}
-              source={require('../../static/icons/serves.png')}
+              source={require('../../static/icons/Untitled/kosher.png')}
             />
             <Text style={styles.titleIcon}>Kosher</Text>
           </SmallIconBG>

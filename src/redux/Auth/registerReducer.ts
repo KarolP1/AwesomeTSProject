@@ -17,7 +17,7 @@ const initialState: IResponseRegisterResponse = {
 };
 
 const register = createSlice({
-  name: 'counter',
+  name: 'register',
   initialState,
   reducers: {
     cleanUpRegister: state => {

@@ -83,7 +83,6 @@ export const tokenThunk = createAsyncThunk<
           logout();
           return rejectWithValue(error.response.data);
         });
-      console.log(res);
       return res.data;
     }
   } catch (error: any) {

@@ -1,12 +1,12 @@
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {RootState} from '../store';
 import {AnyAction, createSlice} from '@reduxjs/toolkit';
-import {setIsLoading} from '../rootReducer';
+import {IResponseRecipes} from '../Auth/AuthTypes';
 import {
-  IResponseLoginIResponseLogin,
-  IResponseRecipes,
-} from '../Auth/AuthTypes';
-import {getAllRecipes} from './recipesThunks';
+  getAllRecipes,
+  getAllRecipesByCategory,
+  getAllRecipesByCuisine,
+} from './recipesThunks';
 
 const initialState: IResponseRecipes = {
   error: '',
@@ -22,7 +22,7 @@ const Recipes = createSlice({
   reducers: {
     cleanUpRecipes: state => {
       state.data = [];
-      state.message = '';
+      state.message = undefined;
       state.isLoading = false;
       state.succes = false;
       state.error = null;
@@ -46,6 +46,58 @@ const Recipes = createSlice({
       state.isLoading = true;
       state.succes = false;
     });
+    ///
+    builder.addCase(
+      getAllRecipesByCategory.rejected,
+      (state, {payload}: AnyAction) => {
+        state.isLoading = false;
+        state.error = payload;
+        state.succes = false;
+        state.data = undefined;
+      },
+    );
+    builder.addCase(
+      getAllRecipesByCategory.fulfilled,
+      (state, {payload}: AnyAction) => {
+        state.data = payload.data.filteredByRecipeDinnerType;
+        state.message = payload.message;
+        state.isLoading = false;
+        state.succes = true;
+      },
+    );
+    builder.addCase(
+      getAllRecipesByCategory.pending,
+      (state, action: AnyAction) => {
+        state.isLoading = true;
+        state.succes = false;
+      },
+    );
+    ///
+    builder.addCase(
+      getAllRecipesByCuisine.rejected,
+      (state, {payload}: AnyAction) => {
+        state.isLoading = false;
+        state.error = payload;
+        state.succes = false;
+        state.data = undefined;
+      },
+    );
+    builder.addCase(
+      getAllRecipesByCuisine.fulfilled,
+      (state, {payload}: AnyAction) => {
+        state.data = payload.data.filteredByRecipeCuisine;
+        state.message = payload.message;
+        state.isLoading = false;
+        state.succes = true;
+      },
+    );
+    builder.addCase(
+      getAllRecipesByCuisine.pending,
+      (state, action: AnyAction) => {
+        state.isLoading = true;
+        state.succes = false;
+      },
+    );
   },
 });
 

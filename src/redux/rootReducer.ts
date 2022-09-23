@@ -8,7 +8,7 @@ const authInitialState: {isLoading: boolean; isAuth: boolean} = {
 };
 
 const authSlice = createSlice({
-  name: 'counter',
+  name: 'auth',
   initialState: authInitialState,
   reducers: {
     setIsLoading: (state, action: PayloadAction<boolean>) => {

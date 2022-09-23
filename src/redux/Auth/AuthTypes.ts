@@ -32,14 +32,14 @@ export interface IResponseRecipes {
 export interface IResponseRecipesByTag {
   isLoading?: boolean;
   message?: string;
-  error: any;
-  data: {
-    filteredRecipesByTag: IRecipe[];
-    filteredRecipesByOwner: IRecipe[];
-    filteredByRecipeName: IRecipe[];
-    filteredByRecipeDescription: IRecipe[];
-    filteredByRecipeCuisine: IRecipe[];
-    filteredByRecipeDinnerType: IRecipe[];
+  error?: any;
+  data?: {
+    filteredRecipesByTag: IRecipe[] | [];
+    filteredRecipesByOwner: IRecipe[] | [];
+    filteredByRecipeName: IRecipe[] | [];
+    filteredByRecipeDescription: IRecipe[] | [];
+    filteredByRecipeCuisine: IRecipe[] | [];
+    filteredByRecipeDinnerType: IRecipe[] | [];
   };
   succes: boolean;
 }

@@ -15,7 +15,7 @@ const initialState: IResponseLoginIResponseLogin = {
 };
 
 const login = createSlice({
-  name: 'counter',
+  name: 'login',
   initialState,
   reducers: {
     cleanUpLogin: state => {

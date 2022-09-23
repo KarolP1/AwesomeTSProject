@@ -1,21 +1,10 @@
 import {getTokensKeychain} from './../../utils/localStorage/index';
-import Keychain from 'react-native-keychain';
-import {getTokens} from './../Auth/loginReducer';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import axios from 'axios';
-import {
-  IResponseRecipes,
-  IResponseRecipesByTag,
-  IResponseRegisterResponse,
-} from '../Auth/AuthTypes';
+import {IResponseRecipes, IResponseRecipesByTag} from '../Auth/AuthTypes';
 import {instance} from '../interceptors';
 
 export interface ISearchRecipes {
   access_token: string | undefined;
-}
-export interface ISearchRecipesByTag {
-  access_token: string | undefined;
-  tag: string;
 }
 
 export const getAllRecipes = createAsyncThunk<IResponseRecipes>(
@@ -25,6 +14,7 @@ export const getAllRecipes = createAsyncThunk<IResponseRecipes>(
       const token = await getTokensKeychain();
 
       const tokenAuth = `Bearer ${token?.access_token}`;
+
       const res = await instance
         .get('/recipes/recipe', {
           headers: {
@@ -35,14 +25,14 @@ export const getAllRecipes = createAsyncThunk<IResponseRecipes>(
           return response.data;
         })
         .catch(error => {
-          return rejectWithValue(error.response.data.message);
+          return rejectWithValue(error.response.data);
         });
       return res;
     } catch (error: any) {
       console.log(error);
       return rejectWithValue({
-        message: error.message,
-        error: 'login failed',
+        message: error,
+        error: error,
         data: null,
       });
     }
@@ -51,28 +41,83 @@ export const getAllRecipes = createAsyncThunk<IResponseRecipes>(
 
 export const getAllRecipesByTag = createAsyncThunk<
   IResponseRecipesByTag,
-  ISearchRecipesByTag
->('recipes/getByTag', async ({access_token, tag}, {rejectWithValue}) => {
+  string
+>('recipes/getByTag', async (tag, {rejectWithValue}) => {
   try {
-    const tokenAuth = `Bearer ${access_token}`;
+    const tokens = await getTokensKeychain();
     const res = await instance
       .get(`/recipes/findByTag/${tag}`, {
         headers: {
-          Authorization: tokenAuth,
+          Authorization: 'Bearer ' + tokens?.access_token,
         },
       })
       .then(response => {
         return response.data;
       })
       .catch(error => {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(error.response.data);
       });
-
     return res;
   } catch (error: any) {
     console.log(error);
     return rejectWithValue({
-      message: error.message,
+      message: error,
+      error: 'login failed',
+      data: null,
+    });
+  }
+});
+export const getAllRecipesByCategory = createAsyncThunk<
+  IResponseRecipesByTag,
+  string
+>('recipes/getByCategory', async (tag, {rejectWithValue}) => {
+  try {
+    const tokens = await getTokensKeychain();
+    const res = await instance
+      .get(`/recipes/findByTag/${tag}`, {
+        headers: {
+          Authorization: 'Bearer ' + tokens?.access_token,
+        },
+      })
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return rejectWithValue(error.response.data);
+      });
+    return res;
+  } catch (error: any) {
+    console.log(error);
+    return rejectWithValue({
+      message: error,
+      error: 'login failed',
+      data: null,
+    });
+  }
+});
+export const getAllRecipesByCuisine = createAsyncThunk<
+  IResponseRecipesByTag,
+  string
+>('recipes/getByCuisine', async (cuisine, {rejectWithValue}) => {
+  try {
+    const tokens = await getTokensKeychain();
+    const res = await instance
+      .get(`/recipes/findByTag/${cuisine}`, {
+        headers: {
+          Authorization: 'Bearer ' + tokens?.access_token,
+        },
+      })
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return rejectWithValue(error.response.data);
+      });
+    return res;
+  } catch (error: any) {
+    console.log(error);
+    return rejectWithValue({
+      message: error,
       error: 'login failed',
       data: null,
     });
