@@ -5,14 +5,26 @@ import {
   ILoginForm,
   IRegisterForm,
 } from '../../redux/Auth/AuthTypes';
+import {IIngredient} from '../../redux/recipes/types';
+import {
+  IIngredientList,
+  IManualList,
+} from '../../Pages/signedIn/recipes/Recipesadd';
 
 export interface ITextInput {
   placeholder: string;
   isSecure?: boolean;
   onChange: any;
   name: string;
-  state?: ILoginForm | IRegisterForm | addressType;
+  state?:
+    | ILoginForm
+    | IRegisterForm
+    | addressType
+    | IManualList
+    | IIngredientList;
   value: string | undefined;
+  onFocus?: (ev: FocusEvent) => void;
+  type?: 'string';
 }
 
 const TextInputRecipe = ({
@@ -22,6 +34,8 @@ const TextInputRecipe = ({
   name,
   state,
   value,
+  onFocus,
+  type,
 }: ITextInput) => {
   return (
     <View
@@ -31,14 +45,22 @@ const TextInputRecipe = ({
         paddingHorizontal: 20,
         backgroundColor: 'rgba(0,0,0,0.15)',
         borderRadius: 5,
+        paddingVertical: 10,
       }}>
       <TextInput
         placeholder={placeholder}
         onChangeText={text => {
-          onChange({...state, [name]: text});
+          if (type === 'string') {
+            const firstLetter = text.substring(0, 1);
+            if (firstLetter === '#' || firstLetter === ' ') {
+              const substring = text.substring(1, text.length);
+              onChange(substring.trim());
+            } else onChange(text.trim());
+          } else onChange({...state, [name]: text});
         }}
         value={value}
-        secureTextEntry={isSecure ? true : false}></TextInput>
+        secureTextEntry={isSecure ? true : false}
+        style={{color: 'white'}}></TextInput>
     </View>
   );
 };

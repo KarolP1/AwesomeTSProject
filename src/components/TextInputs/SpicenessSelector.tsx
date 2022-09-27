@@ -9,30 +9,54 @@ const SpicenessSelector = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <View style={{width: '100%'}}>
+    <View
+      style={{
+        width: '100%',
+        position: 'relative',
+        marginVertical: 10,
+      }}>
       <TouchableOpacity
         onPress={() => setIsOpen(!isOpen)}
         key={spicenessList[selected].id}
         style={{
           flexDirection: 'row-reverse',
           alignItems: 'center',
-          justifyContent: 'space-between',
           paddingHorizontal: 50,
           paddingVertical: 5,
           borderRadius: 5,
           backgroundColor: 'rgba(0,0,0,0.15)',
         }}>
         <Image
-          source={spicenessList[selected].icon}
-          style={{width: 40, aspectRatio: 1}}
+          source={require('../../assets/utilityIcons/arrowup.png')}
+          style={{
+            height: '100%',
+            width: 30,
+            margin: 10,
+            resizeMode: 'contain',
+            transform: !isOpen
+              ? [{rotateX: '180deg'}]
+              : [{rotateX: '0deg'}, {rotateZ: '0deg'}],
+          }}
         />
-        <Text>{spicenessList[selected].name}</Text>
+        <View
+          style={{
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+          }}>
+          <Image
+            source={spicenessList[selected].icon}
+            style={{width: 40, aspectRatio: 1}}
+          />
+          <Text style={{color: 'white'}}>{spicenessList[selected].name}</Text>
+        </View>
       </TouchableOpacity>
 
       <View
         style={{
           width: '100%',
-          height: !isOpen ? 0 : '100%',
+          height: !isOpen ? 0 : '20%',
           opacity: !isOpen ? 0 : 1,
           display: !isOpen ? 'none' : 'flex',
           maxHeight: 200,
@@ -54,7 +78,7 @@ const SpicenessSelector = () => {
               source={spiceness.icon}
               style={{width: 40, aspectRatio: 1}}
             />
-            <Text>{spiceness.name}</Text>
+            <Text style={{color: 'white'}}>{spiceness.name}</Text>
           </TouchableOpacity>
         ))}
       </View>

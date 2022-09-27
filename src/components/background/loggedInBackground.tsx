@@ -13,18 +13,25 @@ import React, {ReactNode} from 'react';
 import {logout} from '../../utils/localStorage';
 import {useAppDispatch} from '../../redux/hooks';
 import {cleanUpLogin, setAuthState} from '../../redux/Auth/loginReducer';
+import {useNavigation} from '@react-navigation/native';
 
 const LoggedInBackground = ({children}: {children?: ReactNode}) => {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.mainContainer}>
       <ImageBackground
         style={styles.loggedOutBackground}
         source={require('../../../src/assets/background.png')}>
         <View style={styles.logoFull}>
-          <TouchableOpacity>
-            <Text>logout</Text>
-          </TouchableOpacity>
+          {navigation.canGoBack() && (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}>
+              <Text>Back</Text>
+            </TouchableOpacity>
+          )}
           <Image
             style={{flex: 1, resizeMode: 'center'}}
             source={require('../../assets/BLINKFIX.png')}

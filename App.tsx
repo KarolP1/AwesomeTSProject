@@ -13,7 +13,7 @@ import React, {useEffect} from 'react';
 import axios from 'axios';
 
 import AuthNavigation from './src/navigation/authNavigation';
-import {StatusBar} from 'react-native';
+import {StatusBar, LogBox} from 'react-native';
 import {
   getStatus,
   getTokens,
@@ -35,6 +35,9 @@ const App = () => {
     return request;
   });
 
+  LogBox.ignoreLogs([
+    "ViewPropTypes will be removed from React Native. Migrate to ViewPropTypes exported from 'deprecated-react-native-prop-types'.",
+  ]);
   return (
     <>
       <AuthNavigation isAuth={authSucces} />

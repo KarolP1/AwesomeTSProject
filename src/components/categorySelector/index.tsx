@@ -13,7 +13,6 @@ const CategoryRecipesSelector = ({
   >;
 }) => {
   const categories = allCategoriesRecipe();
-
   return (
     <ScrollView
       horizontal

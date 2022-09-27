@@ -1,7 +1,7 @@
-import {Text, View} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import React, {useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
-import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
+import {useAppDispatch} from '../../../redux/hooks';
 import {getTokens} from '../../../redux/Auth/loginReducer';
 import AddImage from '../../../components/image/addImage';
 import {ImagePickerResponse} from 'react-native-image-picker';
@@ -11,16 +11,21 @@ import CuisineSearchbar from '../../../components/categorySelector/cuisineSearch
 import OnOfButton from '../../../components/recipes/OnOfButton';
 import CategoryRecipesSelector from '../../../components/categorySelector';
 import SpicenessSelector from '../../../components/TextInputs/SpicenessSelector';
+import ManualController from './ManualController';
+import IngredientController from './IngredientController';
+import TagController from './TagController';
 
 export interface IIngredientList {
-  qtt: number;
+  _id: string;
+  qtt?: string;
   unit: string;
   name: string;
 }
 export interface IManualList {
-  stepNumber: number;
-  description: string;
-  imageUrl?: string;
+  _id: string | null;
+  stepNumber?: string;
+  description?: string;
+  imageUrl?: ImagePickerResponse;
 }
 export interface IRecipeAdd {
   title: string;
@@ -75,7 +80,14 @@ const Recipesadd = () => {
     0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null
   >(null);
   const [recipeAdd, setRecipeAdd] = useState<IRecipeAdd>(initialState);
+  const [manualList, setManualList] = useState<IManualList[]>([]);
+  const [ingredientsList, setIngredientsList] = useState<IIngredientList[]>([]);
+  const [tipManualList, setTipManualList] = useState<IManualList[]>([]);
+  const [tipIngredientsList, setTipIngredientsList] = useState<
+    IIngredientList[]
+  >([]);
 
+  const [tags, setTags] = useState<string[]>([]);
   return (
     <LoggedInBackground>
       <View style={{flex: 1, flexGrow: 1, width: '100%', alignItems: 'center'}}>
@@ -125,21 +137,78 @@ const Recipesadd = () => {
         />
         <SpicenessSelector />
         <TextInputRecipe
-          name="title"
-          placeholder="Title"
+          name="cookTime"
+          placeholder="Cook time (HH:MM)"
           value={recipeAdd?.title}
           onChange={setRecipeAdd}
         />
         <TextInputRecipe
-          name="title"
-          placeholder="Title"
+          name="prepTime"
+          placeholder="Prep time (HH:MM)"
           value={recipeAdd?.title}
           onChange={setRecipeAdd}
         />
-        <Text>addRecipes</Text>
+        <TextInputRecipe
+          name="serves"
+          placeholder="Number of serves"
+          value={recipeAdd?.title}
+          onChange={setRecipeAdd}
+        />
+        <Text style={styles.TextTitle}>Ingredients</Text>
+        <IngredientController
+          ingredientsList={ingredientsList}
+          setIngredientsList={setIngredientsList}
+        />
+        <Text style={styles.TextTitle}>Manual</Text>
+
+        <ManualController
+          manualList={manualList}
+          setManualList={setManualList}
+        />
+        <Text style={styles.TextTitle}>Tags</Text>
+        <TagController tags={tags} setTags={setTags} />
+      </View>
+      <View
+        style={{
+          flex: 1,
+          flexGrow: 1,
+          width: '100%',
+          alignItems: 'center',
+          marginVertical: 20,
+        }}>
+        <Text style={styles.TextTitle}> Exta steps for better taste</Text>
+        <TextInputRecipe
+          name="tipTitle"
+          placeholder="Title for the tip"
+          value={recipeAdd?.tipTitle}
+          onChange={setRecipeAdd}
+        />
+        <TextInputRecipe
+          name="tipDescription"
+          placeholder="description for the tip"
+          value={recipeAdd?.tipDescription}
+          onChange={setRecipeAdd}
+        />
+        <IngredientController
+          ingredientsList={tipIngredientsList}
+          setIngredientsList={setTipIngredientsList}
+        />
+        <ManualController
+          manualList={tipManualList}
+          setManualList={setTipManualList}
+        />
       </View>
     </LoggedInBackground>
   );
 };
+
+const styles = StyleSheet.create({
+  TextTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 8,
+    color: 'white',
+  },
+});
 
 export default Recipesadd;

@@ -1,7 +1,7 @@
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {IRecipeAdd} from '../../Pages/signedIn/recipes/Recipesadd';
-import DropShadow from 'react-native-drop-shadow';
+import {Shadow} from 'react-native-shadow-2';
 
 const OnOfButton = ({
   isOpen,
@@ -13,33 +13,50 @@ const OnOfButton = ({
   setIsOpen: () => void;
 }) => {
   return (
-    <DropShadow
+    <Shadow
+      offset={[2, 40]}
+      safeRender
+      stretch
+      paintInside
       style={{
-        flex: 1,
-        alignItems: 'center',
-        borderRadius: 10,
-        justifyContent: 'center',
-        borderColor: '#fff',
-        borderWidth: 1,
-        elevation: 2,
-        shadowRadius: 10,
+        shadowColor: '#000',
         shadowOffset: {
-          width: -2,
-          height: 4,
+          width: 2,
+          height: 8,
         },
-        shadowOpacity: 1,
+        shadowOpacity: 0.44,
+        shadowRadius: 10,
+
+        elevation: -16,
+      }}
+      containerStyle={{
+        flex: 1,
+        marginVertical: 2,
+        marginHorizontal: 5,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 2,
+          height: -3,
+        },
+        shadowOpacity: isOpen ? 0.44 : 0.1,
+        shadowRadius: isOpen ? 4 : 2,
+
+        elevation: -16,
       }}>
       <TouchableOpacity
+        activeOpacity={0.8}
         style={{
-          backgroundColor: isOpen ? 'rgba(77,77,77,.1)' : 'rgba(234,54,81,.2)',
+          backgroundColor: 'rgba(150, 134, 125, 1)',
           margin: 1,
           padding: 10,
           borderRadius: 10,
+          width: '100%',
+          overflow: 'hidden',
         }}
         onPress={setIsOpen}>
-        <Text>OnOfButton</Text>
+        <Text style={{textAlign: 'center', color: 'white'}}>{name}</Text>
       </TouchableOpacity>
-    </DropShadow>
+    </Shadow>
   );
 };
 

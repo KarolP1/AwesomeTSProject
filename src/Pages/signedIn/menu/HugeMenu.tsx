@@ -34,7 +34,7 @@ const HugeMenu = () => {
           />
           <MenuSquareCartContainer
             name="Profile"
-            image={require('../../../static/icons/Profile.png')}
+            image={require('../../../static/icons/profile.png')}
           />
         </View>
       </View>

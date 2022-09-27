@@ -1,3 +1,6 @@
+import {IManualList} from './../../Pages/signedIn/recipes/Recipesadd';
+import {ImagePickerResponse} from 'react-native-image-picker';
+
 export interface IRecipe {
   _id: string;
   owner: {
@@ -20,11 +23,11 @@ export interface IRecipe {
   isHalal: boolean;
   dishesType: string;
   ingredients: IIngredient[];
-  manual: IManual[];
+  manual: IManualList[];
   tipTitle: string;
   tipDescription: string;
   tipIngredients: IIngredient[];
-  tipManual: IManual[];
+  tipManual: IManualList[];
   tags: string[];
   counter: ICounter;
   __v: 0;
@@ -51,11 +54,5 @@ export interface IIngredient {
   qtt: number;
   unit: string;
   name: string;
-  _id: string;
-}
-
-export interface IManual {
-  stepNumber: number;
-  description: string;
   _id: string;
 }

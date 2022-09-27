@@ -1,4 +1,5 @@
 {
     "editor.peekWidgetDefaultFocus": "tree",
-    "workbench.tree.renderIndentGuides": "always"
+    "workbench.tree.renderIndentGuides": "always",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
