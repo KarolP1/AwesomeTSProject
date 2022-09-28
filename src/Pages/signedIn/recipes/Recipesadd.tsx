@@ -1,7 +1,7 @@
-import {Text, View, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
-import {useAppDispatch} from '../../../redux/hooks';
+import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {getTokens} from '../../../redux/Auth/loginReducer';
 import AddImage from '../../../components/image/addImage';
 import {ImagePickerResponse} from 'react-native-image-picker';
@@ -14,15 +14,25 @@ import SpicenessSelector from '../../../components/TextInputs/SpicenessSelector'
 import ManualController from './ManualController';
 import IngredientController from './IngredientController';
 import TagController from './TagController';
+import AddRecipe, {
+  cleanUpAddRecipe,
+  getAddRecipeError,
+} from '../../../redux/recipes/addRecipe/addRecipe';
+import {addRecipeThunk as addRecipe} from '../../../redux/recipes/addRecipe/addRecipe.thunk';
+import {allCategoriesRecipe} from '../../../components/categorySelector/allCategories';
+import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
+import AdvancementButton from '../../../components/recipes/AdvancementButton';
+import {useNavigation} from '@react-navigation/native';
+import {RecipesHomePageScreenProp} from '../../../navigation/types';
 
 export interface IIngredientList {
-  _id: string;
+  _id?: string;
   qtt?: string;
   unit: string;
   name: string;
 }
 export interface IManualList {
-  _id: string | null;
+  _id?: string | null;
   stepNumber?: string;
   description?: string;
   imageUrl?: ImagePickerResponse;
@@ -30,7 +40,7 @@ export interface IManualList {
 export interface IRecipeAdd {
   title: string;
   description: string;
-  cuisineCode: string;
+  cuisineCode: string | null;
   isKosher: boolean;
   isVegan: boolean;
   isHalal: boolean;
@@ -41,7 +51,7 @@ export interface IRecipeAdd {
   advancement: 1 | 2 | 3 | 4 | 5;
   prepTime: string;
   cookTime: string;
-  serves: number;
+  serves: string;
   manualList: IManualList[];
   tipTitle: string;
   tipDescription: string;
@@ -63,7 +73,7 @@ const initialState: IRecipeAdd = {
   advancement: 1,
   prepTime: '00:00',
   cookTime: '00:00',
-  serves: 0,
+  serves: '0',
   manualList: [],
   tipTitle: '',
   tipDescription: '',
@@ -75,10 +85,17 @@ const initialState: IRecipeAdd = {
 const Recipesadd = () => {
   const dispatch = useAppDispatch();
   const token = getTokens();
+  const navigation = useNavigation<RecipesHomePageScreenProp>();
+  refreshTokenInterveptor(dispatch, instance);
+
+  //#region state for manualList
   const [image, setImage] = useState<ImagePickerResponse | null>(null);
   const [selected, setSelected] = useState<
     0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null
   >(null);
+  const [cuisine, setCuisine] = useState<string | null>(null);
+  const [cuisineCode, setCuisineCode] = useState<string | null>(null);
+  const [isEstablishment, setIsEstablishment] = useState<boolean>(false);
   const [recipeAdd, setRecipeAdd] = useState<IRecipeAdd>(initialState);
   const [manualList, setManualList] = useState<IManualList[]>([]);
   const [ingredientsList, setIngredientsList] = useState<IIngredientList[]>([]);
@@ -86,29 +103,111 @@ const Recipesadd = () => {
   const [tipIngredientsList, setTipIngredientsList] = useState<
     IIngredientList[]
   >([]);
-
   const [tags, setTags] = useState<string[]>([]);
+
+  const [spiceness, setSpiceness] = useState<
+    'normal' | 'extra hot' | 'Hot' | 'Mild'
+  >('normal');
+  const [advancement, setAdvancement] = useState<1 | 2 | 3 | 4 | 5>(1);
+  //git
+  //#endregion
+
+  //#region effects
+  useEffect(() => {
+    setRecipeAdd({
+      ...recipeAdd,
+      advancement,
+    });
+  }, [advancement]);
+  useEffect(() => {
+    setRecipeAdd({
+      ...recipeAdd,
+      spiceness,
+    });
+  }, [spiceness]);
+
+  useEffect(() => {
+    if (cuisineCode) setRecipeAdd({...recipeAdd, cuisineCode: cuisineCode});
+  }, [cuisineCode]);
+
+  useEffect(() => {
+    setRecipeAdd({
+      ...recipeAdd,
+      manualList: manualList,
+      ingredientsList: ingredientsList,
+      tipManualList,
+      tipIngredientsList: tipIngredientsList,
+      tags,
+    });
+  }, [manualList, ingredientsList, tipManualList, tipIngredientsList, tags]);
+  useEffect(() => {
+    const allDishesType = allCategoriesRecipe();
+    const selectedType = allDishesType.find(
+      element => element.index === selected,
+    );
+    if (selectedType)
+      setRecipeAdd({...recipeAdd, dishesType: selectedType.cagetoryName});
+  }, [selected]);
+
+  useEffect(() => {
+    setRecipeAdd({...recipeAdd, isEstablishment});
+  }, [isEstablishment]);
+  //#endregion
+  const recipeAddSuccess = useAppSelector(state => state.addRecipe.succes);
+
+  useEffect(() => {
+    if (recipeAddSuccess === true) {
+      navigation.navigate('My Recipes');
+      dispatch(cleanUpAddRecipe());
+    }
+  }, [recipeAddSuccess]);
+
   return (
     <LoggedInBackground>
       <View style={{flex: 1, flexGrow: 1, width: '100%', alignItems: 'center'}}>
         <AddImage image={image} setImage={setImage} />
+        {/* is establishment */}
+        {/* //TODO: if in profile not establishment dont allowa as establishment */}
+        <View style={{flexDirection: 'row', width: '100%', marginVertical: 10}}>
+          <OnOfButton
+            isOpen={isEstablishment}
+            name="Establishment"
+            setIsOpen={() => setIsEstablishment(true)}
+          />
+          <OnOfButton
+            isOpen={!isEstablishment}
+            name="User"
+            setIsOpen={() => setIsEstablishment(false)}
+          />
+        </View>
+        <Text style={styles.TextSimple}>Title:</Text>
         <TextInputRecipe
           name="title"
           placeholder="Title"
           value={recipeAdd?.title}
           onChange={setRecipeAdd}
+          state={recipeAdd}
         />
+        <Text style={styles.TextSimple}>Description:</Text>
         <TextInputRecipe
           name="description"
           placeholder="Description"
           value={recipeAdd?.description}
           onChange={setRecipeAdd}
+          state={recipeAdd}
         />
-        {/* <CuisineSearchbar
-          cuisine={recipeAdd?.cuisineCode ? recipeAdd?.cuisineCode : ''}
-          setCuisine={}
-        /> */}
-        <View style={{flexDirection: 'row'}}>
+        <Text style={styles.TextSimple}>Advancement:</Text>
+        <AdvancementButton
+          selected={advancement}
+          setSelected={setAdvancement}
+        />
+        <Text style={styles.TextSimple}>Cuisine:</Text>
+        <CuisineSearchbar
+          cuisine={cuisine}
+          setCuisine={setCuisine}
+          setCuisineCode={setCuisineCode}
+        />
+        <View style={{flexDirection: 'row', marginVertical: 10}}>
           <OnOfButton
             isOpen={recipeAdd?.isHalal}
             name="isHalal"
@@ -131,41 +230,67 @@ const Recipesadd = () => {
             }
           />
         </View>
+        <Text style={styles.TextSimple}>Dishes type:</Text>
         <CategoryRecipesSelector
           selected={selected}
           setSelected={setSelected}
         />
-        <SpicenessSelector />
+        <Text style={styles.TextSimple}>Spiceness:</Text>
+        <SpicenessSelector setSpiceness={setSpiceness} />
+        <Text style={styles.TextSimple}>Cook time (HH:MM):</Text>
         <TextInputRecipe
           name="cookTime"
           placeholder="Cook time (HH:MM)"
-          value={recipeAdd?.title}
+          value={recipeAdd?.cookTime}
           onChange={setRecipeAdd}
+          state={recipeAdd}
         />
+        <Text style={styles.TextSimple}>Prep time (HH:MM):</Text>
         <TextInputRecipe
           name="prepTime"
           placeholder="Prep time (HH:MM)"
-          value={recipeAdd?.title}
+          value={recipeAdd?.prepTime}
           onChange={setRecipeAdd}
+          state={recipeAdd}
         />
+        <Text style={styles.TextSimple}>Serves:</Text>
         <TextInputRecipe
           name="serves"
           placeholder="Number of serves"
-          value={recipeAdd?.title}
+          value={recipeAdd?.serves}
           onChange={setRecipeAdd}
+          state={recipeAdd}
         />
-        <Text style={styles.TextTitle}>Ingredients</Text>
+        {ingredientsList.length > 0 && (
+          <Text style={styles.TextTitle}>Ingredients</Text>
+        )}
         <IngredientController
           ingredientsList={ingredientsList}
           setIngredientsList={setIngredientsList}
         />
-        <Text style={styles.TextTitle}>Manual</Text>
+        {recipeAdd.manualList.length !== 0 && (
+          <Text style={styles.TextTitle}>Manual</Text>
+        )}
 
-        <ManualController
-          manualList={manualList}
-          setManualList={setManualList}
-        />
-        <Text style={styles.TextTitle}>Tags</Text>
+        <Text style={styles.TextSimple}>Add recipe step:</Text>
+        <View
+          style={{
+            backgroundColor: 'rgba(0,0,0,0.15)',
+            width: '100%',
+            padding: 10,
+            marginVertical: 10,
+            borderRadius: 5,
+          }}>
+          <ManualController
+            manualList={manualList}
+            setManualList={setManualList}
+          />
+        </View>
+
+        {recipeAdd.tags.length !== 0 && (
+          <Text style={styles.TextTitle}>Tags</Text>
+        )}
+        <Text style={styles.TextSimple}>Add Tag</Text>
         <TagController tags={tags} setTags={setTags} />
       </View>
       <View
@@ -177,26 +302,69 @@ const Recipesadd = () => {
           marginVertical: 20,
         }}>
         <Text style={styles.TextTitle}> Exta steps for better taste</Text>
+        <Text style={styles.TextSimple}>Title for tips:</Text>
+
         <TextInputRecipe
           name="tipTitle"
           placeholder="Title for the tip"
           value={recipeAdd?.tipTitle}
           onChange={setRecipeAdd}
+          state={recipeAdd}
         />
+        <Text style={styles.TextSimple}>Desciption for tips:</Text>
+
         <TextInputRecipe
           name="tipDescription"
           placeholder="description for the tip"
           value={recipeAdd?.tipDescription}
           onChange={setRecipeAdd}
+          state={recipeAdd}
         />
+
+        {tipIngredientsList.length > 0 && (
+          <Text style={styles.TextTitle}>Ingredients for tips</Text>
+        )}
         <IngredientController
           ingredientsList={tipIngredientsList}
           setIngredientsList={setTipIngredientsList}
         />
-        <ManualController
-          manualList={tipManualList}
-          setManualList={setTipManualList}
-        />
+        {recipeAdd.tipManualList.length !== 0 && (
+          <Text style={styles.TextTitle}>Manual for tips</Text>
+        )}
+
+        <Text style={styles.TextSimple}>Add tip step:</Text>
+        <View
+          style={{
+            backgroundColor: 'rgba(0,0,0,0.15)',
+            width: '100%',
+            padding: 10,
+            marginVertical: 10,
+            borderRadius: 5,
+          }}>
+          <ManualController
+            manualList={tipManualList}
+            setManualList={setTipManualList}
+          />
+        </View>
+
+        <Text>{getAddRecipeError()}</Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#EA3651',
+            padding: 20,
+            paddingVertical: 10,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 5,
+          }}
+          onPress={() => {
+            console.log('starting post add recipe...');
+            dispatch(addRecipe(recipeAdd));
+          }}>
+          <Text style={{color: '#fff', fontWeight: 'bold'}}>
+            Submit new Recipe
+          </Text>
+        </TouchableOpacity>
       </View>
     </LoggedInBackground>
   );
@@ -208,6 +376,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 8,
     color: 'white',
+  },
+  insideButtonSelector: {
+    flex: 1,
+    textAlign: 'center',
+    backgroundColor: 'red',
+  },
+  TextSimple: {
+    width: '100%',
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginTop: 8,
+    color: 'white',
+    textAlign: 'left',
   },
 });
 

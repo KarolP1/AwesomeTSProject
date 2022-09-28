@@ -47,7 +47,6 @@ const LoggedInBackground = ({children}: {children?: ReactNode}) => {
         </View>
         <KeyboardAvoidingView style={styles.innerContainer}>
           <ScrollView
-            nestedScrollEnabled={true}
             style={{
               width: '100%',
             }}

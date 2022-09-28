@@ -7,6 +7,7 @@ import {
   setTokensToStorage,
 } from '../utils/localStorage';
 import {cleanUpLogin, setAuthState} from './Auth/loginReducer';
+
 export const instance = axios.create({
   baseURL: 'http://146.59.13.245:3000/api/v1/',
   headers: {
@@ -18,6 +19,7 @@ export const refreshTokenInterveptor = (
   instance: any,
 ) => {
   const refreshAuthLogic = async (failedRequest: any) => {
+    console.log('runinig token refresh');
     const tokens = await getTokensKeychain();
     await axios
       .post(

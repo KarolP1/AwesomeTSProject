@@ -7,7 +7,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {
   ILoginForm,
   IRegisterForm,
-  IResponseLoginIResponseLogin,
+  IResponseLoginIResponseLogin as IResponseLogin,
   IResponseRegisterResponse,
   ITokenForm,
 } from './AuthTypes';
@@ -17,87 +17,86 @@ import {instance} from '../interceptors';
 import {setAuthState, setAuthStatus} from './loginReducer';
 axios.defaults.baseURL = 'http://146.59.13.245:3000/api/v1';
 
-export const loginThunk = createAsyncThunk<
-  IResponseLoginIResponseLogin,
-  ILoginForm,
-  {}
->('user/login', async (state, {rejectWithValue}) => {
-  try {
-    if (state.email === '' || state.password === '') {
-      return rejectWithValue({
-        data: null,
-        error: null,
-        message: 'no data provided',
-      });
-    }
-    const res = await axios
-      .post('/user/login', {
-        login: state.email,
-        password: state.password,
-      })
-      .then(async response => {
-        const tokens = JSON.stringify(response.data.data);
-        await Keychain.setGenericPassword('token', tokens);
-        return response.data;
-      })
-      .catch(error => {
-        return rejectWithValue(error.response.data);
-      });
-
-    if (state.email !== undefined && state.password !== undefined) {
-    }
-
-    return res;
-  } catch (error: any) {
-    return rejectWithValue({
-      message: error.message,
-      error: 'login failed',
-      data: null,
-    });
-  }
-});
-export const tokenThunk = createAsyncThunk<
-  IResponseLoginIResponseLogin,
-  {dispatch: any}
->('user/token', async ({dispatch}, {rejectWithValue}) => {
-  try {
-    const tokens = await getTokensKeychain();
-    if (tokens) {
-      const res = await instance
-        .post(
-          '/user/token',
-          {
-            token: tokens.refresh_token,
-          },
-          {headers: {Authorization: 'Bearer ' + tokens.access_token}},
-        )
+export const loginThunk = createAsyncThunk<IResponseLogin, ILoginForm, {}>(
+  'user/login',
+  async (state, {rejectWithValue}) => {
+    try {
+      if (state.email === '' || state.password === '') {
+        return rejectWithValue({
+          data: null,
+          error: null,
+          message: 'no data provided',
+        });
+      }
+      const res = await axios
+        .post('/user/login', {
+          login: state.email,
+          password: state.password,
+        })
         .then(async response => {
-          await Keychain.resetGenericPassword();
-          await setTokensToStorage(response.data.data);
-          await dispatch(setAuthState(response.data.data));
+          const tokens = JSON.stringify(response.data.data);
+          await Keychain.setGenericPassword('token', tokens);
           return response.data;
         })
-        .catch(async error => {
-          console.log(error.response.data);
-          await dispatch(setAuthStatus(false));
-          logout();
+        .catch(error => {
           return rejectWithValue(error.response.data);
         });
-      return res.data;
+
+      if (state.email !== undefined && state.password !== undefined) {
+      }
+
+      return res;
+    } catch (error: any) {
+      return rejectWithValue({
+        message: error.message,
+        error: 'login failed',
+        data: null,
+      });
     }
-  } catch (error: any) {
-    if (
-      error.response.data.message ===
-      'Invalid request. Token is not same in store.'
-    )
-      logout();
-    return rejectWithValue({
-      message: error.message,
-      error: 'tokens failed: ' + JSON.stringify(error.response.data.message),
-      data: null,
-    });
-  }
-});
+  },
+);
+export const tokenThunk = createAsyncThunk<IResponseLogin, {dispatch: any}>(
+  'user/token',
+  async ({dispatch}, {rejectWithValue}) => {
+    try {
+      const tokens = await getTokensKeychain();
+      if (tokens) {
+        const res = await instance
+          .post(
+            '/user/token',
+            {
+              token: tokens.refresh_token,
+            },
+            {headers: {Authorization: 'Bearer ' + tokens.access_token}},
+          )
+          .then(async response => {
+            await Keychain.resetGenericPassword();
+            await setTokensToStorage(response.data.data);
+            await dispatch(setAuthState(response.data.data));
+            return response.data;
+          })
+          .catch(async error => {
+            console.log(error.response.data);
+            await dispatch(setAuthStatus(false));
+            logout();
+            return rejectWithValue(error.response.data);
+          });
+        return res.data;
+      }
+    } catch (error: any) {
+      if (
+        error.response.data.message ===
+        'Invalid request. Token is not same in store.'
+      )
+        logout();
+      return rejectWithValue({
+        message: error.message,
+        error: 'tokens failed: ' + JSON.stringify(error.response.data.message),
+        data: null,
+      });
+    }
+  },
+);
 
 export const registerThunk = createAsyncThunk<
   IResponseRegisterResponse,

@@ -64,47 +64,49 @@ const SingleRecipe = ({route}: SigneRecipeScreenProps) => {
             })}
           </View>
         </View>
-        <View style={styles.MenuList}>
-          <Text style={styles.RecipeTitle}>Tips:</Text>
-          <Text style={styles.RecipeSubTitle}>{recipe.tipTitle}</Text>
-          <Text style={styles.clasicText}>{recipe.tipDescription}</Text>
-          <View>
-            <Text style={styles.RecipeSubTitle}>Ingredients:</Text>
-            {recipe.tipIngredients.map(ingredient => {
-              ingNumberTips++;
-              return (
-                <Text
-                  key={ingredient._id}
-                  style={styles.clasicTextSide}
-                  ellipsizeMode={'middle'}>
-                  {ingNumberTips}. {ingredient.qtt} {ingredient.unit}{' '}
-                  {ingredient.name}
+        {recipe.tipDescription !== '' && recipe.tipTitle !== '' && (
+          <View style={styles.MenuList}>
+            <Text style={styles.RecipeTitle}>Tips:</Text>
+            <Text style={styles.RecipeSubTitle}>{recipe.tipTitle}</Text>
+            <Text style={styles.clasicText}>{recipe.tipDescription}</Text>
+            <View>
+              <Text style={styles.RecipeSubTitle}>Ingredients:</Text>
+              {recipe.tipIngredients.map(ingredient => {
+                ingNumberTips++;
+                return (
+                  <Text
+                    key={ingredient._id}
+                    style={styles.clasicTextSide}
+                    ellipsizeMode={'middle'}>
+                    {ingNumberTips}. {ingredient.qtt} {ingredient.unit}{' '}
+                    {ingredient.name}
+                  </Text>
+                );
+              })}
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button}>
+                <Text style={{color: 'white', fontWeight: '800'}}>
+                  Buy Ingredients
                 </Text>
-              );
-            })}
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Text style={styles.RecipeSubTitle}>Manual:</Text>
+              {recipe.tipManual.map(manual => {
+                ingNumber++;
+                return (
+                  <Text
+                    key={manual._id}
+                    style={styles.clasicTextSide}
+                    ellipsizeMode={'middle'}>
+                    {manual.stepNumber}. {manual.description}
+                  </Text>
+                );
+              })}
+            </View>
           </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button}>
-              <Text style={{color: 'white', fontWeight: '800'}}>
-                Buy Ingredients
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View>
-            <Text style={styles.RecipeSubTitle}>Manual:</Text>
-            {recipe.tipManual.map(manual => {
-              ingNumber++;
-              return (
-                <Text
-                  key={manual._id}
-                  style={styles.clasicTextSide}
-                  ellipsizeMode={'middle'}>
-                  {manual.stepNumber}. {manual.description}
-                </Text>
-              );
-            })}
-          </View>
-        </View>
+        )}
         <View style={styles.MenuList}>
           <Text style={styles.RecipeSubTitle}>
             Different recipes from {recipe.owner?.name}:

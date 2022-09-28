@@ -4,7 +4,6 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Text,
   ScrollView,
 } from 'react-native';
 import React, {useState} from 'react';
@@ -14,13 +13,15 @@ import CuisinePage from './CuisinePage';
 const CuisineSearchbar = ({
   cuisine,
   setCuisine,
+  setCuisineCode,
 }: {
   cuisine: string | null;
   setCuisine: React.Dispatch<React.SetStateAction<string | null>>;
+  setCuisineCode: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
-    <View style={{maxHeight: 200}}>
+    <View style={{maxHeight: 200, marginVertical: 5}}>
       <View style={[styles.container, {position: 'relative'}]}>
         <TouchableOpacity
           style={styles.iconContainer}
@@ -36,7 +37,10 @@ const CuisineSearchbar = ({
           style={styles.input}
           value={cuisine || ''}
           selectTextOnFocus
-          onChangeText={setCuisine}
+          onChangeText={text => {
+            setIsMenuOpen(true);
+            setCuisine(text);
+          }}
           onFocus={() => {
             setCuisine('');
             setIsMenuOpen(true);
@@ -44,11 +48,14 @@ const CuisineSearchbar = ({
         />
       </View>
       {isMenuOpen && (
-        <CuisinePage
-          cuisine={cuisine}
-          setCuisine={setCuisine}
-          setIsCuisinesVisible={() => setIsMenuOpen(false)}
-        />
+        <ScrollView style={{flex: 1}}>
+          <CuisinePage
+            cuisine={cuisine}
+            setCuisine={setCuisine}
+            setIsCuisinesVisible={() => setIsMenuOpen(false)}
+            setCuisineCode={setCuisineCode}
+          />
+        </ScrollView>
       )}
     </View>
   );
@@ -72,6 +79,7 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
     backgroundColor: 'rgba(0,0,0,0)',
+    marginLeft: 20,
   },
   searchIcon: {
     width: 20,

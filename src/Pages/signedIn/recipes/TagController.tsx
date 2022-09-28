@@ -44,9 +44,7 @@ const TagController = ({
             />
           </View>
         ))}
-      <Text style={{color: '#fff', fontSize: 20, marginVertical: 5}}>
-        Add Tag
-      </Text>
+
       <TextInputRecipe
         name="tag"
         placeholder="Tags will help you reach more people"
@@ -66,7 +64,7 @@ const TagController = ({
             paddingVertical: 10,
             paddingHorizontal: 20,
             borderRadius: 5,
-            width: '50%',
+            width: '45%',
           }}
           onPress={async () => {
             if (tag === '') Alert.alert('Warning', 'You have to type tag');
@@ -75,7 +73,9 @@ const TagController = ({
               setTag('');
             }
           }}>
-          <Text style={{color: '#fff'}}>Add new tag</Text>
+          <Text style={{color: '#fff', width: '100%', textAlign: 'center'}}>
+            Add new tag
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

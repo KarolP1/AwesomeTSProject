@@ -23,6 +23,8 @@ const RecipesFind = ({route}: FindScreenProps) => {
     0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null
   >(null);
   const [cuisine, setCuisine] = useState<string | null>(null);
+  const [cuisineCode, setCuisineCode] = useState<string | null>(null);
+
   refreshTokenInterveptor(dispatch, instance);
   const allCateg = allCategoriesRecipe();
   const recipesStatus = useAppSelector(state => state.recipes.isLoading);
@@ -51,7 +53,11 @@ const RecipesFind = ({route}: FindScreenProps) => {
   );
   return (
     <LoggedInBackground>
-      <CuisineSearchbar setCuisine={setCuisine} cuisine={cuisine} />
+      <CuisineSearchbar
+        setCuisine={setCuisine}
+        cuisine={cuisine}
+        setCuisineCode={setCuisineCode}
+      />
       <CategoryRecipesSelector selected={selected} setSelected={setSelected} />
       {!recipesStatus ? (
         <>

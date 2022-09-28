@@ -6,9 +6,11 @@ const CuisinePage = ({
   cuisine,
   setCuisine,
   setIsCuisinesVisible,
+  setCuisineCode,
 }: {
   cuisine: string | null;
   setCuisine: React.Dispatch<React.SetStateAction<string | null>>;
+  setCuisineCode: React.Dispatch<React.SetStateAction<string | null>>;
   setIsCuisinesVisible: () => void;
 }) => {
   const [array, setArray] = useState(
@@ -30,9 +32,7 @@ const CuisinePage = ({
       nestedScrollEnabled={true}
       contentContainerStyle={{
         width: '100%',
-        height: 200,
         flex: 1,
-        maxHeight: 300,
       }}
       style={{flex: 1}}>
       {array.map(cuisine => (
@@ -41,6 +41,7 @@ const CuisinePage = ({
           onPress={() => {
             setCuisine(cuisine.NameEnglish);
             setIsCuisinesVisible();
+            setCuisineCode(cuisine.CodeURL);
           }}
           style={{width: '100%'}}>
           <Text>

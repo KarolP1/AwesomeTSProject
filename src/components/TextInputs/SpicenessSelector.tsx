@@ -1,12 +1,23 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useCardAnimation} from '@react-navigation/stack';
 import {SpicenessList} from '../../static/spiceness';
 
-const SpicenessSelector = () => {
+const SpicenessSelector = ({
+  setSpiceness,
+}: {
+  setSpiceness: React.Dispatch<
+    React.SetStateAction<'normal' | 'extra hot' | 'Hot' | 'Mild'>
+  >;
+}) => {
   const spicenessList = SpicenessList();
   const [selected, setSelected] = useState<number>(0);
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const selectedSpieness = SpicenessList()[selected];
+    setSpiceness(selectedSpieness.name);
+  }, [selected]);
 
   return (
     <View
@@ -14,6 +25,7 @@ const SpicenessSelector = () => {
         width: '100%',
         position: 'relative',
         marginVertical: 10,
+        maxHeight: 900,
       }}>
       <TouchableOpacity
         onPress={() => setIsOpen(!isOpen)}

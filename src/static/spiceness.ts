@@ -1,8 +1,12 @@
 export const SpicenessList = () => {
-  return [
+  const resArr: {
+    id: number;
+    name: 'extra hot' | 'Hot' | 'Mild' | 'normal';
+    icon?: any;
+  }[] = [
     {
       id: 0,
-      name: 'Neutral',
+      name: 'normal',
       icon: require('../assets/utilityIcons/Spicenes/1.png'),
     },
     {
@@ -17,8 +21,9 @@ export const SpicenessList = () => {
     },
     {
       id: 3,
-      name: 'Extra Hot',
+      name: 'extra hot',
       icon: require('../assets/utilityIcons/Spicenes/4.png'),
     },
   ];
+  return resArr;
 };

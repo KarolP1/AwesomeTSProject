@@ -9,6 +9,7 @@ import {IIngredient} from '../../redux/recipes/types';
 import {
   IIngredientList,
   IManualList,
+  IRecipeAdd,
 } from '../../Pages/signedIn/recipes/Recipesadd';
 
 export interface ITextInput {
@@ -21,7 +22,8 @@ export interface ITextInput {
     | IRegisterForm
     | addressType
     | IManualList
-    | IIngredientList;
+    | IIngredientList
+    | IRecipeAdd;
   value: string | undefined;
   onFocus?: (ev: FocusEvent) => void;
   type?: 'string';

@@ -5,6 +5,7 @@ import loginSlice from './Auth/loginReducer';
 import registerSlice from './Auth/registerReducer';
 import recipesSlice from './recipes';
 import recipesByTagSlice from './recipes/searchByTag';
+import addRecipeSlice from './recipes/addRecipe/addRecipe';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     register: registerSlice,
     recipes: recipesSlice,
     recipesByTag: recipesByTagSlice,
+    addRecipe: addRecipeSlice,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
