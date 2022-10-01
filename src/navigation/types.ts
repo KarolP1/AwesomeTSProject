@@ -1,4 +1,9 @@
-import {IRecipe} from './../redux/recipes/types';
+import {IIngredientList} from './../Pages/signedIn/recipes/Recipesadd';
+import {
+  IRecipe,
+  IIngredient,
+  ShoppingListItemGet,
+} from './../redux/recipes/types';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
@@ -46,7 +51,24 @@ export type RecipesHomeStackParamList = {
   'Single Recipe': {
     recipe: IRecipe;
   };
+  'Add Shopping Lists': {
+    recipeId: string;
+    ingredientsList: IIngredient[];
+    tipIngredientsList: IIngredient[];
+  };
+  'Single ShoppingList Edit': {
+    list: ShoppingListItemGet;
+  };
 };
+
+export type ISingleShoppingListEdit = NativeStackScreenProps<
+  RecipesHomeStackParamList,
+  'Single ShoppingList Edit'
+>;
+export type RecipeAddShoppingListScreenProps = NativeStackScreenProps<
+  RecipesHomeStackParamList,
+  'Add Shopping Lists'
+>;
 export type SigneRecipeScreenProps = NativeStackScreenProps<
   RecipesHomeStackParamList,
   'Single Recipe'

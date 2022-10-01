@@ -10,10 +10,9 @@ const SmallIconBG = ({children}: {children: React.ReactNode}) => {
         aspectRatio: 1,
         backgroundColor: 'rgba(255,255,255,0.15)',
         alignItems: 'center',
-        borderRadius: 10,
         justifyContent: 'center',
       }}>
-      <DropShadow style={styles.ContainerSmall}>{children}</DropShadow>
+      <View style={styles.ContainerSmall}>{children}</View>
     </View>
   );
 };
@@ -30,12 +29,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderColor: '#fff',
     borderWidth: 1,
-    elevation: 2,
-    shadowRadius: 10,
-    shadowOffset: {
-      width: -2,
-      height: 4,
-    },
-    shadowOpacity: 1,
   },
 });

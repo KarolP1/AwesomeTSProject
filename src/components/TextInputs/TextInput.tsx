@@ -27,6 +27,7 @@ const TextInputCustom = ({
     <View
       style={{
         marginVertical: 10,
+        paddingVertical: 10,
         paddingHorizontal: 20,
         backgroundColor: 'rgba(0,0,0,0.15)',
         borderRadius: 5,

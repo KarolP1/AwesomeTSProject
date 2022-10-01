@@ -60,26 +60,58 @@ export interface IRecipeAdd {
   tags: string[];
 }
 const initialState: IRecipeAdd = {
-  title: '',
-  description: '',
-  cuisineCode: '',
+  title: 'test',
+  description: 'desc test',
+  cuisineCode: 'pl',
   isKosher: false,
   isVegan: false,
   isHalal: false,
-  dishesType: '',
+  dishesType: 'Bakeries',
   spiceness: 'normal',
-  ingredientsList: [],
+  ingredientsList: [
+    {name: 'sugar', unit: 'g', qtt: '1'},
+    {name: 'sugar', unit: 'g', qtt: '1'},
+    {name: 'sugar', unit: 'g', qtt: '1'},
+    {name: 'sugar', unit: 'g', qtt: '1'},
+    {name: 'sugar', unit: 'g', qtt: '1'},
+    {name: 'sugar', unit: 'g', qtt: '1'},
+    {name: 'sugar', unit: 'g', qtt: '1'},
+    {name: 'sugar', unit: 'g', qtt: '1'},
+  ],
   isEstablishment: false,
   advancement: 1,
-  prepTime: '00:00',
-  cookTime: '00:00',
-  serves: '0',
-  manualList: [],
-  tipTitle: '',
-  tipDescription: '',
-  tipIngredientsList: [],
-  tipManualList: [],
-  tags: [],
+  prepTime: '00:10',
+  cookTime: '00:30',
+  serves: '4',
+  manualList: [
+    {description: 'asdasda', stepNumber: '1'},
+    {description: 'asdasda', stepNumber: '1'},
+    {description: 'asdasda', stepNumber: '1'},
+    {description: 'asdasda', stepNumber: '1'},
+    {description: 'asdasda', stepNumber: '1'},
+    {description: 'asdasda', stepNumber: '1'},
+  ],
+  tipTitle: 'tip',
+  tipDescription: 'desc tip',
+  tipIngredientsList: [
+    {name: 'sugar', unit: 'g', qtt: '1'},
+    {name: 'sugar', unit: 'g', qtt: '1'},
+    {name: 'sugar', unit: 'g', qtt: '1'},
+    {name: 'sugar', unit: 'g', qtt: '1'},
+    {name: 'sugar', unit: 'g', qtt: '1'},
+    {name: 'sugar', unit: 'g', qtt: '1'},
+    {name: 'sugar', unit: 'g', qtt: '1'},
+    {name: 'sugar', unit: 'g', qtt: '1'},
+  ],
+  tipManualList: [
+    {description: 'asdasda', stepNumber: '1'},
+    {description: 'asdasda', stepNumber: '1'},
+    {description: 'asdasda', stepNumber: '1'},
+    {description: 'asdasda', stepNumber: '1'},
+    {description: 'asdasda', stepNumber: '1'},
+    {description: 'asdasda', stepNumber: '1'},
+  ],
+  tags: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'],
 };
 
 const Recipesadd = () => {
@@ -88,6 +120,7 @@ const Recipesadd = () => {
   const navigation = useNavigation<RecipesHomePageScreenProp>();
   refreshTokenInterveptor(dispatch, instance);
 
+  const [recipeAdd, setRecipeAdd] = useState<IRecipeAdd>(initialState);
   //#region state for manualList
   const [image, setImage] = useState<ImagePickerResponse | null>(null);
   const [selected, setSelected] = useState<
@@ -96,19 +129,26 @@ const Recipesadd = () => {
   const [cuisine, setCuisine] = useState<string | null>(null);
   const [cuisineCode, setCuisineCode] = useState<string | null>(null);
   const [isEstablishment, setIsEstablishment] = useState<boolean>(false);
-  const [recipeAdd, setRecipeAdd] = useState<IRecipeAdd>(initialState);
-  const [manualList, setManualList] = useState<IManualList[]>([]);
-  const [ingredientsList, setIngredientsList] = useState<IIngredientList[]>([]);
-  const [tipManualList, setTipManualList] = useState<IManualList[]>([]);
-  const [tipIngredientsList, setTipIngredientsList] = useState<
-    IIngredientList[]
-  >([]);
-  const [tags, setTags] = useState<string[]>([]);
-
   const [spiceness, setSpiceness] = useState<
     'normal' | 'extra hot' | 'Hot' | 'Mild'
   >('normal');
   const [advancement, setAdvancement] = useState<1 | 2 | 3 | 4 | 5>(1);
+  /** ingredients and manual */
+
+  const [manualList, setManualList] = useState<IManualList[]>(
+    initialState.manualList,
+  );
+  const [ingredientsList, setIngredientsList] = useState<IIngredientList[]>(
+    initialState.ingredientsList,
+  );
+  const [tipManualList, setTipManualList] = useState<IManualList[]>(
+    initialState.tipManualList,
+  );
+  const [tipIngredientsList, setTipIngredientsList] = useState<
+    IIngredientList[]
+  >(initialState.tipIngredientsList);
+  const [tags, setTags] = useState<string[]>([]);
+
   //git
   //#endregion
 
@@ -134,9 +174,9 @@ const Recipesadd = () => {
     setRecipeAdd({
       ...recipeAdd,
       manualList: manualList,
-      ingredientsList: ingredientsList,
+      ingredientsList,
       tipManualList,
-      tipIngredientsList: tipIngredientsList,
+      tipIngredientsList,
       tags,
     });
   }, [manualList, ingredientsList, tipManualList, tipIngredientsList, tags]);
@@ -358,7 +398,6 @@ const Recipesadd = () => {
             borderRadius: 5,
           }}
           onPress={() => {
-            console.log('starting post add recipe...');
             dispatch(addRecipe(recipeAdd));
           }}>
           <Text style={{color: '#fff', fontWeight: 'bold'}}>
@@ -383,13 +422,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
   TextSimple: {
-    width: '100%',
+    flex: 1,
     fontSize: 12,
     fontWeight: 'bold',
     marginTop: 8,
     color: 'white',
     textAlign: 'left',
   },
+  TextSimple2: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginTop: 8,
+    color: 'white',
+    textAlign: 'left',
+    textTransform: 'capitalize',
+  },
 });
-
+export {styles as RecipeStyles};
 export default Recipesadd;

@@ -8,9 +8,11 @@ import {RecipesHomePageScreenProp} from '../../navigation/types';
 const RecipesLists = ({
   recipes,
   tag,
+  title,
 }: {
   recipes: [] | IRecipe[] | undefined;
   tag?: string;
+  title?: string;
 }) => {
   const navigation = useNavigation<RecipesHomePageScreenProp>();
 
@@ -19,7 +21,7 @@ const RecipesLists = ({
       {tag ? (
         <Text style={styles.TextHeading}>recipes by tag: {tag}</Text>
       ) : (
-        <Text style={styles.TextHeading}>All Recipes</Text>
+        <Text style={styles.TextHeading}>{title ? title : 'All Recipes'}</Text>
       )}
       <ScrollView
         horizontal={true}

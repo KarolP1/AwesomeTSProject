@@ -1,6 +1,6 @@
 import recipes from '..';
 import {IRecipeAdd} from './../../../Pages/signedIn/recipes/Recipesadd';
-export const checkIfAddRecipeIsCorrect = (recipe: IRecipeAdd) => {
+export const checkIfAddRecipeIsCorrect = async (recipe: IRecipeAdd) => {
   if (
     recipe.title === '' ||
     recipe.title === undefined ||
@@ -27,17 +27,22 @@ export const checkIfAddRecipeIsCorrect = (recipe: IRecipeAdd) => {
     return true;
   else {
     recipe.manualList.forEach(recipeItem => {
+      console.log(recipeItem._id);
       if (recipeItem._id) delete recipeItem._id;
     });
     recipe.ingredientsList.forEach(recipeItem => {
+      console.log(recipeItem._id);
       if (recipeItem._id) delete recipeItem._id;
     });
     recipe.tipManualList.forEach(recipeItem => {
+      console.log(recipeItem._id);
       if (recipeItem._id) delete recipeItem._id;
     });
     recipe.tipIngredientsList.forEach(recipeItem => {
+      console.log(recipeItem._id);
       if (recipeItem._id) delete recipeItem._id;
     });
+    console.log(recipe);
     return false;
   }
 };

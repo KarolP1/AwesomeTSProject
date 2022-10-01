@@ -43,7 +43,15 @@ const SingleRecipe = ({route}: SigneRecipeScreenProps) => {
             })}
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() =>
+                navigation.navigate('Add Shopping Lists', {
+                  recipeId: recipe._id,
+                  ingredientsList: recipe.ingredients,
+                  tipIngredientsList: recipe.tipIngredients,
+                })
+              }>
               <Text style={{color: 'white', fontWeight: '800'}}>
                 Buy Ingredients
               </Text>
@@ -85,7 +93,15 @@ const SingleRecipe = ({route}: SigneRecipeScreenProps) => {
               })}
             </View>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() =>
+                  navigation.navigate('Add Shopping Lists', {
+                    recipeId: recipe._id,
+                    ingredientsList: recipe.ingredients,
+                    tipIngredientsList: recipe.tipIngredients,
+                  })
+                }>
                 <Text style={{color: 'white', fontWeight: '800'}}>
                   Buy Ingredients
                 </Text>

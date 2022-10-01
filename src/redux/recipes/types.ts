@@ -1,4 +1,7 @@
-import {IManualList} from './../../Pages/signedIn/recipes/Recipesadd';
+import {
+  IManualList,
+  IRecipeAdd,
+} from './../../Pages/signedIn/recipes/Recipesadd';
 import {ImagePickerResponse} from 'react-native-image-picker';
 
 export interface IRecipe {
@@ -118,10 +121,57 @@ interface ResponseDataAddRecipe {
   _id: string;
 }
 
+export interface ShoppingListItem {
+  isDone: false;
+  qtt: string;
+  unit: string;
+  name: string;
+  _id: string;
+}
+
+export interface ShoppingListItemGet {
+  _id: string;
+  owner: string;
+  recipeId: string;
+  ingredients: ShoppingListItem[];
+  tipIngredients: ShoppingListItem[];
+  recipe: IRecipe[];
+}
+
+export interface ResponseDataAddShoppingList {
+  owner: string;
+  recipeId: string;
+  ingredients: ShoppingListItem[];
+  tipIngredients: ShoppingListItem[];
+  recipe: IRecipe[];
+  _id: string;
+}
+
 export interface IResponseAddRecipe {
   error: any | undefined;
   message: string | undefined;
   data?: ResponseDataAddRecipe | null;
+  isLoading: boolean;
+  succes: boolean;
+}
+export interface IResponseGetMyRecipes {
+  error: any | undefined;
+  message: string | undefined;
+  data?: IRecipe[] | null;
+  isLoading: boolean;
+  succes: boolean;
+}
+export interface IResponseAddShoppingList {
+  data?: ResponseDataAddShoppingList | null;
+  error: any | undefined;
+  message: string | undefined;
+  isLoading: boolean;
+  succes: boolean;
+}
+export interface IResponseGetShoppingLists {
+  data?: ShoppingListItemGet[] | null;
+  error: any | undefined;
+  message: string | undefined;
   isLoading: boolean;
   succes: boolean;
 }

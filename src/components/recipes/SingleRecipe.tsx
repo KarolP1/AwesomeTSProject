@@ -137,10 +137,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     backgroundColor: 'rgba(255,255,255,0.15)',
     alignItems: 'center',
-    borderRadius: 10,
     justifyContent: 'center',
-    borderColor: '#fff',
-    borderWidth: 1,
   },
   imageIcon: {
     height: '60%',

@@ -1,29 +1,22 @@
-import {IRecipeAdd} from './../../../Pages/signedIn/recipes/Recipesadd';
+import {IRecipeAdd} from '../../../Pages/signedIn/recipes/Recipesadd';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {getTokensKeychain} from '../../../utils/localStorage';
 import {instance} from '../../interceptors';
-import {IResponseAddRecipe} from './../types';
-import {IResponseRegisterResponse} from '../../Auth/AuthTypes';
-import {checkIfAddRecipeIsCorrect} from './functions';
+import {IResponseGetMyRecipes} from '../types';
 
-export const addRecipeThunk = createAsyncThunk<IResponseAddRecipe, IRecipeAdd>(
-  'recipes/addRecipe',
-  async (state, {rejectWithValue}) => {
+export const getMyRecipes = createAsyncThunk<IResponseGetMyRecipes>(
+  'recipes/getRecipe}',
+  async (_, {rejectWithValue}) => {
     try {
       const tokens = await getTokensKeychain();
-      const check = await checkIfAddRecipeIsCorrect(state);
-      if (check) {
-        return rejectWithValue('Wrong data provided');
-      }
       const res = await instance
-        .post('/recipes/recipe', state, {
+        .get(`/recipes/findMyRecipes`, {
           headers: {Authorization: 'Bearer ' + tokens?.access_token},
         })
         .then(response => {
           return response.data.data;
         })
         .catch(error => {
-          console.error(error.response.data);
           return rejectWithValue(error.response.data.message);
         });
 
