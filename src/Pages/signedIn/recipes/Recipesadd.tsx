@@ -13,7 +13,7 @@ import CategoryRecipesSelector from '../../../components/categorySelector';
 import SpicenessSelector from '../../../components/TextInputs/SpicenessSelector';
 import ManualController from './ManualController';
 import IngredientController from './IngredientController';
-import TagController from './TagController';
+import TagController from '../../../components/recipes/TagController';
 import AddRecipe, {
   cleanUpAddRecipe,
   getAddRecipeError,

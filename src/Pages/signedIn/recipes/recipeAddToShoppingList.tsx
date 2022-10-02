@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
   RecipeAddShoppingListScreenProps,
@@ -13,8 +13,9 @@ import {IIngredient} from '../../../redux/recipes/types';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
 import {addShoppingListThunk} from '../../../redux/recipes/shoppingList/addShoppinglist.thunk';
-import {cleanUpshoppingList} from '../../../redux/recipes/shoppingList/addShoppingList.slice';
+import {cleanUpshoppingListAdd} from '../../../redux/recipes/shoppingList/addShoppingList.slice';
 import {useNavigation} from '@react-navigation/native';
+import SubmitButton from '../../../components/touchables/SubmitButton';
 
 const RecipeAddToShoppingList = ({route}: RecipeAddShoppingListScreenProps) => {
   const dispatch = useAppDispatch();
@@ -26,19 +27,22 @@ const RecipeAddToShoppingList = ({route}: RecipeAddShoppingListScreenProps) => {
   const [shoppingList, setShoppingList] = useState<IIngredient[]>([]);
   const [tipShoppingList, setTipShoppingList] = useState<IIngredient[]>([]);
   refreshTokenInterveptor(dispatch, instance);
-  useEffect(() => {
-    console.log({ingredientsList, tipIngredientsList, recipeId});
-  }, [ingredientsList, tipIngredientsList]);
 
-  const addShoppingListStatus = useAppSelector(
-    state => state.addShoppingList.succes,
-  );
+  const {succes, error} = useAppSelector(state => state.addShoppingList);
   useEffect(() => {
-    if (addShoppingListStatus === true) {
+    if (succes === true) {
+      dispatch(cleanUpshoppingListAdd());
+      console.log('should be clean up');
       navigation.navigate('Shopping Lists');
-      cleanUpshoppingList();
     }
-  }, [addShoppingListStatus]);
+  }, [succes]);
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert('there was a problem', JSON.stringify(error));
+      dispatch(cleanUpshoppingListAdd());
+    }
+  }, [error]);
 
   return (
     <LoggedInBackground>
@@ -73,24 +77,34 @@ const RecipeAddToShoppingList = ({route}: RecipeAddShoppingListScreenProps) => {
           </View>
         )}
       </View>
-      <TouchableOpacity
-        onPress={() => {
-          dispatch(
-            addShoppingListThunk({
-              recipeIngredients: shoppingList,
-              recipeId: recipeId,
-              recipeTipIngredients: tipShoppingList,
-            }),
-          );
-        }}
+      <View
         style={{
-          backgroundColor: '#EA3651',
-          paddingVertical: 10,
-          paddingHorizontal: 20,
-          borderRadius: 5,
+          width: '100%',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          marginTop: 20,
         }}>
-        <Text style={{color: '#fff'}}>Submit new Shopping Lists</Text>
-      </TouchableOpacity>
+        <SubmitButton
+          style={{backgroundColor: 'rgb(80,80,80)'}}
+          title="Buy ingredients"
+          onPress={() => {
+            Alert.alert('go to order find shops');
+            //TODO: ('go to order find shops');
+          }}
+        />
+        <SubmitButton
+          title="Submit new Shopping Lists"
+          onPress={() => {
+            dispatch(
+              addShoppingListThunk({
+                recipeIngredients: shoppingList,
+                recipeId: recipeId,
+                recipeTipIngredients: tipShoppingList,
+              }),
+            );
+          }}
+        />
+      </View>
     </LoggedInBackground>
   );
 };

@@ -122,7 +122,7 @@ interface ResponseDataAddRecipe {
 }
 
 export interface ShoppingListItem {
-  isDone: false;
+  isDone: boolean;
   qtt: string;
   unit: string;
   name: string;

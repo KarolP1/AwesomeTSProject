@@ -1,10 +1,10 @@
+import {editShoppingListThunk} from './updateShoppinglist.thunk';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store';
 import {AnyAction, createSlice} from '@reduxjs/toolkit';
-import {IResponseAddRecipe} from '../types';
-import {addShoppingListThunk} from './addShoppinglist.thunk';
+import {IResponseAddRecipe, IResponseGetShoppingLists} from '../types';
 
-const initialState: IResponseAddRecipe = {
+const initialState: IResponseGetShoppingLists = {
   error: undefined,
   message: undefined,
   data: null,
@@ -12,11 +12,11 @@ const initialState: IResponseAddRecipe = {
   succes: false,
 };
 
-const shoppingList = createSlice({
-  name: 'addshoppingList',
+const editShoppingList = createSlice({
+  name: 'editShoppingList',
   initialState,
   reducers: {
-    cleanUpshoppingListAdd: state => {
+    cleanUpListEdit: state => {
       state.data = initialState.data;
       state.message = initialState.message;
       state.isLoading = initialState.isLoading;
@@ -24,15 +24,17 @@ const shoppingList = createSlice({
       state.error = initialState.error;
     },
   },
+
   extraReducers: builder => {
-    builder.addCase(addShoppingListThunk.rejected, (state, {payload}) => {
+    builder.addCase(editShoppingListThunk.rejected, (state, {payload}) => {
       state.error = payload;
       state.succes = false;
       state.data = null;
       state.isLoading = false;
     });
+
     builder.addCase(
-      addShoppingListThunk.fulfilled,
+      editShoppingListThunk.fulfilled,
       (state, {payload}: AnyAction) => {
         state.error = null;
         state.succes = true;
@@ -41,14 +43,15 @@ const shoppingList = createSlice({
         state.message = payload.message;
       },
     );
-    builder.addCase(addShoppingListThunk.pending, (state, {payload}) => {
+
+    builder.addCase(editShoppingListThunk.pending, (state, {payload}) => {
       state.isLoading = true;
     });
     ///
   },
 });
 
-export const getshoppingListError = () =>
-  useSelector((state: RootState) => state.addShoppingList.error);
-export const {cleanUpshoppingListAdd} = shoppingList.actions;
-export default shoppingList.reducer;
+export const editshoppingListError = () =>
+  useSelector((state: RootState) => state.edistShoppingList.error);
+export const {cleanUpListEdit} = editShoppingList.actions;
+export default editShoppingList.reducer;

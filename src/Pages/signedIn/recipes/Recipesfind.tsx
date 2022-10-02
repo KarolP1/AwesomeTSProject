@@ -48,9 +48,6 @@ const RecipesFind = ({route}: FindScreenProps) => {
   );
 
   const allRecipes = useAppSelector(state => state.recipes.data);
-  const allRecipesByTag = useAppSelector(
-    state => state.recipesByTag.data?.filteredRecipesByTag,
-  );
   return (
     <LoggedInBackground>
       <CuisineSearchbar
@@ -63,7 +60,7 @@ const RecipesFind = ({route}: FindScreenProps) => {
         <>
           {tag && (
             <View style={{height: 400}}>
-              <RecipesLists tag={tag} recipes={allRecipesByTag} />
+              <RecipesLists tag={tag} recipes={allRecipes} />
             </View>
           )}
           <View style={{height: 400}}>

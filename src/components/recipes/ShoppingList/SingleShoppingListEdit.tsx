@@ -1,18 +1,32 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, Text, View, Animated, TouchableOpacity} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   ShoppingListItem,
   ShoppingListItemGet,
 } from '../../../redux/recipes/types';
 import OnOfDot from '../ingredients/OnOfDot';
 import {RecipeStyles} from '../../../Pages/signedIn/recipes/Recipesadd';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import {RectButton} from 'react-native-gesture-handler';
 
 const SingleIngredientListEdit = ({
   ingredient,
+  ingList,
+  setIngList,
 }: {
   ingredient: ShoppingListItem;
+  setIngList: React.Dispatch<React.SetStateAction<ShoppingListItem[]>>;
+  ingList: ShoppingListItem[];
 }) => {
   const [isDone, setIsDone] = useState<boolean>(ingredient.isDone);
+  useEffect(() => {
+    const editedList = ingList.map(item => {
+      if (item._id === ingredient._id) {
+        return {...item, isDone: isDone};
+      } else return item;
+    });
+    setIngList(editedList);
+  }, [isDone]);
   return (
     <View style={styles.ingredientContainer}>
       <OnOfDot isSelected={isDone} setIsSelected={setIsDone} />
@@ -46,5 +60,51 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
+  },
+  rectButton: {
+    flex: 1,
+    height: 80,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    backgroundColor: 'white',
+  },
+  separator: {
+    backgroundColor: 'rgb(200, 199, 204)',
+    height: StyleSheet.hairlineWidth,
+  },
+  fromText: {
+    fontWeight: 'bold',
+    backgroundColor: 'transparent',
+  },
+  messageText: {
+    color: '#999',
+    backgroundColor: 'transparent',
+  },
+  dateText: {
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    right: 20,
+    top: 10,
+    color: '#999',
+    fontWeight: 'bold',
+  },
+  leftAction: {
+    flex: 1,
+    backgroundColor: '#497AFC',
+    justifyContent: 'center',
+  },
+  actionText: {
+    color: 'white',
+    fontSize: 16,
+    backgroundColor: 'transparent',
+    padding: 10,
+  },
+  rightAction: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    width: 50,
   },
 });

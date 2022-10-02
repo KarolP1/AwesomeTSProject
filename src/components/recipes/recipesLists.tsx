@@ -1,5 +1,5 @@
 import {StyleSheet, Text, ScrollView, TouchableOpacity} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {IRecipe} from '../../redux/recipes/types';
 import SingleRecipe from './SingleRecipe';
 import {useNavigation} from '@react-navigation/native';
@@ -10,7 +10,7 @@ const RecipesLists = ({
   tag,
   title,
 }: {
-  recipes: [] | IRecipe[] | undefined;
+  recipes?: IRecipe[];
   tag?: string;
   title?: string;
 }) => {

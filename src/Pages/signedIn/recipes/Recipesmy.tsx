@@ -11,35 +11,74 @@ import {getMyRecipes} from '../../../redux/recipes/myRecipes/myRecipes.thunk';
 import {useFocusEffect} from '@react-navigation/native';
 import RecipesLists from '../../../components/recipes/recipesLists';
 import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
+import CuisineSearchbar from '../../../components/categorySelector/cuisineSearchbar';
+import DishesType from '../../../components/recipes/dishesType';
+import CategoryRecipesSelector from '../../../components/categorySelector';
+import {
+  allCategoriesRecipe,
+  category,
+} from '../../../components/categorySelector/allCategories';
+import {IRecipe} from '../../../redux/recipes/types';
+import Spinner from 'react-native-spinkit';
 
 const Recipesmy = () => {
-  const dispatch = useAppDispatch();
+  const {data, isLoading} = useAppSelector(state => state.myRecipes);
+  const [recipes, setRecipes] = useState<IRecipe[]>();
   useEffect(() => {
-    const run = async () => {
-      // TODO: get user id from profile
-      await dispatch(getMyRecipes());
-    };
-    run();
-  }, []);
+    if (data) setRecipes(data);
+  }, [data]);
+  const dispatch = useAppDispatch();
+
+  const [selected, setSelected] = useState<
+    0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null
+  >(null);
+  const [dishesType, setDishesType] = useState<category>();
 
   refreshTokenInterveptor(dispatch, instance);
 
-  useFocusEffect(
-    React.useCallback(() => {
+  useEffect(() => {
+    const allDishesType = allCategoriesRecipe();
+    const selectedType = allDishesType.find(
+      element => element.index === selected,
+    );
+
+    if (selectedType) setDishesType(selectedType);
+    if (selected === null) {
+      console.log('running dispatch');
       dispatch(getMyRecipes());
-    }, []),
-  );
-  const data = useAppSelector(state => state.myRecipes.data);
+    }
+  }, [selected]);
+
+  useEffect(() => {
+    dispatch(getMyRecipes({category: dishesType?.cagetoryName}));
+  }, [dishesType]);
+
   return (
     <LoggedInBackground>
       {/* //TODO: implement best recipes */}
+      <CategoryRecipesSelector selected={selected} setSelected={setSelected} />
       <View style={{flex: 1}}>
-        <View style={{maxHeight: 450}}>
-          <RecipesLists recipes={data ? data : []} title={'My best recipes'} />
-        </View>
-        <View style={{maxHeight: 450}}>
-          <RecipesLists recipes={data ? data : []} title={'My recipes'} />
-        </View>
+        {isLoading ? (
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Spinner
+              // style={styles.spinner}
+              isVisible={isLoading}
+              size={100}
+              type={'ThreeBounce'}
+              color={'#EA3651'}
+            />
+          </View>
+        ) : (
+          <View style={{maxHeight: 450}}>
+            <RecipesLists recipes={recipes} title={'My recipes'} />
+          </View>
+        )}
       </View>
     </LoggedInBackground>
   );

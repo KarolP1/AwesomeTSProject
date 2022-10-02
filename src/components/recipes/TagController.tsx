@@ -1,7 +1,7 @@
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import TextInputRecipe from '../../../components/TextInputs/TextInputRecipe';
-import DelleteDot from '../../../components/Icons/delleteDot';
+import TextInputRecipe from '../TextInputs/TextInputRecipe';
+import DelleteDot from '../Icons/delleteDot';
 
 const TagController = ({
   tags,

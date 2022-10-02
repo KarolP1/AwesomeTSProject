@@ -22,7 +22,6 @@ export const getShoppinglists = createAsyncThunk<IResponseGetShoppingLists>(
 
       return res;
     } catch (error: any) {
-      console.error(error);
       return rejectWithValue({
         message: error.message,
         error: 'login failed',

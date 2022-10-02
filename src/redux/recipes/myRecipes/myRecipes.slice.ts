@@ -34,7 +34,7 @@ const MyRecipes = createSlice({
     builder.addCase(getMyRecipes.fulfilled, (state, {payload}: AnyAction) => {
       state.error = null;
       state.succes = true;
-      state.data = payload;
+      state.data = payload.data;
       state.isLoading = false;
       state.message = payload.message;
     });

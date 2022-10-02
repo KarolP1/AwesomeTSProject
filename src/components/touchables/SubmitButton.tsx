@@ -1,15 +1,25 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 import React from 'react';
 
 const SubmitButton = ({
   onPress,
   title,
+  style,
 }: {
   onPress: () => void;
   title: string;
+  style?: ViewStyle;
 }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.BodyContainer}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.BodyContainer, {...style}]}>
       <Text style={styles.TextButton}>{title}</Text>
     </TouchableOpacity>
   );

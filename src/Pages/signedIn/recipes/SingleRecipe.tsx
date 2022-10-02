@@ -6,8 +6,11 @@ import {
   SigneRecipeScreenProps,
 } from '../../../navigation/types';
 import {useNavigation} from '@react-navigation/native';
+import {useAppDispatch} from '../../../redux/hooks';
+import {cleanUpshoppingListAdd} from '../../../redux/recipes/shoppingList/addShoppingList.slice';
 
 const SingleRecipe = ({route}: SigneRecipeScreenProps) => {
+  const dispatch = useAppDispatch();
   const recipe = route.params.recipe;
   let ingNumber = 0;
   let ingNumberTips = 0;
@@ -95,13 +98,14 @@ const SingleRecipe = ({route}: SigneRecipeScreenProps) => {
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() =>
+                onPress={() => {
+                  dispatch(cleanUpshoppingListAdd());
                   navigation.navigate('Add Shopping Lists', {
                     recipeId: recipe._id,
                     ingredientsList: recipe.ingredients,
                     tipIngredientsList: recipe.tipIngredients,
-                  })
-                }>
+                  });
+                }}>
                 <Text style={{color: 'white', fontWeight: '800'}}>
                   Buy Ingredients
                 </Text>

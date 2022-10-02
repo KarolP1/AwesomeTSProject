@@ -7,9 +7,10 @@ import registerSlice from './Auth/registerReducer';
 import recipesSlice from './recipes';
 import recipesByTagSlice from './recipes/searchByTag';
 import addRecipeSlice from './recipes/addRecipe/addRecipe';
-import myRecipesSlice from './recipes/myRecipes/';
+import myRecipesSlice from './recipes/myRecipes/myRecipes.slice';
 import addShoppingListSlice from './recipes/shoppingList/addShoppingList.slice';
 import getShoppingListSlice from './recipes/shoppingList/getShoppingList.slice';
+import editShoopingListSlice from './recipes/shoppingList/updateShoppingList.slice';
 
 export const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ export const store = configureStore({
     myRecipes: myRecipesSlice,
     addShoppingList: addShoppingListSlice,
     getShoppinglists: getShoppingListSlice,
+    edistShoppingList: editShoopingListSlice,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
