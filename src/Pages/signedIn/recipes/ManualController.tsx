@@ -23,22 +23,19 @@ const ManualController = ({
   setManualList: React.Dispatch<React.SetStateAction<IManualList[]>>;
 }) => {
   const [manual, setManual] = useState<IManualList>({
-    _id: '',
+    _id: null,
     description: '',
     stepNumber: '',
   });
-  useEffect(() => {
-    console.log({manualList});
-  }, [manualList]);
 
   return (
     <View style={{width: '100%'}}>
       {manualList !== undefined && (
         <View>
-          {manualList?.map(manualStep => {
+          {manualList?.map((manualStep, index) => {
             return (
               <View
-                key={manualStep._id}
+                key={index}
                 style={{
                   marginVertical: 10,
                   backgroundColor: 'rgba(0,0,0,0.15)',
@@ -239,14 +236,13 @@ const ManualController = ({
                   ...manualList,
                   {
                     ...manual,
-                    _id: uuid.v4().toString(),
                     description: manual.description,
                   },
                 ]);
               else {
                 Alert.alert('you have to provide manual step information');
               }
-              setManual({description: '', stepNumber: '', _id: ''});
+              setManual({description: '', stepNumber: '', _id: null});
             }}
             style={{
               backgroundColor: '#EA3651',

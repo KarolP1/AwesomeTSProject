@@ -90,6 +90,14 @@ const SingleRecipe = ({Recipe}: {Recipe: IRecipe}) => {
               }}>
               {Recipe.description}
             </Text>
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#fff',
+                textAlign: 'center',
+              }}>
+              {Recipe.cuisine.name}
+            </Text>
           </View>
         }>
         <LinearGradient

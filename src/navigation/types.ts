@@ -1,4 +1,7 @@
-import {IIngredientList} from './../Pages/signedIn/recipes/Recipesadd';
+import {
+  IIngredientList,
+  IRecipeAdd,
+} from './../Pages/signedIn/recipes/Recipesadd';
 import {
   IRecipe,
   IIngredient,
@@ -46,7 +49,7 @@ export type RecipesHomeStackParamList = {
     recipesTag?: string | undefined;
   };
   'My Recipes': undefined;
-  'Add Recipes': undefined;
+  'Add Recipes': {recipe: IRecipeAdd} | undefined;
   'Shopping Lists': undefined;
   'Single Recipe': {
     recipe: IRecipe;
@@ -80,6 +83,10 @@ export type FindScreenProps = NativeStackScreenProps<
 export type RecipesHomePageScreenProp = NativeStackNavigationProp<
   RecipesHomeStackParamList,
   'Find Recipes'
+>;
+export type RecipesAddHomePageScreenProp = NativeStackNavigationProp<
+  RecipesHomeStackParamList,
+  'Add Recipes'
 >;
 export type HomeTabParamList = {
   Order: undefined;

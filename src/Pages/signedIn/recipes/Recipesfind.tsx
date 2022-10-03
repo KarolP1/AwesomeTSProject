@@ -1,5 +1,5 @@
 import {Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import RecipesLists from '../../../components/recipes/recipesLists';
 import {FindScreenProps} from '../../../navigation/types';
@@ -24,28 +24,38 @@ const RecipesFind = ({route}: FindScreenProps) => {
   >(null);
   const [cuisine, setCuisine] = useState<string | null>(null);
   const [cuisineCode, setCuisineCode] = useState<string | null>(null);
+  const [category, setCategory] = useState<string | null>(null);
 
   refreshTokenInterveptor(dispatch, instance);
   const allCateg = allCategoriesRecipe();
-  const recipesStatus = useAppSelector(state => state.recipes.isLoading);
+  const {data, isLoading} = useAppSelector(state => state.recipes);
+
+  useEffect(() => {
+    const selecetedCategory = allCateg.find(c => c.index === selected);
+    setCategory(selecetedCategory ? selecetedCategory.cagetoryName : null);
+  }, [selected]);
+
+  useEffect(() => {
+    console.log({cuisineCode, category});
+    if (cuisine || category) {
+      dispatch(getAllRecipes({cuisine, category}));
+    }
+  }, [cuisineCode, category]);
 
   useFocusEffect(
     React.useCallback(() => {
-      if (cuisine) {
-        dispatch(getAllRecipesByCategory(cuisine));
+      if (selected === null && !cuisine) {
+        dispatch(getAllRecipes());
       }
-      if (selected === null) {
-        const run = async () => {
-          await dispatch(getAllRecipes());
-          if (tag) await dispatch(getAllRecipesByTag(tag));
-        };
-        run();
-      } else {
-        if (tag) dispatch(getAllRecipesByTag(tag));
-        dispatch(getAllRecipesByCategory(allCateg[selected].cagetoryName));
-      }
-    }, [route, selected, cuisine]),
+    }, [selected, cuisine]),
   );
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      dispatch(getAllRecipes({cuisine, category: category}));
+    }, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [cuisine, category]);
 
   const allRecipes = useAppSelector(state => state.recipes.data);
   return (
@@ -56,7 +66,7 @@ const RecipesFind = ({route}: FindScreenProps) => {
         setCuisineCode={setCuisineCode}
       />
       <CategoryRecipesSelector selected={selected} setSelected={setSelected} />
-      {!recipesStatus ? (
+      {!isLoading ? (
         <>
           {tag && (
             <View style={{height: 400}}>
@@ -77,7 +87,7 @@ const RecipesFind = ({route}: FindScreenProps) => {
           }}>
           <Spinner
             // style={styles.spinner}
-            isVisible={true}
+            isVisible={isLoading}
             size={100}
             type={'ThreeBounce'}
             color={'#EA3651'}

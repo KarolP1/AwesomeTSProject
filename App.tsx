@@ -26,14 +26,6 @@ import {tokenThunk} from './src/redux/Auth/thunks';
 
 const App = () => {
   const authSucces = getStatus();
-  const tokens = getTokens();
-
-  axios.interceptors.request.use((request: any) => {
-    if (!request.headers.Authorization) {
-      request.headers.Authorization = `Bearer ${tokens?.access_token}`;
-    }
-    return request;
-  });
 
   LogBox.ignoreLogs([
     "ViewPropTypes will be removed from React Native. Migrate to ViewPropTypes exported from 'deprecated-react-native-prop-types'.",

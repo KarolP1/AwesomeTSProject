@@ -2,17 +2,9 @@ import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
-import {getRecipes} from '../../../redux/recipes';
-import {getAllRecipes} from '../../../redux/recipes/recipesThunks';
-import {AsyncThunk} from '@reduxjs/toolkit';
-import {IResponseRegisterResponse} from '../../../redux/Auth/AuthTypes';
-import {getTokens} from '../../../redux/Auth/loginReducer';
 import {getMyRecipes} from '../../../redux/recipes/myRecipes/myRecipes.thunk';
-import {useFocusEffect} from '@react-navigation/native';
 import RecipesLists from '../../../components/recipes/recipesLists';
 import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
-import CuisineSearchbar from '../../../components/categorySelector/cuisineSearchbar';
-import DishesType from '../../../components/recipes/dishesType';
 import CategoryRecipesSelector from '../../../components/categorySelector';
 import {
   allCategoriesRecipe,
@@ -25,6 +17,7 @@ const Recipesmy = () => {
   const {data, isLoading} = useAppSelector(state => state.myRecipes);
   const [recipes, setRecipes] = useState<IRecipe[]>();
   useEffect(() => {
+    console.log(data?.length);
     if (data) setRecipes(data);
   }, [data]);
   const dispatch = useAppDispatch();

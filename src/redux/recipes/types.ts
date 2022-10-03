@@ -33,7 +33,6 @@ export interface IRecipe {
   tipManual: IManualList[];
   tags: string[];
   counter: ICounter;
-  __v: 0;
 }
 
 export interface ICuisine {
@@ -129,7 +128,11 @@ export interface ShoppingListItem {
   _id: string;
 }
 
-export interface ShoppingListItemGet {
+export interface ITimesstamps {
+  createdAt: string;
+  updatedAt: string;
+}
+export interface ShoppingListItemGet extends ITimesstamps {
   _id: string;
   owner: string;
   recipeId: string;

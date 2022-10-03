@@ -18,11 +18,11 @@ const CuisinePage = ({
       element.NameEnglish.includes(cuisine ? cuisine : element.NameEnglish),
     ),
   );
-  const filteredCuisines = CuisinesList.filter(element =>
-    element.NameEnglish.includes(cuisine ? cuisine : element.NameEnglish),
-  );
 
   useEffect(() => {
+    const filteredCuisines = CuisinesList.filter(element =>
+      element.NameEnglish.includes(cuisine ? cuisine : element.NameEnglish),
+    );
     setArray(filteredCuisines);
   }, [cuisine]);
 

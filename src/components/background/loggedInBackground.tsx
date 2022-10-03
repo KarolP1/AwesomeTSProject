@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import React, {ReactNode} from 'react';
 import {logout} from '../../utils/localStorage';
@@ -18,11 +19,12 @@ import {useNavigation} from '@react-navigation/native';
 const LoggedInBackground = ({children}: {children?: ReactNode}) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+
   return (
-    <SafeAreaView style={styles.mainContainer}>
-      <ImageBackground
-        style={styles.loggedOutBackground}
-        source={require('../../../src/assets/background.png')}>
+    <ImageBackground
+      style={styles.loggedOutBackground}
+      source={require('../../../src/assets/background.png')}>
+      <SafeAreaView style={styles.mainContainer}>
         <View style={styles.logoFull}>
           {navigation.canGoBack() && (
             <TouchableOpacity
@@ -45,7 +47,8 @@ const LoggedInBackground = ({children}: {children?: ReactNode}) => {
             <Text>logout</Text>
           </TouchableOpacity>
         </View>
-        <KeyboardAvoidingView style={styles.innerContainer}>
+        <KeyboardAvoidingView
+          style={[styles.innerContainer, {marginBottom: 50}]}>
           <ScrollView
             style={{
               width: '100%',
@@ -57,8 +60,8 @@ const LoggedInBackground = ({children}: {children?: ReactNode}) => {
             {children ? children : <Text>hello</Text>}
           </ScrollView>
         </KeyboardAvoidingView>
-      </ImageBackground>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 

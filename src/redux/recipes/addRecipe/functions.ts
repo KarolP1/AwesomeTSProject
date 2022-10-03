@@ -1,48 +1,45 @@
+import {RecipesAddHomePageScreenProp} from './../../../navigation/types';
+import {useNavigation} from '@react-navigation/native';
+import {Alert} from 'react-native';
 import recipes from '..';
 import {IRecipeAdd} from './../../../Pages/signedIn/recipes/Recipesadd';
-export const checkIfAddRecipeIsCorrect = async (recipe: IRecipeAdd) => {
-  if (
-    recipe.title === '' ||
-    recipe.title === undefined ||
-    recipe.description === '' ||
-    recipe.title === undefined ||
-    recipe.cuisineCode === null ||
-    recipe.cuisineCode === '' ||
-    recipe.dishesType === null ||
-    recipe.prepTime === '' ||
-    recipe.prepTime === '00:00' ||
-    recipe.prepTime === undefined ||
-    recipe.cookTime === '' ||
-    recipe.cookTime === '00:00' ||
-    recipe.cookTime === undefined ||
-    recipe.serves === null ||
-    recipe.serves === undefined ||
-    recipe.serves === '' ||
-    recipe.serves === '0' ||
-    recipe.ingredientsList.length === 0 ||
-    recipe.ingredientsList === undefined ||
-    recipe.manualList.length === 0 ||
-    recipe.manualList === undefined
-  )
+import {cleanUpAddRecipe} from './addRecipe';
+
+export const checkStringNull = (
+  string: string | null | undefined,
+  title: string,
+): boolean => {
+  if (string === undefined) {
     return true;
-  else {
-    recipe.manualList.forEach(recipeItem => {
-      console.log(recipeItem._id);
-      if (recipeItem._id) delete recipeItem._id;
-    });
-    recipe.ingredientsList.forEach(recipeItem => {
-      console.log(recipeItem._id);
-      if (recipeItem._id) delete recipeItem._id;
-    });
-    recipe.tipManualList.forEach(recipeItem => {
-      console.log(recipeItem._id);
-      if (recipeItem._id) delete recipeItem._id;
-    });
-    recipe.tipIngredientsList.forEach(recipeItem => {
-      console.log(recipeItem._id);
-      if (recipeItem._id) delete recipeItem._id;
-    });
-    console.log(recipe);
+  }
+  if (string === '') {
+    Alert.alert(
+      'Validation',
+      `${title} is to short. Try to use longer text instead`,
+      [{onPress: () => cleanUpAddRecipe()}],
+    );
     return false;
   }
+
+  if (title === 'Cook Time' || title === 'Prep Time') {
+    if (string) {
+      const regex = new RegExp('^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$');
+      const stringValid = regex.test(string);
+      if (!stringValid) {
+        Alert.alert(
+          'Validation',
+          `${title} not match the pattern HH:MM in 24h system`,
+          [{onPress: () => cleanUpAddRecipe()}],
+        );
+        return false;
+      }
+    } else return false;
+  }
+
+  return true;
+};
+
+export const checktIfCategoryIsChoosen = (category: string | null): boolean => {
+  if (category === null) return false;
+  return false;
 };

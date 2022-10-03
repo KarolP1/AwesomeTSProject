@@ -7,37 +7,64 @@ export interface ISearchRecipes {
   access_token: string | undefined;
 }
 
-export const getAllRecipes = createAsyncThunk<IResponseRecipes>(
-  'recipes/get',
-  async (_, {rejectWithValue}) => {
-    try {
-      const token = await getTokensKeychain();
+export const getAllRecipes = createAsyncThunk<
+  IResponseRecipes,
+  {cuisine: string | null; category: string | null} | undefined
+>('recipes/get', async (state, {rejectWithValue}) => {
+  try {
+    const token = await getTokensKeychain();
 
-      const tokenAuth = `Bearer ${token?.access_token}`;
+    const tokenAuth = `Bearer ${token?.access_token}`;
+    if (state) {
+      console.log('running get Recipes by cuisine and ');
+      const {category, cuisine} = state;
+      let QueryString = '?';
+      if (category) {
+        QueryString += 'category=' + category;
+        if (cuisine) {
+          QueryString += '&cuisine=' + cuisine;
+        }
+      } else if (cuisine) QueryString += 'cuisine=' + cuisine;
+      else QueryString = '';
 
       const res = await instance
-        .get('/recipes/recipe', {
+        .get(`/recipes/recipe/${QueryString}`, {
           headers: {
             Authorization: tokenAuth,
           },
         })
         .then(response => {
+          console.log(response.data.data);
           return response.data;
         })
         .catch(error => {
           return rejectWithValue(error.response.data);
         });
       return res;
-    } catch (error: any) {
-      console.log(error);
-      return rejectWithValue({
-        message: error,
-        error: error,
-        data: null,
-      });
     }
-  },
-);
+
+    const res = await instance
+      .get('/recipes/recipe', {
+        headers: {
+          Authorization: tokenAuth,
+        },
+      })
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        return rejectWithValue(error.response.data);
+      });
+    return res;
+  } catch (error: any) {
+    console.log(error);
+    return rejectWithValue({
+      message: error,
+      error: error,
+      data: null,
+    });
+  }
+});
 
 export const getAllRecipesByTag = createAsyncThunk<
   IResponseRecipesByTag,
@@ -46,6 +73,7 @@ export const getAllRecipesByTag = createAsyncThunk<
   try {
     const tokens = await getTokensKeychain();
     const res = await instance
+
       .get(`/recipes/findByTag/${tag}`, {
         headers: {
           Authorization: 'Bearer ' + tokens?.access_token,
@@ -74,6 +102,7 @@ export const getAllRecipesByCategory = createAsyncThunk<
   try {
     const tokens = await getTokensKeychain();
     const res = await instance
+
       .get(`/recipes/findByTag/${tag}`, {
         headers: {
           Authorization: 'Bearer ' + tokens?.access_token,
@@ -102,6 +131,7 @@ export const getAllRecipesByCuisine = createAsyncThunk<
   try {
     const tokens = await getTokensKeychain();
     const res = await instance
+
       .get(`/recipes/findByTag/${cuisine}`, {
         headers: {
           Authorization: 'Bearer ' + tokens?.access_token,

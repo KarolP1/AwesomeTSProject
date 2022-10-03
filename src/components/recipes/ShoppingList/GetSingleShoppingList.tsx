@@ -1,17 +1,14 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
-import {
-  IRecipe,
-  IResponseGetShoppingLists,
-  ResponseDataAddShoppingList,
-  ShoppingListItemGet,
-} from '../../../redux/recipes/types';
+import React from 'react';
+import {ShoppingListItemGet} from '../../../redux/recipes/types';
 import {RecipesHomePageScreenProp} from '../../../navigation/types';
 import {useNavigation} from '@react-navigation/native';
+import {RecipeStyles} from '../../../Pages/signedIn/recipes/Recipesadd';
 
 const GetSingleShoppingList = ({List}: {List: ShoppingListItemGet}) => {
-  // TODO: add create and update date
   const navigation = useNavigation<RecipesHomePageScreenProp>();
+  const dateYear = List.createdAt;
+  const createdDate = new Date(dateYear);
   return (
     <TouchableOpacity
       style={styles.listContainer}
@@ -21,8 +18,18 @@ const GetSingleShoppingList = ({List}: {List: ShoppingListItemGet}) => {
       }>
       <View style={styles.pseudoImage}></View>
       <View style={styles.contentContainer}>
-        <Text>{List.recipe[0].title}</Text>
-        <Text>{List.recipe[0].description}</Text>
+        <Text style={RecipeStyles.TextSimple2}>{List.recipe[0].title}</Text>
+        <Text style={RecipeStyles.TextSimple2}>
+          {List.recipe[0].description}
+        </Text>
+      </View>
+      <View style={{height: '100%'}}>
+        <Text style={[RecipeStyles.TextSimple2, {fontSize: 10}]}>
+          {createdDate.toLocaleDateString()}
+        </Text>
+        <Text style={[RecipeStyles.TextSimple2, {fontSize: 10}]}>
+          {createdDate.toLocaleTimeString()}
+        </Text>
       </View>
     </TouchableOpacity>
   );

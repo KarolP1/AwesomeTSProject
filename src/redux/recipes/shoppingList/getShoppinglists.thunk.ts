@@ -6,7 +6,7 @@ import {instance} from '../../interceptors';
 
 export const getShoppinglists = createAsyncThunk<IResponseGetShoppingLists>(
   '/recipes/shoppingList/get',
-  async (state, {rejectWithValue}) => {
+  async (_, {rejectWithValue}) => {
     try {
       const tokens = await getTokensKeychain();
       const res = await instance
@@ -14,6 +14,7 @@ export const getShoppinglists = createAsyncThunk<IResponseGetShoppingLists>(
           headers: {Authorization: 'Bearer ' + tokens?.access_token},
         })
         .then(response => {
+          console.log(response.data.data);
           return response.data;
         })
         .catch(error => {

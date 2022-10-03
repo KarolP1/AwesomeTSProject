@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import TextInputRecipe from '../../../components/TextInputs/TextInputRecipe';
 import {IIngredientList} from './Recipesadd';
 import DelleteDot from '../../../components/Icons/delleteDot';
+import uuid from 'react-native-uuid';
 
 const IngredientController = ({
   ingredientsList,
@@ -26,18 +27,14 @@ const IngredientController = ({
       }
     } else if (ingredient === undefined)
       Alert.alert('you have to provide ingredient information');
-    setIngredient({name: '', unit: '', qtt: '', _id: ''});
+    setIngredient({name: '', unit: '', qtt: '', _id: null});
   };
-  const formatedIngredientsList = ingredientsList?.map((ingredient, index) => ({
-    ...ingredient,
-    _id: index.toString(),
-  }));
 
   return (
     <View style={{width: '100%'}}>
       {ingredientsList !== undefined && (
         <View>
-          {formatedIngredientsList?.map((ingredient, index) => {
+          {ingredientsList?.map((ingredient, index) => {
             return (
               <View
                 key={index}
@@ -64,7 +61,7 @@ const IngredientController = ({
                 </Text>
                 <DelleteDot
                   onPress={() => {
-                    const filteredIngredients = formatedIngredientsList.filter(
+                    const filteredIngredients = ingredientsList.filter(
                       item => ingredient._id !== item._id,
                     );
                     setIngredientsList(filteredIngredients);

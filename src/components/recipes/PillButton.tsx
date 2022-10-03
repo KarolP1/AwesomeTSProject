@@ -20,8 +20,8 @@ const PillButton = ({
         position: 'relative',
         borderColor: '#fff',
         padding: 1,
-        alignItems: status === true ? 'flex-start' : 'flex-end',
-        backgroundColor: status
+        alignItems: status === false ? 'flex-start' : 'flex-end',
+        backgroundColor: !status
           ? 'rgba(255, 255, 255, 0.05)'
           : 'rgba(0, 255, 0, 0.35)',
       }}>

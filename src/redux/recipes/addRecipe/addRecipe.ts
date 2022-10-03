@@ -23,6 +23,11 @@ const AddRecipe = createSlice({
       state.succes = initialState.succes;
       state.error = initialState.error;
     },
+    cleanupErrorRecipeAdd: state => {
+      state.error = initialState.error;
+      state.message = initialState.message;
+      state.data = initialState.data;
+    },
   },
   extraReducers: builder => {
     builder.addCase(addRecipeThunk.rejected, (state, {payload}) => {
