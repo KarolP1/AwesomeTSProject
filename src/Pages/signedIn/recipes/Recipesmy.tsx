@@ -17,7 +17,6 @@ const Recipesmy = () => {
   const {data, isLoading} = useAppSelector(state => state.myRecipes);
   const [recipes, setRecipes] = useState<IRecipe[]>();
   useEffect(() => {
-    console.log(data?.length);
     if (data) setRecipes(data);
   }, [data]);
   const dispatch = useAppDispatch();

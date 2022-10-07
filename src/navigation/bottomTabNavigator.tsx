@@ -3,7 +3,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {TabDefaultOptions} from '../options/stackDefaultOptions';
 import Oreder from '../Pages/signedIn/Oreder';
-import Profile from '../Pages/signedIn/Profile';
+import Profile from '../Pages/signedIn/Profile/Profile';
 import BuddyProgram from '../Pages/signedIn/ComingSoon';
 import RecipesNavigation from './recipesNavigation';
 import {HomeTabParamList} from './types';

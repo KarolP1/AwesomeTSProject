@@ -129,7 +129,6 @@ const ManualController = ({
                     <DelleteDot
                       style={{position: 'absolute', right: 10, top: 10}}
                       onPress={() => {
-                        console.log(manualStep);
                         manualList.map(recipeStep => {
                           if (recipeStep._id === manualStep._id) {
                             const allSteps = manualList.map(step => {

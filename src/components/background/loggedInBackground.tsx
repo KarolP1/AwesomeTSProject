@@ -10,16 +10,21 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import React, {ReactNode} from 'react';
+import React, {ReactNode, useEffect, useState} from 'react';
 import {logout} from '../../utils/localStorage';
-import {useAppDispatch} from '../../redux/hooks';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {cleanUpLogin, setAuthState} from '../../redux/Auth/loginReducer';
 import {useNavigation} from '@react-navigation/native';
+import {setScrollPosition} from '../../redux/App/setup.sicle';
 
 const LoggedInBackground = ({children}: {children?: ReactNode}) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-
+  const isViewScrollable = useAppSelector(state => state.App.isViewScrollable);
+  const [pos, setPos] = useState(0);
+  useEffect(() => {
+    dispatch(setScrollPosition(pos));
+  }, [pos]);
   return (
     <ImageBackground
       style={styles.loggedOutBackground}
@@ -50,13 +55,16 @@ const LoggedInBackground = ({children}: {children?: ReactNode}) => {
         <KeyboardAvoidingView
           style={[styles.innerContainer, {marginBottom: 50}]}>
           <ScrollView
+            scrollEventThrottle={16}
             style={{
               width: '100%',
             }}
+            scrollEnabled={isViewScrollable}
             contentContainerStyle={{
               flexGrow: 1,
               alignItems: 'center',
-            }}>
+            }}
+            onScroll={e => setPos(e.nativeEvent.contentOffset.y)}>
             {children ? children : <Text>hello</Text>}
           </ScrollView>
         </KeyboardAvoidingView>

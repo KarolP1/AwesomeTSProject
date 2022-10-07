@@ -11,10 +11,12 @@ import myRecipesSlice from './recipes/myRecipes/myRecipes.slice';
 import addShoppingListSlice from './recipes/shoppingList/addShoppingList.slice';
 import getShoppingListSlice from './recipes/shoppingList/getShoppingList.slice';
 import editShoopingListSlice from './recipes/shoppingList/updateShoppingList.slice';
+import AppSetupSlice from './App/setup.sicle';
 
+import getProfileSlice from './Profile/profileCore.slice';
 export const store = configureStore({
   reducer: {
-    counter: counter,
+    App: AppSetupSlice,
     auth: authSlice,
     login: loginSlice,
     register: registerSlice,
@@ -25,6 +27,7 @@ export const store = configureStore({
     addShoppingList: addShoppingListSlice,
     getShoppinglists: getShoppingListSlice,
     edistShoppingList: editShoopingListSlice,
+    profile: getProfileSlice,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

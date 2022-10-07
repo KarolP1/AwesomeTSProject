@@ -76,7 +76,6 @@ export const tokenThunk = createAsyncThunk<IResponseLogin, {dispatch: any}>(
             return response.data;
           })
           .catch(async error => {
-            console.log(error.response.data);
             await dispatch(setAuthStatus(false));
             logout();
             return rejectWithValue(error.response.data);

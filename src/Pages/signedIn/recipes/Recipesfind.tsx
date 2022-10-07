@@ -36,7 +36,6 @@ const RecipesFind = ({route}: FindScreenProps) => {
   }, [selected]);
 
   useEffect(() => {
-    console.log({cuisineCode, category});
     if (cuisine || category) {
       dispatch(getAllRecipes({cuisine, category}));
     }

@@ -11,6 +11,7 @@ import {
   IManualList,
   IRecipeAdd,
 } from '../../Pages/signedIn/recipes/Recipesadd';
+import {IGetProfileInfo} from '../../redux/Profile/types';
 
 export interface ITextInput {
   placeholder: string;
@@ -23,7 +24,10 @@ export interface ITextInput {
     | addressType
     | IManualList
     | IIngredientList
-    | IRecipeAdd;
+    | IRecipeAdd
+    | IGetProfileInfo
+    | undefined
+    | null;
   value: string | undefined;
   onFocus?: (ev: FocusEvent) => void;
   type?: 'string';

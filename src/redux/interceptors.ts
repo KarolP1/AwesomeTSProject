@@ -19,7 +19,6 @@ export const refreshTokenInterveptor = (
   instance: any,
 ) => {
   const refreshAuthLogic = async (failedRequest: any) => {
-    console.log('runinig token refresh');
     const tokens = await getTokensKeychain();
     await axios
       .post(
@@ -28,25 +27,22 @@ export const refreshTokenInterveptor = (
         {headers: {Authorization: 'Bearer ' + tokens?.access_token}},
       )
       .then(async tokenRefreshResponse => {
-        await setTokensToStorage(tokenRefreshResponse.data.data);
         dispatch(setAuthState(tokenRefreshResponse.data.data));
+        await setTokensToStorage(tokenRefreshResponse.data.data);
         failedRequest.response.config.headers['Authorization'] =
           'Bearer ' + tokenRefreshResponse.data.data.access_token;
 
         return Promise.resolve();
       })
       .catch(e => {
-        console.log(e.response.data.message);
         if (
           e.response.data.message ===
             'Invalid request. Token is not same in store.' ||
           e.response.data.message === 'Invalid request. Token is not in store.'
         ) {
-          console.log('logging out');
           dispatch(cleanUpLogin());
           logout();
           dispatch(setAuthState(false));
-          console.log('logging out2');
         }
       });
   };

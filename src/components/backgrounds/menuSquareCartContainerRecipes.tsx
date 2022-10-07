@@ -19,7 +19,6 @@ const MenuSquareCartContainerReceipes = (props: {
       style={styles.container}
       onPress={() => {
         try {
-          console.log('navigation to ' + props.name);
           navigation.navigate('Recipes Home', {screen: props.name});
         } catch (error) {
           console.error(error);

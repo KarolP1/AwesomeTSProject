@@ -34,7 +34,6 @@ export const getAllRecipes = createAsyncThunk<
           },
         })
         .then(response => {
-          console.log(response.data.data);
           return response.data;
         })
         .catch(error => {

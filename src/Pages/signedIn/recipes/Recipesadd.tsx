@@ -423,7 +423,6 @@ const Recipesadd = () => {
           }}
           onPress={async () => {
             const validation = await validateRecipeAdd(recipeAdd);
-            console.log({validation: uuid.v4().toString()});
             if (!validation) dispatch(addRecipe(recipeAdd));
           }}>
           <Text style={{color: '#fff', fontWeight: 'bold'}}>
@@ -469,7 +468,6 @@ export default Recipesadd;
 
 const validateRecipeAdd = async (recipe: IRecipeAdd): Promise<boolean> => {
   try {
-    console.log(recipe);
     if (!checkStringNull(recipe.title, 'title')) return false;
     if (!checkStringNull(recipe.description, 'description')) return false;
     if (!checkStringNull(recipe.cuisineCode, 'cuisine')) return false;
