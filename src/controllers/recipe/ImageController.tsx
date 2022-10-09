@@ -21,47 +21,36 @@ import {addMyProfileImage} from '../../redux/Profile/core/profileAddImageProfile
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
+import {
+  createFormData,
+  handleChoosePhoto,
+} from '../../utils/photos/handleFormdata';
+import {getMyProfile} from '../../redux/Profile/core/profileCore.thunk';
 
 const ImageController = ({user}: {user?: IGetProfileInfo | null}) => {
   const dispatch = useAppDispatch();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [bacgroundImage, setBacgroundImage] =
-    useState<DocumentPickerResponse>();
-  const [frontImage, setFrontImage] = useState<DocumentPickerResponse>();
-  // useEffect(() => {
-  //   if (bacgroundImage) console.log(bacgroundImage);
-  //   console.log(bacgroundImage);
-  //   dispatch(addMyProfileImage({bacground: bacgroundImage}));
-  //   setBacgroundImage(undefined);
-  // }, [ImageBackground]);
-  const handleDocumentSelection = useCallback(async () => {
-    try {
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images],
-        //There can me more options as well
-      });
-      // //Printing the log realted to the file
-      // console.log('res : ' + JSON.stringify(res));
-      // console.log('URI : ' + res[0].uri);
-      // console.log('Type : ' + res[0].type);
-      // console.log('File Name : ' + res[0].name);
-      // console.log('File Size : ' + res[0].size);
-      //Setting the state to show single file attributes
-      setBacgroundImage(res[0]);
-    } catch (err) {
-      //Handling any exception (If any)
-      if (DocumentPicker.isCancel(err)) {
-        //If user canceled the document selection
-        Alert.alert('Canceled from single doc picker');
-      } else {
-        //For Unknown Error
-        Alert.alert('Unknown Error: ' + JSON.stringify(err));
-        throw err;
-      }
-    }
-  }, []);
+  const [bacgroundImage, setBacgroundImage] = useState<ImagePickerResponse>();
+  const [frontImage, setFrontImage] = useState<ImagePickerResponse>();
 
-  console.log(user?.images?.backgroundImage);
+  useEffect(() => {
+    if (frontImage?.assets) {
+      const data = createFormData(frontImage.assets[0], 'profileImageProfile');
+      dispatch(addMyProfileImage(data));
+      dispatch(getMyProfile());
+    }
+  }, [frontImage]);
+  useEffect(() => {
+    if (bacgroundImage?.assets) {
+      const data = createFormData(
+        bacgroundImage.assets[0],
+        'profileImageBackground',
+      );
+      dispatch(addMyProfileImage(data));
+      dispatch(getMyProfile());
+    }
+  }, [bacgroundImage]);
+  console.info(`${user?.images?.profileImageProfile}`);
   return (
     <TouchableOpacity
       onPress={() => setModalVisible(!modalVisible)}
@@ -121,12 +110,14 @@ const ImageController = ({user}: {user?: IGetProfileInfo | null}) => {
             </Text>
             <Pressable
               style={[styles.button, styles.actionButton]}
-              onPress={handleDocumentSelection}>
+              onPress={() => handleChoosePhoto(setFrontImage, setModalVisible)}>
               <Text style={styles.textStyle}>Add Profile picture</Text>
             </Pressable>
             <Pressable
               style={[styles.button, styles.actionButton]}
-              onPress={handleDocumentSelection}>
+              onPress={() =>
+                handleChoosePhoto(setBacgroundImage, setModalVisible)
+              }>
               <Text style={styles.textStyle}>Add Background picture</Text>
             </Pressable>
             <Pressable

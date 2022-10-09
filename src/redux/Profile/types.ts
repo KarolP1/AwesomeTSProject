@@ -22,7 +22,7 @@ export interface IGetProfileInfo {
   address: IGetAddress[];
   birth_year: string;
   userRole: string;
-  documentImages: [];
+  documentImages: IGetDocumentImages[];
   jobs: [];
   images?: {profileImageProfile?: IGetImages; backgroundImage?: IGetImages};
   allergies: IAllergy;
@@ -39,6 +39,12 @@ export interface IGetImages {
     isImageBackground: boolean;
     _id: string;
   };
+}
+export interface IGetDocumentImages {
+  _id: string;
+  path: string;
+  ownerId: string;
+  isFrontImage: boolean;
 }
 
 export interface IGetAddress {

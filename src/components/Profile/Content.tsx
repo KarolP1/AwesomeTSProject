@@ -15,6 +15,7 @@ import UserDataSection from './Sections/UserDataSection';
 import UserDataAdderssSection from './Sections/UserDataAddressSection';
 import CuisineSection from './Sections/AllergiesSection';
 import AllergiesSection from './Sections/AllergiesSection';
+import DocumentSection from './Sections/DocumentSection';
 
 const ProfileContent = ({
   profileInfo,
@@ -35,7 +36,7 @@ const ProfileContent = ({
             <UserDataSection info={profileInfo} />
             <UserDataAdderssSection info={profileInfo?.address[0]} />
             <AllergiesSection user={userInfo} />
-            <View>{/* student documents */}</View>
+            <DocumentSection document={userInfo?.documentImages} />
           </>
         );
 

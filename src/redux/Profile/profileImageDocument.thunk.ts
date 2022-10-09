@@ -1,10 +1,10 @@
+import {IResponseGetMyProfile} from './types';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {ImagePickerResponse} from 'react-native-image-picker';
-import {getTokensKeychain} from '../../../utils/localStorage';
-import {instance} from '../../interceptors';
-import {IResponseGetMyProfile, IGetImages} from '../types';
+import {ImagePickerResponse, Asset} from 'react-native-image-picker';
+import {getTokensKeychain} from '../../utils/localStorage';
+import {instance} from '../interceptors';
 
-export const addMyProfileImage = createAsyncThunk<
+export const addMyProfileDocumentImage = createAsyncThunk<
   IResponseGetMyProfile,
   FormData
 >('profile/image/post}', async (state, {rejectWithValue}) => {
@@ -14,7 +14,7 @@ export const addMyProfileImage = createAsyncThunk<
     // formData.append('profileImageBackground', JSON.stringify(state?.bacground));
     const res = await instance
 
-      .post(`/profile/profileImage`, state, {
+      .post(`/profile/document`, state, {
         headers: {
           Authorization: 'Bearer ' + tokens?.access_token,
           'Content-Type': 'multipart/form-data',
