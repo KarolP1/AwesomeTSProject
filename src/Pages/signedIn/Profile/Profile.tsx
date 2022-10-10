@@ -13,7 +13,9 @@ const Profile = () => {
   const {data, error} = useAppSelector(state => state.profile);
   const dispatch = useAppDispatch();
   const userRole = data?.userRole;
+
   refreshTokenInterveptor(dispatch, instance);
+
   useEffect(() => {
     if (error) {
       Alert.alert('Something went wrong with loading your profile', error, [
