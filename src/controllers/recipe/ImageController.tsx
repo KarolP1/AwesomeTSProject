@@ -16,7 +16,7 @@ import {
   launchImageLibrary,
 } from 'react-native-image-picker';
 import {WEBCONST} from '../../constants/webConstants';
-import {useAppDispatch} from '../../redux/hooks';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {addMyProfileImage} from '../../redux/Profile/core/profileAddImageProfile.thunk';
 import DocumentPicker, {
   DocumentPickerResponse,
@@ -26,17 +26,25 @@ import {
   handleChoosePhoto,
 } from '../../utils/photos/handleFormdata';
 import {getMyProfile} from '../../redux/Profile/core/profileCore.thunk';
+import FastImage from 'react-native-fast-image';
 
 const ImageController = ({user}: {user?: IGetProfileInfo | null}) => {
   const dispatch = useAppDispatch();
+  const images = useAppSelector(state => state.profile.data?.images);
+
+  const [imagesState, setImagesState] = useState(images);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [bacgroundImage, setBacgroundImage] = useState<ImagePickerResponse>();
   const [frontImage, setFrontImage] = useState<ImagePickerResponse>();
 
   useEffect(() => {
+    setImagesState(images);
+  }, [images]);
+  useEffect(() => {
     if (frontImage?.assets) {
       const data = createFormData(frontImage.assets[0], 'profileImageProfile');
       dispatch(addMyProfileImage(data));
+      setImagesState(images);
       dispatch(getMyProfile());
     }
   }, [frontImage]);
@@ -47,10 +55,11 @@ const ImageController = ({user}: {user?: IGetProfileInfo | null}) => {
         'profileImageBackground',
       );
       dispatch(addMyProfileImage(data));
+      setImagesState(images);
       dispatch(getMyProfile());
     }
   }, [bacgroundImage]);
-  console.info(`${user?.images?.profileImageProfile}`);
+
   return (
     <TouchableOpacity
       onPress={() => setModalVisible(!modalVisible)}
@@ -63,18 +72,30 @@ const ImageController = ({user}: {user?: IGetProfileInfo | null}) => {
         justifyContent: 'center',
         borderRadius: 15,
         marginVertical: 10,
+        overflow: 'hidden',
       }}>
-      <>
-        {user?.images?.backgroundImage && (
-          <Image
-            style={{flex: 1, resizeMode: 'cover', width: '100%'}}
-            source={{
-              uri: `${WEBCONST().APIURL}${user?.images?.backgroundImage}`,
-            }}
-          />
-        )}
-      </>
-      <View>
+      {imagesState?.backgroundImage?.path && (
+        <FastImage
+          style={{
+            width: '100%',
+            height: undefined,
+            borderRadius: 15,
+            aspectRatio: 1.5,
+            position: 'absolute',
+          }}
+          source={{
+            uri: `${WEBCONST().APIURL}${
+              imagesState?.backgroundImage?.path
+            }?${new Date().getTime()}`,
+            priority: FastImage.priority.high,
+          }}
+          resizeMode={FastImage.resizeMode.cover}
+        />
+      )}
+      <View
+        style={{
+          zIndex: 1000,
+        }}>
         <View
           style={{
             backgroundColor: '#EA3651',
@@ -83,7 +104,25 @@ const ImageController = ({user}: {user?: IGetProfileInfo | null}) => {
             alignSelf: 'center',
             justifyContent: 'center',
             borderRadius: 100,
-          }}></View>
+            overflow: 'hidden',
+          }}>
+          {imagesState?.profileImage?.path && (
+            <FastImage
+              style={{
+                width: '100%',
+                height: '100%',
+                position: 'absolute',
+              }}
+              source={{
+                uri: `${WEBCONST().APIURL}${
+                  imagesState?.profileImage?.path
+                }?${new Date().getTime()}`,
+                priority: FastImage.priority.high,
+              }}
+              resizeMode={FastImage.resizeMode.cover}
+            />
+          )}
+        </View>
         <Text
           style={{
             textTransform: 'capitalize',

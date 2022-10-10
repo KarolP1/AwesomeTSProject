@@ -24,7 +24,10 @@ export interface IGetProfileInfo {
   userRole: string;
   documentImages: IGetDocumentImages[];
   jobs: [];
-  images?: {profileImageProfile?: IGetImages; backgroundImage?: IGetImages};
+  images?: {
+    profileImage?: IGetImages;
+    backgroundImage?: IGetImages;
+  };
   allergies: IAllergy;
 }
 
@@ -33,6 +36,7 @@ export interface IGetImages {
   originalname: string;
   encoding: any;
   mimetype: string;
+  path: string;
   image?: {
     ownerId: string;
     path: string;

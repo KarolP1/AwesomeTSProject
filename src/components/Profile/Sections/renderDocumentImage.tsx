@@ -26,75 +26,126 @@ const RenderDocumentImage = ({
   setIsEditModeEnabled: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   {
-    return !images ? (
-      <FlipView
-        shouldFlip={!isEditModeEnabled}
-        onPress={async () => {
-          handleChoosePhoto(setPhotos, setIsEditModeEnabled);
-        }}
-        image={require('../../../assets/utilityIcons/document.png')}
-      />
-    ) : !isEditModeEnabled ? (
+    return !isEditModeEnabled ? (
       <TouchableOpacity
         onPress={() => setisImageFlipped(!isImageFlipped)}
-        style={{borderRadius: 10, overflow: 'hidden'}}>
+        style={{borderRadius: 20, overflow: 'hidden'}}>
         <FlipCard flip={isImageFlipped} flipHorizontal>
-          <FastImage
-            style={{
-              width: '100%',
-              height: '100%',
-              aspectRatio: 1.5,
-              borderRadius: 15,
-            }}
-            source={{
-              uri: 'http://146.59.13.245' + images[0]?.path,
-              headers: {Authorization: 'someAuthToken'},
-              priority: FastImage.priority.normal,
-            }}
-            resizeMode={FastImage.resizeMode.cover}
-          />
-          <FastImage
-            style={{
-              width: '100%',
-              height: undefined,
-              borderRadius: 15,
-              aspectRatio: 1.5,
-            }}
-            source={{
-              uri: 'http://146.59.13.245' + images[1]?.path,
-              headers: {Authorization: 'someAuthToken'},
-              priority: FastImage.priority.normal,
-            }}
-            resizeMode={FastImage.resizeMode.cover}
-          />
+          {images && images[0].path ? (
+            <Image
+              source={{
+                uri:
+                  'http://146.59.13.245' +
+                  images[0]?.path +
+                  '?' +
+                  new Date().getTime(),
+              }}
+              style={{
+                width: '100%',
+                height: undefined,
+                aspectRatio: 1.55,
+                resizeMode: 'contain',
+                borderRadius: 15,
+              }}
+            />
+          ) : (
+            <FlipView
+              shouldFlip={!isEditModeEnabled}
+              onPress={async () => {
+                handleChoosePhoto(setPhotos, setIsEditModeEnabled);
+              }}
+              image={require('../../../assets/utilityIcons/document.png')}
+            />
+          )}
+
+          {images && images[1].path ? (
+            <Image
+              source={{
+                uri:
+                  'http://146.59.13.245' +
+                  images[1]?.path +
+                  '?' +
+                  new Date().getTime(),
+              }}
+              style={{
+                width: '100%',
+                height: undefined,
+                aspectRatio: 1.55,
+                resizeMode: 'contain',
+                borderRadius: 15,
+              }}
+            />
+          ) : (
+            <FlipView
+              shouldFlip={!isEditModeEnabled}
+              onPress={async () => {
+                handleChoosePhoto(setPhotos, setIsEditModeEnabled);
+              }}
+              image={require('../../../assets/utilityIcons/document.png')}
+            />
+          )}
         </FlipCard>
       </TouchableOpacity>
     ) : (
       <TouchableOpacity
+        style={{borderRadius: 15, overflow: 'hidden'}}
         onPress={() => {
           handleChoosePhoto(setPhotos, setIsEditModeEnabled);
         }}>
         <FlipCard flip={isImageFlipped} flipHorizontal clickable={false}>
-          <Image
-            source={{
-              uri: 'http://146.59.13.245' + images[0]?.path,
-            }}
-            style={{
-              width: '100%',
-              height: undefined,
-              aspectRatio: 1.5,
-              resizeMode: 'contain',
-            }}
-          />
-          <Image
-            source={{uri: 'http://146.59.13.245' + images[1]?.path}}
-            style={{
-              width: '100%',
-              height: undefined,
-              aspectRatio: 1.5,
-              resizeMode: 'contain',
-            }}
-          />
+          {images && images[0].path ? (
+            <Image
+              source={{
+                uri:
+                  'http://146.59.13.245' +
+                  images[0]?.path +
+                  '?' +
+                  new Date().getTime(),
+              }}
+              style={{
+                width: '100%',
+                height: undefined,
+                aspectRatio: 1.55,
+                resizeMode: 'contain',
+                borderRadius: 15,
+                overflow: 'hidden',
+              }}
+            />
+          ) : (
+            <FlipView
+              shouldFlip={!isEditModeEnabled}
+              onPress={async () => {
+                handleChoosePhoto(setPhotos, setIsEditModeEnabled);
+              }}
+              image={require('../../../assets/utilityIcons/document.png')}
+            />
+          )}
+          {images && images[1].path ? (
+            <Image
+              source={{
+                uri:
+                  'http://146.59.13.245' +
+                  images[1]?.path +
+                  '?' +
+                  new Date().getTime(),
+              }}
+              style={{
+                width: '100%',
+                height: undefined,
+                aspectRatio: 1.55,
+                resizeMode: 'contain',
+                borderRadius: 15,
+              }}
+            />
+          ) : (
+            <FlipView
+              shouldFlip={!isEditModeEnabled}
+              onPress={async () => {
+                handleChoosePhoto(setPhotos, setIsEditModeEnabled);
+              }}
+              image={require('../../../assets/utilityIcons/document.png')}
+            />
+          )}
         </FlipCard>
       </TouchableOpacity>
     );

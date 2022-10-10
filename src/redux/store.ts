@@ -14,6 +14,7 @@ import editShoopingListSlice from './recipes/shoppingList/updateShoppingList.sli
 import AppSetupSlice from './App/setup.sicle';
 
 import getProfileSlice from './Profile/profileCore.slice';
+
 export const store = configureStore({
   reducer: {
     App: AppSetupSlice,

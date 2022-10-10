@@ -1,4 +1,4 @@
-import {AnyAction, createSlice} from '@reduxjs/toolkit';
+import {Action, AnyAction, createSlice} from '@reduxjs/toolkit';
 import {useAppSelector} from '../hooks';
 import {addAllergy} from './allergies/addAllergy.thunk';
 import {IResponseGetMyProfile} from './types';
@@ -6,6 +6,7 @@ import {editMyProfileAddress} from './core/profileAddressEditUserData.thunk';
 import {getMyProfile} from './core/profileCore.thunk';
 import {editMyProfile} from './core/profileEditUserData.thunk';
 import {deleteAllergy} from './allergies/deleteAllergy.thunk';
+import {addMyProfileImage} from './core/profileAddImageProfile.thunk';
 
 const initialState: IResponseGetMyProfile = {
   error: undefined,
@@ -127,6 +128,29 @@ const MyProfileSlice = createSlice({
       }
     });
     builder.addCase(deleteAllergy.pending, (state, {payload}) => {
+      state.isLoading = true;
+    });
+    //#endregion
+    //#region profile image
+    builder.addCase(addMyProfileImage.rejected, (state, {payload}) => {
+      state.error = payload;
+      state.succes = false;
+      state.data = null;
+      state.isLoading = false;
+    });
+    builder.addCase(
+      addMyProfileImage.fulfilled,
+      (state, {payload}: AnyAction) => {
+        state.error = null;
+        state.succes = true;
+        state.isLoading = false;
+        state.message = payload.message;
+        if (state.data?.images) {
+          state.data.images = payload.data;
+        }
+      },
+    );
+    builder.addCase(addMyProfileImage.pending, (state, {payload}) => {
       state.isLoading = true;
     });
     //#endregion

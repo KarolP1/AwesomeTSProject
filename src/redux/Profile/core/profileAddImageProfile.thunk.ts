@@ -11,7 +11,6 @@ export const addMyProfileImage = createAsyncThunk<
   try {
     const tokens = await getTokensKeychain();
 
-    // formData.append('profileImageBackground', JSON.stringify(state?.bacground));
     const res = await instance
 
       .post(`/profile/profileImage`, state, {
