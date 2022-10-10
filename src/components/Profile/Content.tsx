@@ -11,15 +11,14 @@ import {IGetProfileInfo} from '../../redux/Profile/types';
 import ImageController from '../../controllers/recipe/ImageController';
 
 import ProfileMenu from './ProfileMenu';
-import BalanceSection from './BalanceSection';
-import UserDataSection from './Sections/UserDataSection';
-import UserDataAdderssSection from './Sections/UserDataAddressSection';
-import CuisineSection from './Sections/AllergiesSection';
-import AllergiesSection from './Sections/AllergiesSection';
-import DocumentSection from './Sections/DocumentSection';
-import {WEBCONST} from '../../constants/webConstants';
-import FastImage from 'react-native-fast-image';
 import {useAppSelector} from '../../redux/hooks';
+import InfoSection from './Sections/infoScetion/InfoSection';
+import BalanceSection from './Sections/infoScetion/BalanceSection';
+import UserDataSection from './Sections/infoScetion/UserDataSection';
+import UserDataAdderssSection from './Sections/infoScetion/UserDataAddressSection';
+import AllergiesSection from './Sections/infoScetion/AllergiesSection';
+import DocumentSection from './Sections/infoScetion/DocumentSection';
+import RecipesSection from './Sections/recipesSection/RecipesSection';
 
 const ProfileContent = ({
   profileInfo,
@@ -38,15 +37,10 @@ const ProfileContent = ({
   const renderSeciton = (selected: 0 | 1 | 2 | 3 | 4) => {
     switch (selected) {
       case 0:
-        return (
-          <>
-            <BalanceSection />
-            <UserDataSection info={profileInfo} />
-            <UserDataAdderssSection info={profileInfo?.address[0]} />
-            <AllergiesSection user={userInfo} />
-            <DocumentSection document={profileInfo?.documentImages} />
-          </>
-        );
+        return <InfoSection profileInfo={profileInfo} userInfo={userInfo} />;
+
+      case 1:
+        return <RecipesSection />;
 
       default:
         <></>;
@@ -54,13 +48,9 @@ const ProfileContent = ({
   };
   return (
     <View style={{width: '100%'}}>
-      <View>
-        <ImageController user={profileInfo} />
-      </View>
+      <ImageController user={profileInfo} />
 
-      <View style={{width: '100%'}}>
-        <ProfileMenu selected={selected} setSelected={setSelected} />
-      </View>
+      <ProfileMenu selected={selected} setSelected={setSelected} />
       {renderSeciton(selected)}
       <View style={{height: 40}}></View>
     </View>

@@ -1,8 +1,8 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import SimpleSection from './Sections/SimpleSection';
+import SimpleSection from './SimpleSection';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import SimpleButton from './Sections/simpleButton';
+import SimpleButton from './simpleButton';
 
 const BalanceSection = () => {
   return (

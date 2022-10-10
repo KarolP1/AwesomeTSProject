@@ -1,15 +1,17 @@
 import {Alert, Image, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {IAllergy, IGetProfileInfo} from '../../../redux/Profile/types';
-import SimpleSection from './SimpleSection';
-import TextInputProfile from '../../TextInputs/TextInputProfile';
+import {IAllergy, IGetProfileInfo} from '../../../../redux/Profile/types';
+import TextInputProfile from '../../../TextInputs/TextInputProfile';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import SimpleButton from './simpleButton';
-import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
-import {useAppDispatch} from '../../../redux/hooks';
-import {addAllergy} from '../../../redux/Profile/allergies/addAllergy.thunk';
-import {deleteAllergy} from '../../../redux/Profile/allergies/deleteAllergy.thunk';
-import {getMyProfile} from '../../../redux/Profile/core/profileCore.thunk';
+import {
+  instance,
+  refreshTokenInterveptor,
+} from '../../../../redux/interceptors';
+import {useAppDispatch} from '../../../../redux/hooks';
+import {addAllergy} from '../../../../redux/Profile/allergies/addAllergy.thunk';
+import {deleteAllergy} from '../../../../redux/Profile/allergies/deleteAllergy.thunk';
+import {getMyProfile} from '../../../../redux/Profile/core/profileCore.thunk';
+import SimpleSection from './SimpleSection';
 
 const AllergiesSection = ({
   user,
@@ -41,7 +43,7 @@ const AllergiesSection = ({
                 setIsAddAllergyEnablrd(!isAddAllergyEnabled);
               }}>
               <Image
-                source={require('../../../assets/utilityIcons/add.png')}
+                source={require('../../../../assets/utilityIcons/add.png')}
                 style={{width: 20, height: 20, transform: [{rotate: '45deg'}]}}
               />
             </TouchableOpacity>
@@ -54,7 +56,7 @@ const AllergiesSection = ({
               }}>
               <Image
                 style={{width: 20, height: 20}}
-                source={require('../../../assets/utilityIcons/add.png')}
+                source={require('../../../../assets/utilityIcons/add.png')}
               />
             </TouchableOpacity>
           </>
@@ -91,7 +93,7 @@ const AllergiesSection = ({
                 dispatch(deleteAllergy(allergyToMap));
               }}>
               <Image
-                source={require('../../../assets/utilityIcons/add.png')}
+                source={require('../../../../assets/utilityIcons/add.png')}
                 style={{
                   width: 20,
                   height: 20,

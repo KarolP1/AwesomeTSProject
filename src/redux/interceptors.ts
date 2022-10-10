@@ -38,7 +38,9 @@ export const refreshTokenInterveptor = (
         if (
           e.response.data.message ===
             'Invalid request. Token is not same in store.' ||
-          e.response.data.message === 'Invalid request. Token is not in store.'
+          e.response.data.message ===
+            'Invalid request. Token is not in store.' ||
+          e.response.data.message === 'Your session is not valid.'
         ) {
           dispatch(cleanUpLogin());
           logout();

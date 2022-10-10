@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {useAppDispatch, useAppSelector} from '../../../../redux/hooks';
+import {editMyProfileAddress} from '../../../../redux/Profile/core/profileAddressEditUserData.thunk';
+import {IGetAddress} from '../../../../redux/Profile/types';
+import TextInputProfile from '../../../TextInputs/TextInputProfile';
 import SimpleSection from './SimpleSection';
-import {IGetAddress, IGetProfileInfo} from '../../../redux/Profile/types';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import TextInputProfile from '../../TextInputs/TextInputProfile';
-import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
-import {editMyProfileAddress} from '../../../redux/Profile/core/profileAddressEditUserData.thunk';
 
 const UserDataAdderssSection = ({
   info,
@@ -41,8 +40,8 @@ const UserDataAdderssSection = ({
               style={{height: 20, aspectRatio: 1}}
               source={
                 isEditModeEnabled
-                  ? require('../../../assets/utilityIcons/close.png')
-                  : require('../../../assets/utilityIcons/edit.png')
+                  ? require('../../../../assets/utilityIcons/close.png')
+                  : require('../../../../assets/utilityIcons/edit.png')
               }
             />
           </TouchableOpacity>

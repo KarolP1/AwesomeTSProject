@@ -1,24 +1,21 @@
-import {Alert, Image, StyleSheet, Text, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SimpleSection from './SimpleSection';
-import {IGetDocumentImages} from '../../../redux/Profile/types';
-import {
-  ImagePickerResponse,
-  launchImageLibrary,
-  ImageLibraryOptions,
-} from 'react-native-image-picker';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useAppDispatch} from '../../../redux/hooks';
-import FlipView from '../../backgrounds/FlipView';
-import {
-  createFormData,
-  handleChoosePhoto,
-} from '../../../utils/photos/handleFormdata';
-import {addMyProfileDocumentImage} from '../../../redux/Profile/profileImageDocument.thunk';
-import {useFocusEffect} from '@react-navigation/native';
-import {getMyProfile} from '../../../redux/Profile/core/profileCore.thunk';
-import FlipCard from 'react-native-flip-card';
 import RenderDocumentImage from './renderDocumentImage';
+import {IGetDocumentImages} from '../../../../redux/Profile/types';
+import {useAppDispatch} from '../../../../redux/hooks';
+import {ImagePickerResponse} from 'react-native-image-picker';
+import {useFocusEffect} from '@react-navigation/native';
+import {getMyProfile} from '../../../../redux/Profile/core/profileCore.thunk';
+import {createFormData} from '../../../../utils/photos/handleFormdata';
+import {addMyProfileDocumentImage} from '../../../../redux/Profile/profileImageDocument.thunk';
 
 const DocumentSection = ({
   document,
@@ -68,8 +65,8 @@ const DocumentSection = ({
             style={{height: 20, aspectRatio: 1}}
             source={
               isEditModeEnabled
-                ? require('../../../assets/utilityIcons/close.png')
-                : require('../../../assets/utilityIcons/edit.png')
+                ? require('../../../../assets/utilityIcons/close.png')
+                : require('../../../../assets/utilityIcons/edit.png')
             }
           />
         </TouchableOpacity>

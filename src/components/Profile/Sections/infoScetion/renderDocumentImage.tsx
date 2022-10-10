@@ -1,12 +1,10 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {IGetDocumentImages} from '../../../redux/Profile/types';
-import FlipView from '../../backgrounds/FlipView';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import FlipCard from 'react-native-flip-card';
+import {IGetDocumentImages} from '../../../../redux/Profile/types';
 import {ImagePickerResponse} from 'react-native-image-picker';
-import {handleChoosePhoto} from '../../../utils/photos/handleFormdata';
-import FastImage from 'react-native-fast-image';
+import FlipCard from 'react-native-flip-card';
+import FlipView from '../../../backgrounds/FlipView';
+import {handleChoosePhoto} from '../../../../utils/photos/handleFormdata';
 
 const RenderDocumentImage = ({
   images,
@@ -54,7 +52,7 @@ const RenderDocumentImage = ({
               onPress={async () => {
                 handleChoosePhoto(setPhotos, setIsEditModeEnabled);
               }}
-              image={require('../../../assets/utilityIcons/document.png')}
+              image={require('../../../../assets/utilityIcons/document.png')}
             />
           )}
 
@@ -81,7 +79,7 @@ const RenderDocumentImage = ({
               onPress={async () => {
                 handleChoosePhoto(setPhotos, setIsEditModeEnabled);
               }}
-              image={require('../../../assets/utilityIcons/document.png')}
+              image={require('../../../../assets/utilityIcons/document.png')}
             />
           )}
         </FlipCard>
@@ -117,7 +115,7 @@ const RenderDocumentImage = ({
               onPress={async () => {
                 handleChoosePhoto(setPhotos, setIsEditModeEnabled);
               }}
-              image={require('../../../assets/utilityIcons/document.png')}
+              image={require('../../../../assets/utilityIcons/document.png')}
             />
           )}
           {images && images[1].path ? (
@@ -143,7 +141,7 @@ const RenderDocumentImage = ({
               onPress={async () => {
                 handleChoosePhoto(setPhotos, setIsEditModeEnabled);
               }}
-              image={require('../../../assets/utilityIcons/document.png')}
+              image={require('../../../../assets/utilityIcons/document.png')}
             />
           )}
         </FlipCard>
