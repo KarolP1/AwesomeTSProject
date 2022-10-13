@@ -12,7 +12,7 @@ import {getShoppinglists} from '../../../redux/recipes/shoppingList/getShoppingl
 import GetSingleShoppingList from '../../../components/recipes/ShoppingList/GetSingleShoppingList';
 import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
 
-const Recipeslists = () => {
+const RecipesShoppinglists = () => {
   const dispatch = useAppDispatch();
   const getShoppingListState = useAppSelector(state => state.getShoppinglists);
 
@@ -33,4 +33,4 @@ const Recipeslists = () => {
   );
 };
 
-export default Recipeslists;
+export default RecipesShoppinglists;

@@ -22,6 +22,7 @@ const Profile = () => {
         {
           onPress: () => {
             dispatch(cleanUpGetMyProfile());
+            dispatch(getMyProfile());
           },
         },
       ]);

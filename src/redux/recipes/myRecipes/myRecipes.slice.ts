@@ -3,6 +3,7 @@ import {RootState} from '../../store';
 import {AnyAction, createSlice} from '@reduxjs/toolkit';
 import {IResponseGetMyRecipes} from '../types';
 import {getMyRecipes} from './myRecipes.thunk';
+import {deleteRecipe} from '../recipesThunks';
 
 const initialState: IResponseGetMyRecipes = {
   error: undefined,
@@ -28,7 +29,6 @@ const MyRecipes = createSlice({
     builder.addCase(getMyRecipes.rejected, (state, {payload}) => {
       state.error = payload;
       state.succes = false;
-      state.data = null;
       state.isLoading = false;
     });
     builder.addCase(getMyRecipes.fulfilled, (state, {payload}: AnyAction) => {
@@ -39,6 +39,22 @@ const MyRecipes = createSlice({
       state.message = payload.message;
     });
     builder.addCase(getMyRecipes.pending, (state, {payload}) => {
+      state.isLoading = true;
+    });
+    ///
+    builder.addCase(deleteRecipe.rejected, (state, {payload}) => {
+      state.error = payload;
+      state.succes = false;
+      state.isLoading = false;
+    });
+    builder.addCase(deleteRecipe.fulfilled, (state, {payload}: AnyAction) => {
+      state.error = null;
+      state.succes = true;
+      state.data = payload.data;
+      state.isLoading = false;
+      state.message = payload.message;
+    });
+    builder.addCase(deleteRecipe.pending, (state, {payload}) => {
       state.isLoading = true;
     });
     ///

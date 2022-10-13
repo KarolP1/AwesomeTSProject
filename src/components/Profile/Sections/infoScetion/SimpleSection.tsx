@@ -10,7 +10,7 @@ const SimpleSection = ({
   isEditModeEnabled,
 }: {
   children: React.ReactNode;
-  title: string;
+  title: string | null;
   balance?: number;
   currency?: string;
   Button?: () => JSX.Element;

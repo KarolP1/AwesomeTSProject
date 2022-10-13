@@ -93,3 +93,11 @@ export const initialRegosterForm: IRegisterForm = {
   birth_year: '17-10-1997',
   userRole: '',
 };
+
+export interface IResponseRecipeDelete {
+  isLoading?: boolean;
+  message?: string;
+  error?: any;
+  data?: IRecipe[];
+  succes: boolean;
+}

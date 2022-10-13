@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {IGetProfileInfo} from '../../../../redux/Profile/types';
 import {useAppDispatch, useAppSelector} from '../../../../redux/hooks';
@@ -12,6 +12,8 @@ import {getMyRecipes} from '../../../../redux/recipes/myRecipes/myRecipes.thunk'
 import Spinner from 'react-native-spinkit';
 import RecipesLists from '../../../recipes/recipesLists';
 import {IRecipe} from '../../../../redux/recipes/types';
+import SimpleSection from '../infoScetion/SimpleSection';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const RecipesSection = ({}: {}) => {
   const {isLoading, data} = useAppSelector(state => state.myRecipes);
@@ -40,12 +42,17 @@ const RecipesSection = ({}: {}) => {
     }
   }, [selected]);
 
+  const [isEditModeEnabled, setIsEditModeEnabled] = useState<boolean>(false);
+
+  const [isEditModeEnabledBest, setIsEditModeEnabledBest] =
+    useState<boolean>(false);
+
   useEffect(() => {
     dispatch(getMyRecipes({category: dishesType?.cagetoryName}));
   }, [dishesType]);
 
   return (
-    <View style={{marginTop: 10}}>
+    <View style={{width: '100%', marginTop: 10}}>
       <CategoryRecipesSelector
         size={70}
         selected={selected}
@@ -69,12 +76,84 @@ const RecipesSection = ({}: {}) => {
             />
           </View>
         ) : (
-          <View style={{maxHeight: 450}}>
-            <RecipesLists recipes={recipes} title={'My recipes'} />
-          </View>
+          <>
+            <SimpleSection
+              title={'Your best recipes'}
+              isEditModeEnabled={isEditModeEnabledBest}
+              Button={() =>
+                !isEditModeEnabledBest ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setIsEditModeEnabledBest(!isEditModeEnabledBest);
+                      setIsEditModeEnabled(false);
+                    }}>
+                    <Image
+                      style={{height: 20, width: 20}}
+                      source={require('../../../../assets/utilityIcons/edit.png')}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setIsEditModeEnabledBest(!isEditModeEnabledBest);
+                    }}>
+                    <Image
+                      style={{
+                        height: 20,
+                        width: 20,
+                        transform: [{rotate: '45deg'}],
+                      }}
+                      source={require('../../../../assets/utilityIcons/add.png')}
+                    />
+                  </TouchableOpacity>
+                )
+              }>
+              <View style={{height: 400}}>
+                <RecipesLists
+                  isEditModeEnabled={isEditModeEnabledBest}
+                  recipes={recipes}
+                  title={null}
+                />
+              </View>
+            </SimpleSection>
+            <SimpleSection
+              title={'Your recipes'}
+              isEditModeEnabled={isEditModeEnabled}
+              Button={() =>
+                !isEditModeEnabled ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setIsEditModeEnabled(!isEditModeEnabled);
+                      setIsEditModeEnabledBest(false);
+                    }}>
+                    <Image
+                      style={{height: 20, width: 20}}
+                      source={require('../../../../assets/utilityIcons/edit.png')}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setIsEditModeEnabled(!isEditModeEnabled);
+                    }}>
+                    <Image
+                      style={{
+                        height: 20,
+                        width: 20,
+                        transform: [{rotate: '45deg'}],
+                      }}
+                      source={require('../../../../assets/utilityIcons/add.png')}
+                    />
+                  </TouchableOpacity>
+                )
+              }>
+              <View style={{height: 400}}>
+                <RecipesLists recipes={recipes} title={null} />
+              </View>
+            </SimpleSection>
+          </>
         )}
       </View>
-      <Text>{JSON.stringify(recipes)}</Text>
     </View>
   );
 };

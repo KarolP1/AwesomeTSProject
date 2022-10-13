@@ -1,6 +1,10 @@
 import {getTokensKeychain} from './../../utils/localStorage/index';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {IResponseRecipes, IResponseRecipesByTag} from '../Auth/AuthTypes';
+import {
+  IResponseRecipeDelete,
+  IResponseRecipes,
+  IResponseRecipesByTag,
+} from '../Auth/AuthTypes';
 import {instance} from '../interceptors';
 
 export interface ISearchRecipes {
@@ -152,3 +156,33 @@ export const getAllRecipesByCuisine = createAsyncThunk<
     });
   }
 });
+
+export const deleteRecipe = createAsyncThunk<IResponseRecipeDelete, string>(
+  'recipes/getByCategory',
+  async (recipeId, {rejectWithValue}) => {
+    try {
+      const tokens = await getTokensKeychain();
+      const res = await instance
+
+        .delete(`/recipes/recipe/${recipeId}`, {
+          headers: {
+            Authorization: 'Bearer ' + tokens?.access_token,
+          },
+        })
+        .then(response => {
+          return response.data;
+        })
+        .catch(error => {
+          return rejectWithValue(error.response.data);
+        });
+      return res;
+    } catch (error: any) {
+      console.log(error);
+      return rejectWithValue({
+        message: error,
+        error: 'login failed',
+        data: null,
+      });
+    }
+  },
+);

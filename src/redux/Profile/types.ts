@@ -21,9 +21,15 @@ export interface IGetProfileInfo {
   phone_number: string;
   address: IGetAddress[];
   birth_year: string;
-  userRole: string;
+  userRole:
+    | 'End User'
+    | 'Student'
+    | 'Local Cook'
+    | 'Restaurant'
+    | 'Food trucks'
+    | 'Shop';
   documentImages: IGetDocumentImages[];
-  jobs: [];
+  jobs?: IJobsGet[];
   images?: {
     profileImage?: IGetImages;
     backgroundImage?: IGetImages;
@@ -60,3 +66,23 @@ export interface IGetAddress {
   state: string;
   buildingnumber: string;
 }
+
+export interface IJobsGet {
+  _id: string;
+  typeOfWork: IJobTitle;
+
+  workerId?: string;
+  workPlace: IJobWorkPlace;
+  startOfWork?: string;
+  endOfWork?: string;
+  isConfirmed?: boolean;
+  orders?: [];
+}
+
+export interface IJobWorkPlace {
+  type: string;
+  name: string;
+  _id: string;
+}
+
+export type IJobTitle = 'waiter' | 'chef' | 'driver' | '';

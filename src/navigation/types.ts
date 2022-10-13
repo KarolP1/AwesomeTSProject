@@ -8,12 +8,10 @@ import {
   ShoppingListItemGet,
 } from './../redux/recipes/types';
 import {
-  createNativeStackNavigator,
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 
-const Stack = createNativeStackNavigator();
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
@@ -37,16 +35,32 @@ export type HomePageScreenProp = NativeStackNavigationProp<
 export type RecipesStackParamList = {
   HugeMenuRecipes2x2: undefined;
   'Recipes Home': {
-    screen: 'Find Recipes' | 'My Recipes' | 'Add Recipes' | 'Shopping Lists';
+    screen:
+      | 'Find Recipes'
+      | 'Edit Recipe'
+      | 'My Recipes'
+      | 'Add Recipes'
+      | 'Shopping Lists'
+      | 'MyRecipes'
+      | 'Add Shopping Lists'
+      | 'Single ShoppingList Edit'
+      | 'Single Recipe';
   };
 };
 export type RecipesPageScreenProp = NativeStackNavigationProp<
   RecipesStackParamList,
   'HugeMenuRecipes2x2'
 >;
+export type HomePageScreenPropNavigation = NativeStackNavigationProp<
+  RecipesStackParamList,
+  'Recipes Home'
+>;
 export type RecipesHomeStackParamList = {
   'Find Recipes': {
     recipesTag?: string | undefined;
+  };
+  'Edit Recipe': {
+    recipe: IRecipe;
   };
   'My Recipes': undefined;
   'Add Recipes': {recipe: IRecipeAdd} | undefined;
@@ -63,6 +77,10 @@ export type RecipesHomeStackParamList = {
     list: ShoppingListItemGet;
   };
 };
+export type IRecipeEdit = NativeStackNavigationProp<
+  RecipesHomeStackParamList,
+  'Edit Recipe'
+>;
 
 export type ISingleShoppingListEdit = NativeStackScreenProps<
   RecipesHomeStackParamList,

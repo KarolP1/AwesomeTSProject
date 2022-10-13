@@ -9,19 +9,33 @@ const RecipesLists = ({
   recipes,
   tag,
   title,
+  isEditModeEnabled,
 }: {
   recipes?: IRecipe[];
   tag?: string;
-  title?: string;
+  title?: string | null;
+  isEditModeEnabled?: boolean;
 }) => {
   const navigation = useNavigation<RecipesHomePageScreenProp>();
 
   return (
     <>
       {tag ? (
-        <Text style={styles.TextHeading}>recipes by tag: {tag}</Text>
+        <Text
+          style={[
+            styles.TextHeading,
+            {display: title === null ? 'none' : 'flex'},
+          ]}>
+          recipes by tag: {tag}
+        </Text>
       ) : (
-        <Text style={styles.TextHeading}>{title ? title : 'All Recipes'}</Text>
+        <Text
+          style={[
+            styles.TextHeading,
+            {display: title === null ? 'none' : 'flex'},
+          ]}>
+          {title ? title : 'All Recipes'}
+        </Text>
       )}
       <ScrollView
         horizontal={true}
@@ -30,6 +44,7 @@ const RecipesLists = ({
         {recipes &&
           recipes.map(recipe => (
             <TouchableOpacity
+              disabled={isEditModeEnabled ? true : false}
               key={recipe._id}
               style={{
                 width: 300,
@@ -40,7 +55,10 @@ const RecipesLists = ({
               onPress={() =>
                 navigation.navigate('Single Recipe', {recipe: recipe})
               }>
-              <SingleRecipe Recipe={recipe} />
+              <SingleRecipe
+                Recipe={recipe}
+                isEditModeEnabled={isEditModeEnabled}
+              />
             </TouchableOpacity>
           ))}
       </ScrollView>

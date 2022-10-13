@@ -19,6 +19,7 @@ import UserDataAdderssSection from './Sections/infoScetion/UserDataAddressSectio
 import AllergiesSection from './Sections/infoScetion/AllergiesSection';
 import DocumentSection from './Sections/infoScetion/DocumentSection';
 import RecipesSection from './Sections/recipesSection/RecipesSection';
+import MainComponents from './Sections/Job/MainComponents';
 
 const ProfileContent = ({
   profileInfo,
@@ -41,6 +42,8 @@ const ProfileContent = ({
 
       case 1:
         return <RecipesSection />;
+      case 3:
+        return <MainComponents />;
 
       default:
         <></>;

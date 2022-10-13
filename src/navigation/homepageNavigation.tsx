@@ -4,18 +4,18 @@ import {HomeStackParamList} from './types';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StackDefaultOptions} from '../options/stackDefaultOptions';
 import HugeMenu from '../Pages/signedIn/menu/HugeMenu';
-import Oreder from '../Pages/signedIn/Oreder';
+import HomeNavigation from './HomeNavigation';
 
-const HomepageNavigation = () => {
+const HomepageNavigationContainer = () => {
   const Stack = createNativeStackNavigator<HomeStackParamList>();
   return (
     <Stack.Navigator screenOptions={StackDefaultOptions}>
       <Stack.Screen name="HugeMenu2x2" component={HugeMenu} />
-      <Stack.Screen name="Home Page" component={HomepageNavigation} />
+      <Stack.Screen name="Home Page" component={HomeNavigation} />
     </Stack.Navigator>
   );
 };
 
-export default HomepageNavigation;
+export default HomepageNavigationContainer;
 
 const styles = StyleSheet.create({});

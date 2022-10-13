@@ -1,3 +1,4 @@
+import {getJobRequests} from './Jobs/getJobs.thunk';
 import {Action, AnyAction, createSlice} from '@reduxjs/toolkit';
 import {useAppSelector} from '../hooks';
 import {addAllergy} from './allergies/addAllergy.thunk';
@@ -7,6 +8,8 @@ import {getMyProfile} from './core/profileCore.thunk';
 import {editMyProfile} from './core/profileEditUserData.thunk';
 import {deleteAllergy} from './allergies/deleteAllergy.thunk';
 import {addMyProfileImage} from './core/profileAddImageProfile.thunk';
+import {addNewJobRequest} from './Jobs/addNewJobRequest';
+import {deleteJobRequests} from './Jobs/deleteJob.thunk';
 
 const initialState: IResponseGetMyProfile = {
   error: undefined,
@@ -33,7 +36,7 @@ const MyProfileSlice = createSlice({
     builder.addCase(getMyProfile.rejected, (state, {payload}) => {
       state.error = payload;
       state.succes = false;
-      state.data = null;
+
       state.isLoading = false;
     });
     builder.addCase(getMyProfile.fulfilled, (state, {payload}: AnyAction) => {
@@ -51,7 +54,7 @@ const MyProfileSlice = createSlice({
     builder.addCase(editMyProfile.rejected, (state, {payload}) => {
       state.error = payload;
       state.succes = false;
-      state.data = null;
+
       state.isLoading = false;
     });
     builder.addCase(editMyProfile.fulfilled, (state, {payload}: AnyAction) => {
@@ -69,7 +72,7 @@ const MyProfileSlice = createSlice({
     builder.addCase(editMyProfileAddress.rejected, (state, {payload}) => {
       state.error = payload;
       state.succes = false;
-      state.data = null;
+
       state.isLoading = false;
     });
     builder.addCase(
@@ -92,7 +95,7 @@ const MyProfileSlice = createSlice({
     builder.addCase(addAllergy.rejected, (state, {payload}) => {
       state.error = payload;
       state.succes = false;
-      state.data = null;
+
       state.isLoading = false;
     });
     builder.addCase(addAllergy.fulfilled, (state, {payload}: AnyAction) => {
@@ -115,7 +118,7 @@ const MyProfileSlice = createSlice({
     builder.addCase(deleteAllergy.rejected, (state, {payload}) => {
       state.error = payload;
       state.succes = false;
-      state.data = null;
+
       state.isLoading = false;
     });
     builder.addCase(deleteAllergy.fulfilled, (state, {payload}: AnyAction) => {
@@ -135,7 +138,7 @@ const MyProfileSlice = createSlice({
     builder.addCase(addMyProfileImage.rejected, (state, {payload}) => {
       state.error = payload;
       state.succes = false;
-      state.data = null;
+
       state.isLoading = false;
     });
     builder.addCase(
@@ -153,6 +156,76 @@ const MyProfileSlice = createSlice({
     builder.addCase(addMyProfileImage.pending, (state, {payload}) => {
       state.isLoading = true;
     });
+    //#endregion
+
+    //#region profile job add
+    builder.addCase(addNewJobRequest.rejected, (state, {payload}) => {
+      state.error = payload;
+      state.succes = false;
+
+      state.isLoading = false;
+    });
+    builder.addCase(
+      addNewJobRequest.fulfilled,
+      (state, {payload}: AnyAction) => {
+        state.error = null;
+        state.succes = true;
+        state.isLoading = false;
+        state.message = payload.message;
+        if (state.data?.jobs) {
+          state.data.jobs = payload.data;
+        }
+      },
+    );
+    builder.addCase(addNewJobRequest.pending, (state, {payload}) => {
+      state.isLoading = true;
+    });
+
+    //#endregion
+    //#region profile job get
+    builder.addCase(getJobRequests.rejected, (state, {payload}) => {
+      state.error = payload;
+      state.succes = false;
+
+      state.isLoading = false;
+    });
+    builder.addCase(getJobRequests.fulfilled, (state, {payload}: AnyAction) => {
+      state.error = null;
+      state.succes = true;
+      state.isLoading = false;
+      state.message = payload.message;
+      if (state.data?.jobs) {
+        state.data.jobs = payload.data;
+      }
+    });
+    builder.addCase(getJobRequests.pending, (state, {payload}) => {
+      state.isLoading = true;
+    });
+
+    //#endregion
+    //#region profile job delete
+    builder.addCase(deleteJobRequests.rejected, (state, {payload}) => {
+      state.error = payload;
+      state.succes = false;
+
+      state.isLoading = false;
+    });
+    builder.addCase(
+      deleteJobRequests.fulfilled,
+      (state, {payload}: AnyAction) => {
+        state.error = null;
+        state.succes = true;
+        state.isLoading = false;
+        state.message = payload.message;
+        if (state.data?.jobs) {
+          state.data.jobs = payload.data;
+        }
+      },
+    );
+    builder.addCase(deleteJobRequests.pending, (state, {payload}) => {
+      state.isLoading = true;
+    });
+
     //#endregion
   },
 });

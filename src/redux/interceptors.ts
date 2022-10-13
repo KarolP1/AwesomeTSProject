@@ -1,6 +1,6 @@
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import {AppDispatch} from './store';
-import axios from 'axios';
+import axios, {AxiosInstance} from 'axios';
 import {
   getTokensKeychain,
   logout,

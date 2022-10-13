@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, Alert} from 'react-native';
 import React from 'react';
 import {IRecipe} from '../../redux/recipes/types';
 import {convertAdvancement} from './advancement';
@@ -6,10 +6,73 @@ import SmallIconBG from '../background/smallIconBG';
 import DishesType from './dishesType';
 import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
+import {
+  TapGestureHandler,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native-gesture-handler';
+import {useAppDispatch} from '../../redux/hooks';
+import {deleteRecipe} from '../../redux/recipes/recipesThunks';
+import {useNavigation} from '@react-navigation/native';
+import {
+  HomePageScreenPropNavigation,
+  IRecipeEdit,
+  RecipesHomeStackParamList,
+} from '../../navigation/types';
 
-const SingleRecipe = ({Recipe}: {Recipe: IRecipe}) => {
+const SingleRecipe = ({
+  Recipe,
+  isEditModeEnabled,
+}: {
+  Recipe: IRecipe;
+  isEditModeEnabled?: boolean;
+}) => {
+  const navigation = useNavigation<HomePageScreenPropNavigation>();
+  const dispatch = useAppDispatch();
   return (
     <View style={styles.container}>
+      <View
+        style={{
+          flex: 1,
+          position: 'absolute',
+          width: '100%',
+          zIndex: 100,
+          backgroundColor: 'transparent',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        }}>
+        {isEditModeEnabled && (
+          <View
+            style={{alignSelf: 'flex-end', right: 10, top: 10, zIndex: 100}}>
+            <TouchableWithoutFeedback>
+              <TouchableOpacity
+                onPress={() => {
+                  dispatch(deleteRecipe(Recipe._id));
+                }}>
+                <Image
+                  source={require('../../assets/utilityIcons/deleteC.png')}
+                  style={{width: 30, height: 30, marginBottom: 5}}
+                />
+              </TouchableOpacity>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Recipes Home', {
+                    screen: 'Edit Recipe',
+                  });
+                }}>
+                <Image
+                  source={require('../../assets/utilityIcons/editC.png')}
+                  style={{width: 30, height: 30, marginBottom: 5}}
+                />
+              </TouchableOpacity>
+            </TouchableWithoutFeedback>
+          </View>
+        )}
+      </View>
       <View style={styles.image}>
         <View style={{marginTop: 10, marginLeft: 10}}>
           <SmallIconBG>

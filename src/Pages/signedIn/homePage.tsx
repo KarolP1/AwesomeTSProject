@@ -5,7 +5,7 @@ import {setIsAuth} from '../../redux/rootReducer';
 import {useAppDispatch} from '../../redux/hooks';
 import {cleanUpLogin} from '../../redux/Auth/loginReducer';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import HomepageNavigation from '../../navigation/homepageNavigation';
+import HomepageNavigationContainer from '../../navigation/homepageNavigation';
 import BottomTabNavigator from '../../navigation/bottomTabNavigator';
 
 const HomePage = () => {
