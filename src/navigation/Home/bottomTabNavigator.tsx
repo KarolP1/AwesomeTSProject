@@ -1,13 +1,13 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {TabDefaultOptions} from '../options/stackDefaultOptions';
-import Oreder from '../Pages/signedIn/Oreder';
-import Profile from '../Pages/signedIn/Profile/Profile';
-import BuddyProgram from '../Pages/signedIn/ComingSoon';
-import RecipesNavigation from './recipesNavigation';
-import {HomeTabParamList} from './types';
-import Tabbar from '../components/background/Tabbar';
+import {TabDefaultOptions} from '../../options/stackDefaultOptions';
+import Oreder from '../../Pages/signedIn/Oreder';
+import Profile from '../../Pages/signedIn/Profile/Profile';
+import BuddyProgram from '../../Pages/signedIn/ComingSoon';
+import RecipesNavigation from '../recipes/recipesNavigation';
+import {HomeTabParamList} from '../types';
+import Tabbar from '../../components/background/Tabbar';
 
 const BottomTabNavigator = () => {
   const Tab = createBottomTabNavigator<HomeTabParamList>();
@@ -15,7 +15,8 @@ const BottomTabNavigator = () => {
     <Tab.Navigator
       screenOptions={TabDefaultOptions}
       tabBar={props => <Tabbar {...props} />}
-      backBehavior={'history'}>
+      backBehavior={'history'}
+      initialRouteName="Order">
       <Tab.Screen
         name="Order"
         component={Oreder}
@@ -25,7 +26,7 @@ const BottomTabNavigator = () => {
           tabBarIcon: () => (
             <View>
               <Image
-                source={require('../assets/mainIcons/order.png')}
+                source={require('../../assets/mainIcons/order.png')}
                 style={{height: 25, aspectRatio: 1}}
               />
             </View>
@@ -41,7 +42,7 @@ const BottomTabNavigator = () => {
           tabBarIcon: () => (
             <View>
               <Image
-                source={require('../assets/mainIcons/recipe.png')}
+                source={require('../../assets/mainIcons/recipe.png')}
                 style={{height: 25, aspectRatio: 1}}
               />
             </View>
@@ -57,7 +58,7 @@ const BottomTabNavigator = () => {
           tabBarIcon: () => (
             <View>
               <Image
-                source={require('../assets/mainIcons/buddy.png')}
+                source={require('../../assets/mainIcons/buddy.png')}
                 style={{height: 25, aspectRatio: 1}}
               />
             </View>
@@ -73,7 +74,7 @@ const BottomTabNavigator = () => {
           tabBarIcon: () => (
             <View>
               <Image
-                source={require('../assets/mainIcons/profile.png')}
+                source={require('../../assets/mainIcons/profile.png')}
                 style={{height: 25, aspectRatio: 1}}
               />
             </View>

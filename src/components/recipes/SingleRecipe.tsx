@@ -7,7 +7,6 @@ import DishesType from './dishesType';
 import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import {
-  TapGestureHandler,
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
@@ -15,19 +14,27 @@ import {useAppDispatch} from '../../redux/hooks';
 import {deleteRecipe} from '../../redux/recipes/recipesThunks';
 import {useNavigation} from '@react-navigation/native';
 import {
-  HomePageScreenPropNavigation,
-  IRecipeEdit,
-  RecipesHomeStackParamList,
+  ProfileRecipeScreenProps,
+  ProfileScreenProps,
 } from '../../navigation/types';
+import {
+  ProfileRecipeNavigationProp,
+  RootNavigationWithRecipeAndRecipePagesProp,
+  RootNavigationWithRecipeProp,
+} from '../../navigation/rootNavigation.navigation';
 
 const SingleRecipe = ({
   Recipe,
   isEditModeEnabled,
+  test,
 }: {
   Recipe: IRecipe;
   isEditModeEnabled?: boolean;
+  test: ProfileScreenProps;
 }) => {
-  const navigation = useNavigation<HomePageScreenPropNavigation>();
+  const navigation =
+    useNavigation<RootNavigationWithRecipeAndRecipePagesProp>();
+  console.log([navigation]);
   const dispatch = useAppDispatch();
   return (
     <View style={styles.container}>
@@ -60,8 +67,15 @@ const SingleRecipe = ({
             <TouchableWithoutFeedback>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('Recipes Home', {
-                    screen: 'Edit Recipe',
+                  navigation.navigate('Home Page', {
+                    // @ts-ignore
+                    screen: 'Recipes',
+                    params: {
+                      screen: 'Recipes Home',
+                      params: {
+                        screen: 'Edit Recipe',
+                      },
+                    },
                   });
                 }}>
                 <Image

@@ -4,22 +4,22 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import {RecipesHomeStackParamList} from './types';
-import Recipesmy from '../Pages/signedIn/recipes/Recipesmy';
-import {StackDefaultOptions} from '../options/stackDefaultOptions';
-import Recipesadd from '../Pages/signedIn/recipes/Recipesadd';
-import EditRecipes from '../Pages/signedIn/recipes/EditRecipePage';
-import RecipesFind from '../Pages/signedIn/recipes/Recipesfind';
-import SingleRecipe from '../Pages/signedIn/recipes/SingleRecipe';
-import SingleShoppingListEdit from '../Pages/signedIn/recipes/SingleShoppingListEdit';
-import RecipeAddToShoppingList from '../Pages/signedIn/recipes/recipeAddToShoppingList';
-import RecipesShoppinglists from '../Pages/signedIn/recipes/Recipeslists';
+import {RecipesHomeStackParamList} from '../types';
+import Recipesmy from '../../Pages/signedIn/recipes/Recipesmy';
+import {StackDefaultOptions} from '../../options/stackDefaultOptions';
+import Recipesadd from '../../Pages/signedIn/recipes/Recipesadd';
+import EditRecipes from '../../Pages/signedIn/recipes/EditRecipePage';
+import RecipesFind from '../../Pages/signedIn/recipes/Recipesfind';
+import SingleRecipe from '../../Pages/signedIn/recipes/SingleRecipe';
+import SingleShoppingListEdit from '../../Pages/signedIn/recipes/SingleShoppingListEdit';
+import RecipeAddToShoppingList from '../../Pages/signedIn/recipes/recipeAddToShoppingList';
+import RecipesShoppinglists from '../../Pages/signedIn/recipes/Recipeslists';
 
 export type IRecipeEdit = NativeStackNavigationProp<
   RecipesHomeStackParamList,
   'Edit Recipe'
 >;
-const HomeNavigation = () => {
+const HomeRecipesNavigation = () => {
   const Stack = createNativeStackNavigator<RecipesHomeStackParamList>();
 
   return (
@@ -42,6 +42,6 @@ const HomeNavigation = () => {
   );
 };
 
-export default HomeNavigation;
+export default HomeRecipesNavigation;
 
 const styles = StyleSheet.create({});

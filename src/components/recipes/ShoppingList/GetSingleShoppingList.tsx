@@ -6,6 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import {RecipeStyles} from '../../../Pages/signedIn/recipes/Recipesadd';
 
 const GetSingleShoppingList = ({List}: {List: ShoppingListItemGet}) => {
+  console.log({List});
   const navigation = useNavigation<RecipesHomePageScreenProp>();
   const dateYear = List.createdAt;
   const createdDate = new Date(dateYear);
@@ -18,9 +19,9 @@ const GetSingleShoppingList = ({List}: {List: ShoppingListItemGet}) => {
       }>
       <View style={styles.pseudoImage}></View>
       <View style={styles.contentContainer}>
-        <Text style={RecipeStyles.TextSimple2}>{List.recipe[0].title}</Text>
+        <Text style={RecipeStyles.TextSimple2}>{List.recipe[0]?.title}</Text>
         <Text style={RecipeStyles.TextSimple2}>
-          {List.recipe[0].description}
+          {List.recipe[0]?.description}
         </Text>
       </View>
       <View style={{height: '100%'}}>
