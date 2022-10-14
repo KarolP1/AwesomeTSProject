@@ -1,5 +1,5 @@
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import ProfileContent from '../../../components/Profile/Content';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';

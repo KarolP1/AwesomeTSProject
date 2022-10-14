@@ -1,11 +1,4 @@
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {IGetProfileInfo} from '../../redux/Profile/types';
 import ImageController from '../../controllers/recipe/ImageController';
@@ -13,11 +6,6 @@ import ImageController from '../../controllers/recipe/ImageController';
 import ProfileMenu from './ProfileMenu';
 import {useAppSelector} from '../../redux/hooks';
 import InfoSection from './Sections/infoScetion/InfoSection';
-import BalanceSection from './Sections/infoScetion/BalanceSection';
-import UserDataSection from './Sections/infoScetion/UserDataSection';
-import UserDataAdderssSection from './Sections/infoScetion/UserDataAddressSection';
-import AllergiesSection from './Sections/infoScetion/AllergiesSection';
-import DocumentSection from './Sections/infoScetion/DocumentSection';
 import RecipesSection from './Sections/recipesSection/RecipesSection';
 import MainComponents from './Sections/Job/MainComponents';
 
