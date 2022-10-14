@@ -1,5 +1,5 @@
 import {Text, View, StyleSheet, TouchableOpacity, Alert} from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import AddImage from '../../../components/image/addImage';
@@ -19,14 +19,13 @@ import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
 import AdvancementButton from '../../../components/recipes/AdvancementButton';
 import {useNavigation} from '@react-navigation/native';
 import {
-  IRecipeEdit,
   RecipesHomePageScreenProp,
-  RecipesHomeStackParamList,
+  RecipesToProfilePageScreenProp,
 } from '../../../navigation/types';
 import {checkStringNull} from '../../../redux/recipes/addRecipe/functions';
 import PillButton from '../../../components/recipes/PillButton';
-import uuid from 'react-native-uuid';
 import {ProfileRecipeScreenProps} from '../../../navigation/rootNavigation.navigation';
+import {IRecipe} from '../../../redux/recipes/types';
 
 //#region initial
 export interface IIngredientList {
@@ -63,10 +62,9 @@ export interface IRecipeAdd {
   tipManualList: IManualList[];
   tags: string[];
 }
-const initialState: IRecipeAdd = {
+const initialState: IRecipe = {
   title: 'test Edit from pc',
   description: 'tes2',
-  cuisineCode: 'pl',
   isKosher: false,
   isVegan: false,
   isHalal: false,
@@ -118,13 +116,16 @@ const initialState: IRecipeAdd = {
   tags: [],
 };
 //#endregion
-const EditRecipes = ({route}: ProfileRecipeScreenProps) => {
+const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<RecipesHomePageScreenProp>();
   refreshTokenInterveptor(dispatch, instance);
-  console.log();
+  console.log(route.params.params.recipeGet);
+  const recipe = route.params.params.recipeGet;
 
-  const [recipeAdd, setRecipeAdd] = useState<IRecipeAdd>(initialState);
+  const [recipeAdd, setRecipeAdd] = useState<IRecipe>(
+    recipe ? recipe : initialState,
+  );
   //#region state for manualList
   const [image, setImage] = useState<ImagePickerResponse | null>(null);
   const [selected, setSelected] = useState<

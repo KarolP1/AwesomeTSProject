@@ -3,15 +3,16 @@ import React, {useEffect, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import {
   RecipesHomePageScreenProp,
+  RecipesToProfilePageScreenProp,
   SigneRecipeScreenProps,
 } from '../../../navigation/types';
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../../redux/hooks';
 import {cleanUpshoppingListAdd} from '../../../redux/recipes/shoppingList/addShoppingList.slice';
 
-const SingleRecipe = ({route}: SigneRecipeScreenProps) => {
+const SingleRecipe = ({route}: RecipesToProfilePageScreenProp) => {
   const dispatch = useAppDispatch();
-  const recipe = route.params?.recipe;
+  const recipe = route.params.params.recipeGet;
   let ingNumber = 0;
   let ingNumberTips = 0;
   const navigation = useNavigation<RecipesHomePageScreenProp>();
@@ -28,11 +29,11 @@ const SingleRecipe = ({route}: SigneRecipeScreenProps) => {
             overflow: 'hidden',
           }}></View>
         <View style={styles.MenuList}>
-          <Text style={styles.RecipeTitle}>{recipe.title}</Text>
-          <Text style={styles.clasicText}>{recipe.description}</Text>
+          <Text style={styles.RecipeTitle}>{recipe?.title}</Text>
+          <Text style={styles.clasicText}>{recipe?.description}</Text>
           <View>
             <Text style={styles.RecipeSubTitle}>Ingredients:</Text>
-            {recipe.ingredients.map(ingredient => {
+            {recipe?.ingredients.map(ingredient => {
               ingNumber++;
               return (
                 <Text
@@ -45,24 +46,26 @@ const SingleRecipe = ({route}: SigneRecipeScreenProps) => {
               );
             })}
           </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() =>
-                navigation.navigate('Add Shopping Lists', {
-                  recipeId: recipe._id,
-                  ingredientsList: recipe.ingredients,
-                  tipIngredientsList: recipe.tipIngredients,
-                })
-              }>
-              <Text style={{color: 'white', fontWeight: '800'}}>
-                Buy Ingredients
-              </Text>
-            </TouchableOpacity>
-          </View>
+          {recipe && (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() =>
+                  navigation.navigate('Add Shopping Lists', {
+                    recipeId: recipe?._id,
+                    ingredientsList: recipe?.ingredients,
+                    tipIngredientsList: recipe?.tipIngredients,
+                  })
+                }>
+                <Text style={{color: 'white', fontWeight: '800'}}>
+                  Buy Ingredients
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
           <View>
             <Text style={styles.RecipeSubTitle}>Manual:</Text>
-            {recipe.manual.map(manual => {
+            {recipe?.manual.map(manual => {
               ingNumber++;
               return (
                 <Text
@@ -75,14 +78,14 @@ const SingleRecipe = ({route}: SigneRecipeScreenProps) => {
             })}
           </View>
         </View>
-        {recipe.tipDescription !== '' && recipe.tipTitle !== '' && (
+        {recipe?.tipDescription !== '' && recipe?.tipTitle !== '' && (
           <View style={styles.MenuList}>
             <Text style={styles.RecipeTitle}>Tips:</Text>
-            <Text style={styles.RecipeSubTitle}>{recipe.tipTitle}</Text>
-            <Text style={styles.clasicText}>{recipe.tipDescription}</Text>
+            <Text style={styles.RecipeSubTitle}>{recipe?.tipTitle}</Text>
+            <Text style={styles.clasicText}>{recipe?.tipDescription}</Text>
             <View>
               <Text style={styles.RecipeSubTitle}>Ingredients:</Text>
-              {recipe.tipIngredients.map(ingredient => {
+              {recipe?.tipIngredients.map(ingredient => {
                 ingNumberTips++;
                 return (
                   <Text
@@ -95,25 +98,28 @@ const SingleRecipe = ({route}: SigneRecipeScreenProps) => {
                 );
               })}
             </View>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  dispatch(cleanUpshoppingListAdd());
-                  navigation.navigate('Add Shopping Lists', {
-                    recipeId: recipe._id,
-                    ingredientsList: recipe.ingredients,
-                    tipIngredientsList: recipe.tipIngredients,
-                  });
-                }}>
-                <Text style={{color: 'white', fontWeight: '800'}}>
-                  Buy Ingredients
-                </Text>
-              </TouchableOpacity>
-            </View>
+            {recipe && (
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    dispatch(cleanUpshoppingListAdd());
+
+                    navigation.navigate('Add Shopping Lists', {
+                      recipeId: recipe._id,
+                      ingredientsList: recipe.ingredients,
+                      tipIngredientsList: recipe.tipIngredients,
+                    });
+                  }}>
+                  <Text style={{color: 'white', fontWeight: '800'}}>
+                    Buy Ingredients
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
             <View>
               <Text style={styles.RecipeSubTitle}>Manual:</Text>
-              {recipe.tipManual.map(manual => {
+              {recipe?.tipManual.map(manual => {
                 ingNumber++;
                 return (
                   <Text
@@ -129,13 +135,13 @@ const SingleRecipe = ({route}: SigneRecipeScreenProps) => {
         )}
         <View style={styles.MenuList}>
           <Text style={styles.RecipeSubTitle}>
-            Different recipes from {recipe.owner?.name}:
+            Different recipes from {recipe?.owner?.name}:
           </Text>
           {/* <View>//TODO: implement recipes from author</View> */}
         </View>
         <View style={styles.MenuList}>
           <Text style={styles.RecipeSubTitle}>Tags</Text>
-          {recipe.tags.map((tag, index) => (
+          {recipe?.tags.map((tag, index) => (
             <TouchableOpacity
               key={index}
               onPress={async () => {

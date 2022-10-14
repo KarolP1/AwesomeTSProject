@@ -43,15 +43,32 @@ export type RecipesPageScreenProp = NativeStackNavigationProp<
   RecipesStackParamList,
   'HugeMenuRecipes2x2'
 >;
+
 export type HomePageScreenPropNavigation = NativeStackNavigationProp<
   RecipesStackParamList,
   'Recipes Home'
 >;
-export type HomePageScreenPropNavigationx = NativeStackNavigationProp<
+
+//#region
+export type RecipesToProfilePageNavigation = NativeStackNavigationProp<
   RecipesStackParamList,
   'Recipes Home'
 >;
-
+export type RecipesToProfilePageScreenProp = NativeStackScreenProps<
+  RecipesStackParamList,
+  'Recipes Home'
+>;
+//#endregion
+//#region
+export type RecipesToSingleRecipePageNavigation = NativeStackNavigationProp<
+  RecipesStackParamList,
+  'Recipes Home'
+>;
+export type RecipesToSingleRecipePageScreenProp = NativeStackScreenProps<
+  RecipesStackParamList,
+  'Recipes Home'
+>;
+//#endregion
 export type IRecipeEdit = NativeStackScreenProps<
   RecipesHomeStackParamList,
   'Edit Recipe'
@@ -73,10 +90,12 @@ export type FindScreenProps = NativeStackScreenProps<
   RecipesHomeStackParamList,
   'Find Recipes'
 >;
+
 export type RecipesHomePageScreenProp = NativeStackNavigationProp<
   RecipesHomeStackParamList,
   'Find Recipes'
 >;
+
 export type RecipesAddHomePageScreenProp = NativeStackNavigationProp<
   RecipesHomeStackParamList,
   'Add Recipes'
@@ -138,7 +157,7 @@ export type RecipesStackParamList = {
       | 'Single ShoppingList Edit'
       | 'Single Recipe';
     params: {
-      recipeGet?: IRecipe;
+      recipeGet: IRecipe | null;
     };
   };
 };

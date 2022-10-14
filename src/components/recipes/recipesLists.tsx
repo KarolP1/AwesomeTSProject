@@ -1,9 +1,12 @@
 import {StyleSheet, Text, ScrollView, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {IRecipe} from '../../redux/recipes/types';
-import SingleRecipe from './SingleRecipe';
+import SingleRecipe from './smallSingleRecipe';
 import {useNavigation} from '@react-navigation/native';
-import {RecipesHomePageScreenProp} from '../../navigation/types';
+import {
+  RecipesHomePageScreenProp,
+  RecipesToProfilePageNavigation,
+} from '../../navigation/types';
 import {RootNavigationWithRecipeAndRecipePagesProp} from '../../navigation/rootNavigation.navigation';
 
 const RecipesLists = ({
@@ -17,8 +20,7 @@ const RecipesLists = ({
   title?: string | null;
   isEditModeEnabled?: boolean;
 }) => {
-  const navigation =
-    useNavigation<RootNavigationWithRecipeAndRecipePagesProp>();
+  const navigation = useNavigation<RecipesToProfilePageNavigation>();
 
   return (
     <>
@@ -54,12 +56,14 @@ const RecipesLists = ({
                 marginVertical: 10,
                 borderRadius: 15,
               }}
-              onPress={() =>
-                navigation.navigate('Single Recipe', {
-                  // @ts-ignore
-                  recipe,
-                })
-              }>
+              //TODO:fix unknown undefined issue
+              onPress={() => {
+                if (recipe)
+                  navigation.navigate('Recipes Home', {
+                    screen: 'Single Recipe',
+                    params: {recipeGet: recipe},
+                  });
+              }}>
               <SingleRecipe
                 Recipe={recipe}
                 isEditModeEnabled={isEditModeEnabled}

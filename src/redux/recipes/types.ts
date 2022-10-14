@@ -20,7 +20,7 @@ export interface IRecipe {
   advancement: number;
   prepTime: string;
   cookTime: string;
-  serves: number;
+  serves: string;
   isKosher: boolean;
   isVegan: boolean;
   isHalal: boolean;
@@ -33,6 +33,7 @@ export interface IRecipe {
   tipManual: IManualList[];
   tags: string[];
   counter: ICounter;
+  spiceness: 'extra hot' | 'Hot' | 'Mild' | 'normal';
 }
 
 export interface ICuisine {

@@ -17,11 +17,7 @@ import {
   RootNavigationWithRecipeAndRecipePagesProp,
   RootNavigationWithRecipeProp,
 } from '../../navigation/rootNavigation.navigation';
-import {
-  HomePageScreenPropNavigationx,
-  IRecipeEdit,
-  ProfileToRecipesNavigation,
-} from '../../navigation/types';
+import {RecipesToProfilePageNavigation} from '../../navigation/types';
 
 const SingleRecipe = ({
   Recipe,
@@ -30,7 +26,7 @@ const SingleRecipe = ({
   Recipe: IRecipe;
   isEditModeEnabled?: boolean;
 }) => {
-  const navigation = useNavigation<HomePageScreenPropNavigationx>();
+  const navigation = useNavigation<RecipesToProfilePageNavigation>();
   const dispatch = useAppDispatch();
   return (
     <View style={styles.container}>
