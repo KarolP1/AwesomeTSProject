@@ -13,7 +13,9 @@ const HomepageNavigationContainer = () => {
     <Stack.Navigator
       screenOptions={StackDefaultOptions}
       initialRouteName="HugeMenu2x2">
+      {/*  */}
       <Stack.Screen name="HugeMenu2x2" component={HugeMenu} />
+      {/*  */}
       <Stack.Screen
         name="Home Page"
         component={HomepageHomeNavigationContainer}

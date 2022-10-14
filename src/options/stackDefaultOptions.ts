@@ -11,6 +11,7 @@ export const StackDefaultOptions: NativeStackNavigationOptions = {
 export const TabDefaultOptions: BottomTabNavigationOptions = {
   headerShown: false,
   tabBarShowLabel: false,
+  lazy: false,
 
   tabBarStyle: {
     position: 'absolute',

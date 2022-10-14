@@ -122,7 +122,7 @@ const EditRecipes = ({route}: ProfileRecipeScreenProps) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<RecipesHomePageScreenProp>();
   refreshTokenInterveptor(dispatch, instance);
-  console.log(route);
+  console.log();
 
   const [recipeAdd, setRecipeAdd] = useState<IRecipeAdd>(initialState);
   //#region state for manualList

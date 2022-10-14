@@ -47,6 +47,10 @@ export type HomePageScreenPropNavigation = NativeStackNavigationProp<
   RecipesStackParamList,
   'Recipes Home'
 >;
+export type HomePageScreenPropNavigationx = NativeStackNavigationProp<
+  RecipesStackParamList,
+  'Recipes Home'
+>;
 
 export type IRecipeEdit = NativeStackScreenProps<
   RecipesHomeStackParamList,
@@ -91,6 +95,12 @@ export type HomeTabParamList = {
   };
   'Coming soon': undefined;
 };
+
+export type ProfileToRecipesNavigation = CompositeNavigationProp<
+  NativeStackNavigationProp<HomeTabParamList, 'Profile'>,
+  NativeStackNavigationProp<HomeTabParamList, 'Recipes'>
+>;
+
 /** Recipes navigation */
 export type RecipesHomeStackParamList = {
   'Find Recipes': {
@@ -127,6 +137,9 @@ export type RecipesStackParamList = {
       | 'Add Shopping Lists'
       | 'Single ShoppingList Edit'
       | 'Single Recipe';
+    params: {
+      recipeGet?: IRecipe;
+    };
   };
 };
 export type ProfileScreenProps = CompositeNavigationProp<

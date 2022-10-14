@@ -17,6 +17,11 @@ import {
   RootNavigationWithRecipeAndRecipePagesProp,
   RootNavigationWithRecipeProp,
 } from '../../navigation/rootNavigation.navigation';
+import {
+  HomePageScreenPropNavigationx,
+  IRecipeEdit,
+  ProfileToRecipesNavigation,
+} from '../../navigation/types';
 
 const SingleRecipe = ({
   Recipe,
@@ -25,8 +30,7 @@ const SingleRecipe = ({
   Recipe: IRecipe;
   isEditModeEnabled?: boolean;
 }) => {
-  const navigation =
-    useNavigation<RootNavigationWithRecipeAndRecipePagesProp>();
+  const navigation = useNavigation<HomePageScreenPropNavigationx>();
   const dispatch = useAppDispatch();
   return (
     <View style={styles.container}>
@@ -58,19 +62,17 @@ const SingleRecipe = ({
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback>
               <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('Home Page', {
-                    recipe: Recipe,
-                    // @ts-ignore
-                    screen: 'Recipes',
-                    params: {
-                      screen: 'Recipes Home',
+                onPress={async () => {
+                  try {
+                    navigation.navigate('Recipes Home', {
+                      screen: 'Edit Recipe',
                       params: {
-                        screen: 'Edit Recipe',
-                        recipe: Recipe,
+                        recipeGet: Recipe,
                       },
-                    },
-                  });
+                    });
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}>
                 <Image
                   source={require('../../assets/utilityIcons/editC.png')}

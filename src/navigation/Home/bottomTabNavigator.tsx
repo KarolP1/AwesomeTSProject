@@ -15,6 +15,7 @@ const BottomTabNavigator = () => {
     <Tab.Navigator
       screenOptions={TabDefaultOptions}
       tabBar={props => <Tabbar {...props} />}
+      defaultScreenOptions={{lazy: false}}
       backBehavior={'history'}
       initialRouteName="Order">
       <Tab.Screen
@@ -37,6 +38,7 @@ const BottomTabNavigator = () => {
         name="Recipes"
         component={RecipesNavigation}
         options={{
+          lazy: false,
           tabBarIconStyle: {backgroundColor: 'red'},
           tabBarActiveBackgroundColor: 'rgba(80,80,80,1)',
           tabBarIcon: () => (
