@@ -37,7 +37,6 @@ const RecipesSection = ({}: {}) => {
 
     if (selectedType) setDishesType(selectedType);
     if (selected === null) {
-      console.log('running dispatch');
       dispatch(getMyRecipes());
     }
   }, [selected]);

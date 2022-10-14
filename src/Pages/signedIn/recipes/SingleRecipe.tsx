@@ -11,7 +11,7 @@ import {cleanUpshoppingListAdd} from '../../../redux/recipes/shoppingList/addSho
 
 const SingleRecipe = ({route}: SigneRecipeScreenProps) => {
   const dispatch = useAppDispatch();
-  const recipe = route.params.recipe;
+  const recipe = route.params?.recipe;
   let ingNumber = 0;
   let ingNumberTips = 0;
   const navigation = useNavigation<RecipesHomePageScreenProp>();

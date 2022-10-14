@@ -6,7 +6,6 @@ import {useNavigation} from '@react-navigation/native';
 import {RecipeStyles} from '../../../Pages/signedIn/recipes/Recipesadd';
 
 const GetSingleShoppingList = ({List}: {List: ShoppingListItemGet}) => {
-  console.log({List});
   const navigation = useNavigation<RecipesHomePageScreenProp>();
   const dateYear = List.createdAt;
   const createdDate = new Date(dateYear);

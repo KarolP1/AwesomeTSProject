@@ -20,8 +20,6 @@ const WorkspaceSection = ({jobs}: {jobs: IJobsGet[]}) => {
   });
   var groupedResult = _.groupBy(accepted, jobs => jobs.workPlace._id);
 
-  console.log(groupedResult);
-
   return (
     <SimpleSection title="Workspace">
       {accepted.length > 1 ? (

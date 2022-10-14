@@ -39,13 +39,11 @@ const DocumentSection = ({
   );
 
   useEffect(() => {
-    console.log(photo);
     if (photo?.assets) {
       const data = createFormData(
         photo?.assets[0],
         isImageFlipped ? 'documentImageBack' : 'documentImageFront',
       );
-      console.log(data);
       dispatch(addMyProfileDocumentImage(data));
       setPhoto(null);
       dispatch(getMyProfile());

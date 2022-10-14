@@ -14,11 +14,6 @@ import {useAppDispatch} from '../../redux/hooks';
 import {deleteRecipe} from '../../redux/recipes/recipesThunks';
 import {useNavigation} from '@react-navigation/native';
 import {
-  ProfileRecipeScreenProps,
-  ProfileScreenProps,
-} from '../../navigation/types';
-import {
-  ProfileRecipeNavigationProp,
   RootNavigationWithRecipeAndRecipePagesProp,
   RootNavigationWithRecipeProp,
 } from '../../navigation/rootNavigation.navigation';
@@ -26,15 +21,12 @@ import {
 const SingleRecipe = ({
   Recipe,
   isEditModeEnabled,
-  test,
 }: {
   Recipe: IRecipe;
   isEditModeEnabled?: boolean;
-  test: ProfileScreenProps;
 }) => {
   const navigation =
     useNavigation<RootNavigationWithRecipeAndRecipePagesProp>();
-  console.log([navigation]);
   const dispatch = useAppDispatch();
   return (
     <View style={styles.container}>

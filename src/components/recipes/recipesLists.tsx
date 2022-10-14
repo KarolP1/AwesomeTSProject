@@ -4,6 +4,7 @@ import {IRecipe} from '../../redux/recipes/types';
 import SingleRecipe from './SingleRecipe';
 import {useNavigation} from '@react-navigation/native';
 import {RecipesHomePageScreenProp} from '../../navigation/types';
+import {RootNavigationWithRecipeAndRecipePagesProp} from '../../navigation/rootNavigation.navigation';
 
 const RecipesLists = ({
   recipes,
@@ -16,7 +17,8 @@ const RecipesLists = ({
   title?: string | null;
   isEditModeEnabled?: boolean;
 }) => {
-  const navigation = useNavigation<RecipesHomePageScreenProp>();
+  const navigation =
+    useNavigation<RootNavigationWithRecipeAndRecipePagesProp>();
 
   return (
     <>
@@ -53,7 +55,10 @@ const RecipesLists = ({
                 borderRadius: 15,
               }}
               onPress={() =>
-                navigation.navigate('Single Recipe', {recipe: recipe})
+                navigation.navigate('Single Recipe', {
+                  // @ts-ignore
+                  recipe,
+                })
               }>
               <SingleRecipe
                 Recipe={recipe}
