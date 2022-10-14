@@ -1,6 +1,9 @@
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {CompositeNavigationProp} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 import {
   HomeStackParamList,
   HomeTabParamList,
@@ -27,4 +30,9 @@ export type RootNavigationWithRecipeAndRecipePagesProp =
 export type ProfileRecipeNavigationProp = CompositeNavigationProp<
   NativeStackNavigationProp<RecipesHomeStackParamList, 'Edit Recipe'>,
   NativeStackNavigationProp<HomeTabParamList, 'Profile'>
+>;
+
+export type ProfileRecipeScreenProps = NativeStackScreenProps<
+  RecipesHomeStackParamList,
+  'Edit Recipe'
 >;

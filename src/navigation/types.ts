@@ -48,7 +48,7 @@ export type HomePageScreenPropNavigation = NativeStackNavigationProp<
   'Recipes Home'
 >;
 
-export type IRecipeEdit = NativeStackNavigationProp<
+export type IRecipeEdit = NativeStackScreenProps<
   RecipesHomeStackParamList,
   'Edit Recipe'
 >;

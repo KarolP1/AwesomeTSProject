@@ -18,10 +18,15 @@ import {allCategoriesRecipe} from '../../../components/categorySelector/allCateg
 import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
 import AdvancementButton from '../../../components/recipes/AdvancementButton';
 import {useNavigation} from '@react-navigation/native';
-import {RecipesHomePageScreenProp} from '../../../navigation/types';
+import {
+  IRecipeEdit,
+  RecipesHomePageScreenProp,
+  RecipesHomeStackParamList,
+} from '../../../navigation/types';
 import {checkStringNull} from '../../../redux/recipes/addRecipe/functions';
 import PillButton from '../../../components/recipes/PillButton';
 import uuid from 'react-native-uuid';
+import {ProfileRecipeScreenProps} from '../../../navigation/rootNavigation.navigation';
 
 //#region initial
 export interface IIngredientList {
@@ -59,7 +64,7 @@ export interface IRecipeAdd {
   tags: string[];
 }
 const initialState: IRecipeAdd = {
-  title: 'test from pc',
+  title: 'test Edit from pc',
   description: 'tes2',
   cuisineCode: 'pl',
   isKosher: false,
@@ -113,10 +118,11 @@ const initialState: IRecipeAdd = {
   tags: [],
 };
 //#endregion
-const EditRecipes = () => {
+const EditRecipes = ({route}: ProfileRecipeScreenProps) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<RecipesHomePageScreenProp>();
   refreshTokenInterveptor(dispatch, instance);
+  console.log(route);
 
   const [recipeAdd, setRecipeAdd] = useState<IRecipeAdd>(initialState);
   //#region state for manualList

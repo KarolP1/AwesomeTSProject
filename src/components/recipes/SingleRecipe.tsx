@@ -60,12 +60,14 @@ const SingleRecipe = ({
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate('Home Page', {
+                    recipe: Recipe,
                     // @ts-ignore
                     screen: 'Recipes',
                     params: {
                       screen: 'Recipes Home',
                       params: {
                         screen: 'Edit Recipe',
+                        recipe: Recipe,
                       },
                     },
                   });
