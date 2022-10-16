@@ -11,7 +11,7 @@ import SubmitButton from '../../../components/touchables/SubmitButton';
 import {ShoppingListItem} from '../../../redux/recipes/types';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {editShoppingListThunk} from '../../../redux/recipes/shoppingList/updateShoppinglist.thunk';
-import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
+import {instance} from '../../../redux/interceptors';
 import {useNavigation} from '@react-navigation/native';
 import {cleanUpListEdit} from '../../../redux/recipes/shoppingList/updateShoppingList.slice';
 import {deleteShoppingListThunk} from '../../../redux/recipes/shoppingList/deleteShoppingList.thunk';
@@ -29,7 +29,6 @@ const SingleShoppingListEdit = (props: ISingleShoppingListEdit) => {
     list.tipIngredients,
   );
 
-  refreshTokenInterveptor(dispatch, instance);
   const {succes, error} = useAppSelector(state => state.edistShoppingList);
 
   useEffect(() => {

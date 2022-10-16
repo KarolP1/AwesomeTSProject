@@ -10,7 +10,7 @@ import {getTokens} from '../../../redux/Auth/loginReducer';
 import {useFocusEffect} from '@react-navigation/native';
 import {getShoppinglists} from '../../../redux/recipes/shoppingList/getShoppinglists.thunk';
 import GetSingleShoppingList from '../../../components/recipes/ShoppingList/GetSingleShoppingList';
-import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
+import {instance} from '../../../redux/interceptors';
 
 const RecipesShoppinglists = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +21,6 @@ const RecipesShoppinglists = () => {
       dispatch(getShoppinglists());
     }, []),
   );
-  refreshTokenInterveptor(dispatch, instance);
   return (
     <LoggedInBackground>
       <View style={{flex: 1, width: '100%'}}>

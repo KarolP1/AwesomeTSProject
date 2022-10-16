@@ -10,7 +10,7 @@ import {
   getAllRecipesByTag,
 } from '../../../redux/recipes/recipesThunks';
 import {useFocusEffect} from '@react-navigation/native';
-import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
+import {instance} from '../../../redux/interceptors';
 import CategoryRecipesSelector from '../../../components/categorySelector';
 import {allCategoriesRecipe} from '../../../components/categorySelector/allCategories';
 import Spinner from 'react-native-spinkit';
@@ -26,7 +26,6 @@ const RecipesFind = ({route}: FindScreenProps) => {
   const [cuisineCode, setCuisineCode] = useState<string | null>(null);
   const [category, setCategory] = useState<string | null>(null);
 
-  refreshTokenInterveptor(dispatch, instance);
   const allCateg = allCategoriesRecipe();
   const {data, isLoading} = useAppSelector(state => state.recipes);
 

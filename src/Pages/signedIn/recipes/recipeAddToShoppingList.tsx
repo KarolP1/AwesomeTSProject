@@ -11,7 +11,7 @@ import {RecipeStyles} from './Recipesadd';
 import PillButton from '../../../components/recipes/PillButton';
 import {IIngredient} from '../../../redux/recipes/types';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
-import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
+import {instance} from '../../../redux/interceptors';
 import {addShoppingListThunk} from '../../../redux/recipes/shoppingList/addShoppinglist.thunk';
 import {cleanUpshoppingListAdd} from '../../../redux/recipes/shoppingList/addShoppingList.slice';
 import {useNavigation} from '@react-navigation/native';
@@ -26,7 +26,6 @@ const RecipeAddToShoppingList = ({route}: RecipeAddShoppingListScreenProps) => {
   const [isTipIngredients, setIsTipIngredients] = useState<boolean>(true);
   const [shoppingList, setShoppingList] = useState<IIngredient[]>([]);
   const [tipShoppingList, setTipShoppingList] = useState<IIngredient[]>([]);
-  refreshTokenInterveptor(dispatch, instance);
 
   const {succes, error} = useAppSelector(state => state.addShoppingList);
   useEffect(() => {

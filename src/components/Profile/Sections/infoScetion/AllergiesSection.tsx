@@ -3,10 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {IAllergy, IGetProfileInfo} from '../../../../redux/Profile/types';
 import TextInputProfile from '../../../TextInputs/TextInputProfile';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {
-  instance,
-  refreshTokenInterveptor,
-} from '../../../../redux/interceptors';
+import {instance} from '../../../../redux/interceptors';
 import {useAppDispatch} from '../../../../redux/hooks';
 import {addAllergy} from '../../../../redux/Profile/allergies/addAllergy.thunk';
 import {deleteAllergy} from '../../../../redux/Profile/allergies/deleteAllergy.thunk';
@@ -22,7 +19,6 @@ const AllergiesSection = ({
     user?.allergies?.allergies,
   );
   const dispatch = useAppDispatch();
-  refreshTokenInterveptor(dispatch, instance);
   useEffect(() => {
     dispatch(getMyProfile());
   }, [dispatch]);

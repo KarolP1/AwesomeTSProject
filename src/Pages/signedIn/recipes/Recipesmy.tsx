@@ -4,7 +4,7 @@ import LoggedInBackground from '../../../components/background/loggedInBackgroun
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {getMyRecipes} from '../../../redux/recipes/myRecipes/myRecipes.thunk';
 import RecipesLists from '../../../components/recipes/recipesLists';
-import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
+import {instance} from '../../../redux/interceptors';
 import CategoryRecipesSelector from '../../../components/categorySelector';
 import {
   allCategoriesRecipe,
@@ -25,8 +25,6 @@ const Recipesmy = () => {
     0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null
   >(null);
   const [dishesType, setDishesType] = useState<category>();
-
-  refreshTokenInterveptor(dispatch, instance);
 
   useEffect(() => {
     const allDishesType = allCategoriesRecipe();

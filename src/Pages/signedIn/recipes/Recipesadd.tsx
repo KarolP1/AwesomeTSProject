@@ -15,7 +15,7 @@ import TagController from '../../../components/recipes/TagController';
 import {cleanUpAddRecipe} from '../../../redux/recipes/addRecipe/addRecipe';
 import {addRecipeThunk as addRecipe} from '../../../redux/recipes/addRecipe/addRecipe.thunk';
 import {allCategoriesRecipe} from '../../../components/categorySelector/allCategories';
-import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
+import {instance} from '../../../redux/interceptors';
 import AdvancementButton from '../../../components/recipes/AdvancementButton';
 import {useNavigation} from '@react-navigation/native';
 import {RecipesHomePageScreenProp} from '../../../navigation/types';
@@ -116,7 +116,6 @@ const initialState: IRecipeAdd = {
 const Recipesadd = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<RecipesHomePageScreenProp>();
-  refreshTokenInterveptor(dispatch, instance);
 
   const [recipeAdd, setRecipeAdd] = useState<IRecipeAdd>(initialState);
   //#region state for manualList

@@ -2,14 +2,13 @@ import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import ProfileContent from '../../../components/Profile/Content';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
-import {instance, refreshTokenInterveptor} from '../../../redux/interceptors';
+import {instance} from '../../../redux/interceptors';
 
 const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 
 const StudentProfile = () => {
   const state = useAppSelector(state => state.profile.data);
   const dispatch = useAppDispatch();
-  refreshTokenInterveptor(dispatch, instance);
 
   return (
     <View
