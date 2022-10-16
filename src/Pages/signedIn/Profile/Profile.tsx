@@ -18,14 +18,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (error) {
-      Alert.alert('Something went wrong with loading your profile', error, [
-        {
-          onPress: () => {
-            dispatch(cleanUpGetMyProfile());
-            dispatch(getMyProfile());
-          },
-        },
-      ]);
+      console.log({error});
     }
   }, [error]);
 
