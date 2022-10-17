@@ -95,7 +95,7 @@ interface ICuisine {
   oryginalName: string;
 }
 
-interface IWokringHours {
+export interface IWokringHours {
   hours: {
     open: string;
     close: string;
@@ -110,6 +110,15 @@ interface ILocation {
   _id: string;
 }
 
+export interface ITable {
+  _id?: string;
+  tableName: string;
+  tableShape: string;
+  numberOfPlaces: string;
+  numberOfTables: string;
+  numberOfTablesAvailable?: string;
+}
+
 export interface IEstablishment {
   _id: string;
   type: string;
@@ -117,7 +126,7 @@ export interface IEstablishment {
   owner: string;
   location: ILocation;
   cuisine: ICuisine[];
-  openHours: IWokringHours[];
+  openHours?: IWokringHours[];
   address: IGetAddress;
   isVegan: boolean;
   isHalal: boolean;
@@ -129,7 +138,7 @@ export interface IEstablishment {
   };
   menu: [];
   assortment: [];
-  tables: [];
+  tables: ITable[];
   reservations: [];
   image: [];
   __v: 0;

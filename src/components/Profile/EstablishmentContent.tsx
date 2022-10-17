@@ -4,16 +4,19 @@ import {IGetProfileInfo} from '../../redux/Profile/types';
 import ImageController from '../../controllers/recipe/ImageController';
 
 import ProfileMenu from './ProfileMenu';
-import {useAppSelector} from '../../redux/hooks';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import InfoSection from './Sections/infoScetion/InfoSection';
 import RecipesSection from './Sections/recipesSection/RecipesSection';
 import MainComponents from './Sections/Job/MainComponents';
+import {useFocusEffect} from '@react-navigation/native';
+import {getMyProfile} from '../../redux/Profile/core/profileCore.thunk';
 
 const EstablishmentContent = ({
   profileInfo,
 }: {
   profileInfo: IGetProfileInfo | null | undefined;
 }) => {
+  const dispatch = useAppDispatch();
   const [selected, setSelected] = useState<0 | 1 | 2 | 3 | 4>(0);
   const [userInfo, setUserInfo] = useState<IGetProfileInfo | undefined | null>(
     profileInfo,
@@ -22,6 +25,12 @@ const EstablishmentContent = ({
   useEffect(() => {
     setUserInfo(user);
   }, [profileInfo]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(getMyProfile());
+    }, []),
+  );
 
   const renderSeciton = (selected: 0 | 1 | 2 | 3 | 4) => {
     switch (selected) {

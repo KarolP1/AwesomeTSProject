@@ -1,13 +1,10 @@
 import {IEstablishment} from './../Profile/types';
 import {useAppSelector} from './../hooks';
-import {
-  Action,
-  ActionCreator,
-  createSlice,
-  PayloadAction,
-} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {GetEstablishment, IResponseGetMyEstablishment} from './order.thunk';
 import {editMyEstablishmentAddress} from '../Profile/core/profileAddressEstablishmentEdit.thunk';
+import {AddTableToEstablishment} from './tables/tableAdd.thunk';
+import {DeleteTableEstablishment} from './tables/tableDelete.thunk';
 
 const initialState: IResponseGetMyEstablishment = {
   error: undefined,
@@ -67,6 +64,46 @@ const MyEstablishmentSlice = createSlice({
       },
     );
     builder.addCase(editMyEstablishmentAddress.pending, (state, {payload}) => {
+      state.isLoading = true;
+    });
+    ////////////////////////////////////////////////////////////////
+    builder.addCase(AddTableToEstablishment.rejected, (state, {payload}) => {
+      state.error = payload;
+      state.succes = false;
+
+      state.isLoading = false;
+    });
+    builder.addCase(
+      AddTableToEstablishment.fulfilled,
+      (state, {payload}: PayloadAction<IEstablishment | any>) => {
+        state.error = null;
+        state.succes = true;
+        if (state.data) state.data[0].tables = payload.data;
+        state.isLoading = false;
+        state.message = payload.message;
+      },
+    );
+    builder.addCase(AddTableToEstablishment.pending, (state, {payload}) => {
+      state.isLoading = true;
+    });
+    ////////////////////////////////////////////////////////////////
+    builder.addCase(DeleteTableEstablishment.rejected, (state, {payload}) => {
+      state.error = payload;
+      state.succes = false;
+
+      state.isLoading = false;
+    });
+    builder.addCase(
+      DeleteTableEstablishment.fulfilled,
+      (state, {payload}: PayloadAction<IEstablishment | any>) => {
+        state.error = null;
+        state.succes = true;
+        if (state.data) state.data[0].tables = payload.data;
+        state.isLoading = false;
+        state.message = payload.message;
+      },
+    );
+    builder.addCase(DeleteTableEstablishment.pending, (state, {payload}) => {
       state.isLoading = true;
     });
     ////////////////////////////////////////////////////////////////

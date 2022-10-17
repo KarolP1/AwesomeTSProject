@@ -11,7 +11,7 @@ import {
   IManualList,
   IRecipeAdd,
 } from '../../Pages/signedIn/recipes/Recipesadd';
-import {IGetProfileInfo} from '../../redux/Profile/types';
+import {IGetProfileInfo, IWokringHours} from '../../redux/Profile/types';
 import InsetShadow from 'react-native-inset-shadow';
 import DropShadow from 'react-native-drop-shadow';
 
@@ -28,8 +28,20 @@ export interface ITextInput {
     | IIngredientList
     | IRecipeAdd
     | IGetProfileInfo
+    | IWokringHours
     | undefined
     | null;
+  value: string | undefined;
+  onFocus?: (ev: FocusEvent) => void;
+  type?: 'string' | 'array';
+  disabled?: boolean;
+}
+export interface ITextInputArray {
+  placeholder: string;
+  isSecure?: boolean;
+  onChange: (text: string) => void;
+  name: string;
+  state?: IWokringHours[] | null;
   value: string | undefined;
   onFocus?: (ev: FocusEvent) => void;
   type?: 'string' | 'array';
@@ -86,6 +98,63 @@ const TextInputProfile = ({
             color: 'white',
             borderRadius: 5,
             paddingVertical: 4,
+            flex: 1,
+            paddingHorizontal: 10,
+            width: '100%',
+          }}
+        />
+      </View>
+    </DropShadow>
+  );
+};
+export const TextInputProfileArray = ({
+  placeholder,
+  isSecure,
+  onChange,
+  name,
+  state,
+  value,
+  disabled,
+  type,
+}: ITextInputArray) => {
+  return (
+    <DropShadow
+      style={{
+        shadowColor: '#ccc',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.05,
+        shadowRadius: 30.84,
+
+        elevation: 5,
+        alignItems: 'center',
+        height: 50,
+        paddingVertical: 5,
+      }}>
+      <View
+        style={{
+          backgroundColor: 'rgba(0,0,0,.05)',
+          borderRadius: 5,
+          width: '100%',
+          marginBottom: 10,
+          paddingHorizontal: 5,
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+        }}>
+        <TextInput
+          editable={disabled}
+          placeholder={placeholder}
+          onChangeText={text => {
+            onChange(text);
+          }}
+          value={value}
+          secureTextEntry={isSecure ? true : false}
+          style={{
+            color: 'white',
+            borderRadius: 5,
             flex: 1,
             paddingHorizontal: 10,
             width: '100%',

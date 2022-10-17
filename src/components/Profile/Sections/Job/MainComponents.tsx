@@ -9,6 +9,7 @@ import {getMyProfile} from '../../../../redux/Profile/core/profileCore.thunk';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import SingleItem from '../../ProfileMenu/SingleItem';
 import OnOfButton from './OnOfButton';
+import EstablishmentJobSection from './EstablishmentJobSection';
 
 const MainComponents = () => {
   const dispatch = useAppDispatch();
@@ -65,7 +66,7 @@ const MainComponents = () => {
           <Text>standatd</Text>
         </>
       ) : (
-        <Text>{userRole}</Text>
+        <EstablishmentJobSection />
       )}
     </View>
   );

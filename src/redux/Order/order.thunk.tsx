@@ -5,10 +5,11 @@ import {
   IEstablishment,
   IGetProfileInfo,
   IResponseGetMyProfile,
+  ITable,
 } from '../Profile/types';
 
 export const GetEstablishment = createAsyncThunk<IResponseGetMyEstablishment>(
-  'profile/allergy/post}',
+  'Establishment/get}',
   async (_, {rejectWithValue}) => {
     try {
       const tokens = await getTokensKeychain();
@@ -39,6 +40,13 @@ export interface IResponseGetMyEstablishment {
   error: any | undefined;
   message: string | undefined;
   data?: IEstablishment[] | null;
+  isLoading: boolean;
+  succes: boolean;
+}
+export interface IResponseAddNewTable {
+  error: any | undefined;
+  message: string | undefined;
+  data?: ITable[] | null;
   isLoading: boolean;
   succes: boolean;
 }
