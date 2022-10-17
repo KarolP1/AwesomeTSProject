@@ -9,7 +9,7 @@ export interface IResponseGetMyProfile {
 export interface IAllergy {
   _id: string;
   ownerId: string;
-  allergies: string[];
+  allergies?: string[];
 }
 
 export interface IGetProfileInfo {
@@ -34,7 +34,8 @@ export interface IGetProfileInfo {
     profileImage?: IGetImages;
     backgroundImage?: IGetImages;
   };
-  allergies: IAllergy;
+  allergies?: IAllergy;
+  establishment?: IEstablishment;
 }
 
 export interface IGetImages {
@@ -86,3 +87,50 @@ export interface IJobWorkPlace {
 }
 
 export type IJobTitle = 'waiter' | 'chef' | 'driver' | '';
+
+interface ICuisine {
+  _id: string;
+  code: string;
+  name: string;
+  oryginalName: string;
+}
+
+interface IWokringHours {
+  hours: {
+    open: string;
+    close: string;
+  };
+  day: string;
+  _id: string;
+}
+
+interface ILocation {
+  type: 'Point';
+  coordinates: string[];
+  _id: string;
+}
+
+export interface IEstablishment {
+  _id: string;
+  type: string;
+  name: string;
+  owner: string;
+  location: ILocation;
+  cuisine: ICuisine[];
+  openHours: IWokringHours[];
+  address: IGetAddress;
+  isVegan: boolean;
+  isHalal: boolean;
+  isKosher: boolean;
+  delivery: {
+    isDelivery: boolean;
+    isPickup: boolean;
+    _id: string;
+  };
+  menu: [];
+  assortment: [];
+  tables: [];
+  reservations: [];
+  image: [];
+  __v: 0;
+}

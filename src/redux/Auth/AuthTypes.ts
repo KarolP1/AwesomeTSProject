@@ -9,7 +9,7 @@ export interface ITokenForm {
   token?: string | undefined;
 }
 export const initialLoginForm: ILoginForm = {
-  email: 'platek549@gmail.com',
+  email: 'platek549@restaurant.com',
   password: '123456',
 };
 export interface IResponseLoginIResponseLogin {

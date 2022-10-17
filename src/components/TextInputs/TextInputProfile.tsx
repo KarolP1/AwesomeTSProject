@@ -73,7 +73,7 @@ const TextInputProfile = ({
           editable={disabled}
           placeholder={placeholder}
           onChangeText={text => {
-            onChange(text);
+            onChange({...state, [name]: text});
           }}
           value={value}
           secureTextEntry={isSecure ? true : false}

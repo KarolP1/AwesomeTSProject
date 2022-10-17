@@ -2,14 +2,17 @@ import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../../redux/hooks';
 import {editMyProfileAddress} from '../../../../redux/Profile/core/profileAddressEditUserData.thunk';
+import {editMyEstablishmentAddress} from '../../../../redux/Profile/core/profileAddressEstablishmentEdit.thunk';
 import {IGetAddress} from '../../../../redux/Profile/types';
 import TextInputProfile from '../../../TextInputs/TextInputProfile';
 import SimpleSection from './SimpleSection';
 
 const UserDataAdderssSection = ({
   info,
+  establishment,
 }: {
   info: IGetAddress | null | undefined;
+  establishment?: boolean;
 }) => {
   const dispatch = useAppDispatch();
   const userDetails = useAppSelector(state => state.profile.data);
@@ -18,22 +21,31 @@ const UserDataAdderssSection = ({
   const [infoState, setInfoDate] = useState<IGetAddress | undefined | null>(
     info,
   );
+  const estabData = useAppSelector(state => state.establishment.data);
 
   return (
     <View>
       <SimpleSection
         isEditModeEnabled={isEditModeEnabled}
-        title="Your Address"
+        title={establishment ? 'Establishment address' : 'Your Address'}
         Button={() => (
           <TouchableOpacity
             onPress={() => {
-              if (isEditModeEnabled)
+              if (isEditModeEnabled && !establishment)
                 dispatch(
                   editMyProfileAddress({
                     address: infoState,
-                    id: userDetails?._id,
+                    id: userDetails?.establishment?._id,
                   }),
                 );
+              if (isEditModeEnabled && establishment)
+                if (infoState && userDetails && estabData)
+                  dispatch(
+                    editMyEstablishmentAddress({
+                      address: infoState,
+                      establishmentId: estabData[0]._id,
+                    }),
+                  );
               setIsEditModeEnabled(!isEditModeEnabled);
             }}>
             <Image

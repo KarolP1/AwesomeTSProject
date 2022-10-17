@@ -1,6 +1,6 @@
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import ProfileContent from '../../../components/Profile/Content';
+import ProfileContentStudent from '../../../components/Profile/StudentContent';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {instance} from '../../../redux/interceptors';
 
@@ -16,7 +16,7 @@ const StudentProfile = () => {
         flex: 1,
         width: '100%',
       }}>
-      <ProfileContent profileInfo={state} />
+      <ProfileContentStudent profileInfo={state} />
     </View>
   );
 };

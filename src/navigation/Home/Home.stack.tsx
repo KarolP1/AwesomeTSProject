@@ -5,7 +5,7 @@ import {HomeStackParamList, HomeTabParamList} from '../types';
 import {StackDefaultOptions} from '../../options/stackDefaultOptions';
 import HugeMenu from '../../Pages/signedIn/menu/HugeMenu';
 import HomeRecipesNavigation from '../recipes/HomeRecipesNavigation.Stack';
-import Oreder from '../../Pages/signedIn/Oreder';
+import Oreder from '../../Pages/signedIn/Order/Oreder';
 
 const HomepageHomeNavigationContainer = () => {
   const Stack = createNativeStackNavigator<HomeTabParamList>();

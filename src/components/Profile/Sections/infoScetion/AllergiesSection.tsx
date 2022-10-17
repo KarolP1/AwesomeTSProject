@@ -16,7 +16,7 @@ const AllergiesSection = ({
   user: IGetProfileInfo | null | undefined;
 }) => {
   const [allergies, setAllergies] = useState<string[] | undefined>(
-    user?.allergies?.allergies,
+    user?.allergies?.allergies ? user?.allergies?.allergies : [],
   );
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -82,7 +82,7 @@ const AllergiesSection = ({
             <TouchableOpacity
               style={{paddingHorizontal: 10}}
               onPress={() => {
-                const filterDeletedAllergies = allergies.filter(
+                const filterDeletedAllergies = allergies?.filter(
                   e => e !== allergyToMap,
                 );
                 setAllergies(filterDeletedAllergies);

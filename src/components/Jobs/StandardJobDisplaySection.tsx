@@ -13,7 +13,6 @@ import {deleteJobRequests} from '../../redux/Profile/Jobs/deleteJob.thunk';
 
 const StandardJobDisplaySection = ({jobs}: {jobs: IJobsGet[] | undefined}) => {
   const user = useAppSelector(state => state.profile);
-  const userRole = user.data?.userRole;
   const dispatch = useAppDispatch();
   const [jobRequestForm, setJobRequestForm] = useState({
     workPlace: '',

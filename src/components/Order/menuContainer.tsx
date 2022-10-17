@@ -1,26 +1,20 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
-import DropShadow from 'react-native-drop-shadow';
 import {useNavigation} from '@react-navigation/native';
-import {
-  HomePageScreenProp,
-  HomeStackParamList,
-  RecipesPageScreenProp,
-  TabPageScreenProp,
-} from '../../navigation/types';
+import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import DropShadow from 'react-native-drop-shadow';
+import {MenuOrderNavigation} from '../../navigation/order/types';
 
-const MenuSquareCartContainerReceipes = (props: {
-  name: 'Find Recipes' | 'My Recipes' | 'Add Recipes' | 'Shopping Lists';
+const MenuSquareCartContainerOrder = (props: {
+  name: 'restaurants' | 'shops' | 'foodTrucks' | 'localCooks';
   image: any;
+  displayName: string;
 }) => {
-  const navigation = useNavigation<RecipesPageScreenProp>();
+  const navigation = useNavigation<MenuOrderNavigation>();
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() => {
         try {
-          //@ts-ignore
-          navigation.navigate('Recipes Home', {screen: props.name});
+          navigation.navigate('OrderPage', {screen: props.name});
         } catch (error) {
           console.error(error);
         }
@@ -30,14 +24,13 @@ const MenuSquareCartContainerReceipes = (props: {
           source={props.image}
           style={{width: 60, height: 60, resizeMode: 'cover'}}
         />
-        <Text>{props.name}</Text>
+        <Text style={{color: '#fff'}}>{props.displayName}</Text>
       </DropShadow>
     </TouchableOpacity>
   );
 };
 
-export default MenuSquareCartContainerReceipes;
-
+export default MenuSquareCartContainerOrder;
 const styles = StyleSheet.create({
   container: {
     width: '50%',

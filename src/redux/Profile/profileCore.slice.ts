@@ -103,7 +103,7 @@ const MyProfileSlice = createSlice({
       state.succes = true;
       state.isLoading = false;
       state.message = payload.message;
-      if (state.data) {
+      if (state.data?.allergies?.allergies) {
         state.data.allergies.allergies = [
           ...state.data.allergies.allergies,
           payload.data,

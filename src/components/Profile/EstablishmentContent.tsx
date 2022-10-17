@@ -9,7 +9,7 @@ import InfoSection from './Sections/infoScetion/InfoSection';
 import RecipesSection from './Sections/recipesSection/RecipesSection';
 import MainComponents from './Sections/Job/MainComponents';
 
-const ProfileContent = ({
+const EstablishmentContent = ({
   profileInfo,
 }: {
   profileInfo: IGetProfileInfo | null | undefined;
@@ -38,14 +38,13 @@ const ProfileContent = ({
     }
   };
   return (
-    <View style={{width: '100%'}}>
+    <View style={{width: '100%', flex: 1}}>
       <ImageController user={profileInfo} />
 
       <ProfileMenu selected={selected} setSelected={setSelected} />
-      {renderSeciton(selected)}
-      <View style={{height: 40}}></View>
+      <View style={{flex: 1}}>{renderSeciton(selected)}</View>
     </View>
   );
 };
 
-export default ProfileContent;
+export default EstablishmentContent;

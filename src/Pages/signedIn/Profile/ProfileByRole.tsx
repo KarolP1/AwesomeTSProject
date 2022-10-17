@@ -1,6 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import StudentProfile from './StudentProfile';
+import EstablishmentProfile from './EstablishmentProfile';
 
 const ProfileByRole = ({role}: {role: string | undefined}) => {
   switch (role) {
@@ -13,29 +14,13 @@ const ProfileByRole = ({role}: {role: string | undefined}) => {
     case 'Student':
       return <StudentProfile />;
     case 'Local Cook':
-      return (
-        <View>
-          <Text>{role}</Text>
-        </View>
-      );
+      return <EstablishmentProfile />;
     case 'Restaurant':
-      return (
-        <View>
-          <Text>{role}</Text>
-        </View>
-      );
+      return <EstablishmentProfile />;
     case 'Food trucks':
-      return (
-        <View>
-          <Text>{role}</Text>
-        </View>
-      );
+      return <EstablishmentProfile />;
     case 'Shop':
-      return (
-        <View>
-          <Text>{role}</Text>
-        </View>
-      );
+      return <EstablishmentProfile />;
 
     default:
       return (

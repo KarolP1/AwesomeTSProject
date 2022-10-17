@@ -18,7 +18,7 @@ const WorkspaceSection = ({jobs}: {jobs: IJobsGet[]}) => {
       orders: job.orders,
     };
   });
-  var groupedResult = _.groupBy(accepted, jobs => jobs.workPlace._id);
+  var groupedResult = _.groupBy(accepted, jobs => jobs?.workPlace._id);
 
   return (
     <SimpleSection title="Workspace">
@@ -70,7 +70,7 @@ const WorkspaceSection = ({jobs}: {jobs: IJobsGet[]}) => {
           />
         </View>
       ) : (
-        <Text>{accepted[0].workPlace.name}</Text>
+        <Text>{accepted[0]?.workPlace?.name}</Text>
       )}
     </SimpleSection>
   );

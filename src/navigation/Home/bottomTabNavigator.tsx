@@ -2,12 +2,13 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {TabDefaultOptions} from '../../options/stackDefaultOptions';
-import Oreder from '../../Pages/signedIn/Oreder';
+import Oreder from '../../Pages/signedIn/Order/Oreder';
 import Profile from '../../Pages/signedIn/Profile/Profile';
 import BuddyProgram from '../../Pages/signedIn/ComingSoon';
 import RecipesNavigation from '../recipes/recipesNavigation';
 import {HomeTabParamList} from '../types';
 import Tabbar from '../../components/background/Tabbar';
+import {HomepageHomeMenuNavigationContainer} from '../order/initialOrderNavigation';
 
 const BottomTabNavigator = () => {
   const Tab = createBottomTabNavigator<HomeTabParamList>();
@@ -20,7 +21,7 @@ const BottomTabNavigator = () => {
       initialRouteName="Order">
       <Tab.Screen
         name="Order"
-        component={Oreder}
+        component={HomepageHomeMenuNavigationContainer}
         options={{
           tabBarIconStyle: {backgroundColor: 'red'},
           tabBarActiveBackgroundColor: 'rgba(80,80,80,1)',

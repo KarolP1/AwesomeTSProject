@@ -9,10 +9,16 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../../redux/hooks';
 import {cleanUpshoppingListAdd} from '../../../redux/recipes/shoppingList/addShoppingList.slice';
+import {IRecipe} from '../../../redux/recipes/types';
 
 const SingleRecipe = ({route}: RecipesToProfilePageScreenProp) => {
   const dispatch = useAppDispatch();
-  const recipe = route.params.params.recipeGet;
+  //@ts-ignore
+  const recipeParam = route.params.recipeGet;
+  const [recipe, SetRecipe] = useState<IRecipe | null>(null);
+  useEffect(() => {
+    SetRecipe(recipeParam);
+  }, [recipeParam]);
   let ingNumber = 0;
   let ingNumberTips = 0;
   const navigation = useNavigation<RecipesHomePageScreenProp>();

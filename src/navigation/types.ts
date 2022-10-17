@@ -156,7 +156,7 @@ export type RecipesStackParamList = {
       | 'Add Shopping Lists'
       | 'Single ShoppingList Edit'
       | 'Single Recipe';
-    params: {
+    params?: {
       recipeGet: IRecipe | null;
     };
   };

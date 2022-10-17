@@ -14,6 +14,8 @@ import RecipesLists from '../../../recipes/recipesLists';
 import {IRecipe} from '../../../../redux/recipes/types';
 import SimpleSection from '../infoScetion/SimpleSection';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useNavigation} from '@react-navigation/native';
+import {RecipesToProfilePageNavigation} from '../../../../navigation/types';
 
 const RecipesSection = ({}: {}) => {
   const {isLoading, data} = useAppSelector(state => state.myRecipes);
@@ -50,8 +52,16 @@ const RecipesSection = ({}: {}) => {
     dispatch(getMyRecipes({category: dishesType?.cagetoryName}));
   }, [dishesType]);
 
+  const navigation = useNavigation<RecipesToProfilePageNavigation>();
+
   return (
-    <View style={{width: '100%', marginTop: 10}}>
+    <View
+      style={{
+        height: '100%',
+        width: '100%',
+        marginTop: 10,
+        flex: 1,
+      }}>
       <CategoryRecipesSelector
         size={70}
         selected={selected}
@@ -76,80 +86,130 @@ const RecipesSection = ({}: {}) => {
           </View>
         ) : (
           <>
-            <SimpleSection
-              title={'Your best recipes'}
-              isEditModeEnabled={isEditModeEnabledBest}
-              Button={() =>
-                !isEditModeEnabledBest ? (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setIsEditModeEnabledBest(!isEditModeEnabledBest);
-                      setIsEditModeEnabled(false);
-                    }}>
-                    <Image
-                      style={{height: 20, width: 20}}
-                      source={require('../../../../assets/utilityIcons/edit.png')}
-                    />
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setIsEditModeEnabledBest(!isEditModeEnabledBest);
-                    }}>
-                    <Image
-                      style={{
-                        height: 20,
-                        width: 20,
-                        transform: [{rotate: '45deg'}],
-                      }}
-                      source={require('../../../../assets/utilityIcons/add.png')}
-                    />
-                  </TouchableOpacity>
-                )
-              }>
-              <View style={{height: 400}}>
-                <RecipesLists
-                  isEditModeEnabled={isEditModeEnabledBest}
-                  recipes={recipes}
-                  title={null}
-                />
+            {recipes.length > 0 && (
+              <SimpleSection
+                title={'Your best recipes'}
+                isEditModeEnabled={isEditModeEnabledBest}
+                Button={() =>
+                  !isEditModeEnabledBest ? (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setIsEditModeEnabledBest(!isEditModeEnabledBest);
+                        setIsEditModeEnabled(false);
+                      }}>
+                      <Image
+                        style={{height: 20, width: 20}}
+                        source={require('../../../../assets/utilityIcons/edit.png')}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setIsEditModeEnabledBest(!isEditModeEnabledBest);
+                      }}>
+                      <Image
+                        style={{
+                          height: 20,
+                          width: 20,
+                          transform: [{rotate: '45deg'}],
+                        }}
+                        source={require('../../../../assets/utilityIcons/add.png')}
+                      />
+                    </TouchableOpacity>
+                  )
+                }>
+                <View style={{height: 400}}>
+                  <RecipesLists
+                    isEditModeEnabled={isEditModeEnabledBest}
+                    recipes={recipes}
+                    title={null}
+                  />
+                </View>
+              </SimpleSection>
+            )}
+            {recipes.length > 0 && (
+              <SimpleSection
+                title={'Your recipes'}
+                isEditModeEnabled={isEditModeEnabled}
+                Button={() =>
+                  !isEditModeEnabled ? (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setIsEditModeEnabled(!isEditModeEnabled);
+                        setIsEditModeEnabledBest(false);
+                      }}>
+                      <Image
+                        style={{height: 20, width: 20}}
+                        source={require('../../../../assets/utilityIcons/edit.png')}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setIsEditModeEnabled(!isEditModeEnabled);
+                      }}>
+                      <Image
+                        style={{
+                          height: 20,
+                          width: 20,
+                          transform: [{rotate: '45deg'}],
+                        }}
+                        source={require('../../../../assets/utilityIcons/add.png')}
+                      />
+                    </TouchableOpacity>
+                  )
+                }>
+                <View style={{height: 400}}>
+                  <RecipesLists recipes={recipes} title={null} />
+                </View>
+              </SimpleSection>
+            )}
+
+            {recipes.length === 0 ? (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  marginHorizontal: 20,
+                }}>
+                <Text style={{fontSize: 25, color: '#fff'}}>
+                  You have no recipes right now. If you want to add one click
+                  there.
+                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('Recipes Home', {screen: 'Add Recipes'})
+                  }
+                  style={{
+                    backgroundColor: '#EA3651',
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    borderRadius: 5,
+                    marginTop: 20,
+                  }}>
+                  <Text style={{fontSize: 20, color: '#fff'}}>Add recipe</Text>
+                </TouchableOpacity>
               </View>
-            </SimpleSection>
-            <SimpleSection
-              title={'Your recipes'}
-              isEditModeEnabled={isEditModeEnabled}
-              Button={() =>
-                !isEditModeEnabled ? (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setIsEditModeEnabled(!isEditModeEnabled);
-                      setIsEditModeEnabledBest(false);
-                    }}>
-                    <Image
-                      style={{height: 20, width: 20}}
-                      source={require('../../../../assets/utilityIcons/edit.png')}
-                    />
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setIsEditModeEnabled(!isEditModeEnabled);
-                    }}>
-                    <Image
-                      style={{
-                        height: 20,
-                        width: 20,
-                        transform: [{rotate: '45deg'}],
-                      }}
-                      source={require('../../../../assets/utilityIcons/add.png')}
-                    />
-                  </TouchableOpacity>
-                )
-              }>
-              <View style={{height: 400}}>
-                <RecipesLists recipes={recipes} title={null} />
-              </View>
-            </SimpleSection>
+            ) : (
+              <>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('Recipes Home', {screen: 'Add Recipes'})
+                  }
+                  style={{
+                    backgroundColor: '#EA3651',
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    borderRadius: 5,
+                    marginTop: 20,
+                    position: 'absolute',
+                    bottom: 30,
+                    right: 10,
+                  }}>
+                  <Text style={{fontSize: 20, color: '#fff'}}>Add recipe</Text>
+                </TouchableOpacity>
+              </>
+            )}
           </>
         )}
       </View>

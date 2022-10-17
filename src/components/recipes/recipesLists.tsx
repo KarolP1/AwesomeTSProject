@@ -61,7 +61,9 @@ const RecipesLists = ({
                 if (recipe)
                   navigation.navigate('Recipes Home', {
                     screen: 'Single Recipe',
-                    params: {recipeGet: recipe},
+                    params: {
+                      recipeGet: recipe,
+                    },
                   });
               }}>
               <SingleRecipe

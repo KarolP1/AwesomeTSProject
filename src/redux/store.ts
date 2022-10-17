@@ -12,6 +12,7 @@ import addShoppingListSlice from './recipes/shoppingList/addShoppingList.slice';
 import getShoppingListSlice from './recipes/shoppingList/getShoppingList.slice';
 import editShoopingListSlice from './recipes/shoppingList/updateShoppingList.slice';
 import AppSetupSlice from './App/setup.sicle';
+import EstablishmentSlice from './Order/Establishment.slice';
 
 import getProfileSlice from './Profile/profileCore.slice';
 
@@ -29,6 +30,7 @@ export const store = configureStore({
     getShoppinglists: getShoppingListSlice,
     edistShoppingList: editShoopingListSlice,
     profile: getProfileSlice,
+    establishment: EstablishmentSlice,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
