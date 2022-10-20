@@ -16,6 +16,7 @@ const MenuSquareCartContainer = (props: {
   return (
     <TouchableOpacity
       style={styles.container}
+      //@ts-ignore
       onPress={() => navigation.navigate('Home Page', {screen: props.name})}>
       <DropShadow style={styles.MenuSquareCartContainer}>
         <Image

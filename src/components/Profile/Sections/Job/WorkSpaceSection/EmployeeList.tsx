@@ -5,6 +5,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {GetEmployeeList} from '../../../../../redux/Order/tables/employees/GetEmployeeList.thunk';
 import SimpleSection from '../../infoScetion/SimpleSection';
 import SimpleEmployee from '../../../../Jobs/SimpleEmployee';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const EmployeeList = ({establishmentId}: {establishmentId: string}) => {
   const employeThunks = useAppSelector(state => state.employees);
@@ -19,9 +20,11 @@ const EmployeeList = ({establishmentId}: {establishmentId: string}) => {
       {employeThunks.data?.map(list => {
         return (
           <SimpleSection key={list._id} title={list._id + 's'}>
-            {list.employees?.map(employee => (
-              <SimpleEmployee employee={employee} />
-            ))}
+            <ScrollView horizontal>
+              {list.employees?.map(employee => (
+                <SimpleEmployee employee={employee} key={employee._id} />
+              ))}
+            </ScrollView>
           </SimpleSection>
         );
       })}

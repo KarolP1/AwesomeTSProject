@@ -1,5 +1,5 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SimpleSection from '../../infoScetion/SimpleSection';
 import {useFocusEffect} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../../../../redux/hooks';
@@ -8,6 +8,8 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {EmpoyeesToAccept} from '../../../../../redux/Order/tables/employees/getEmployeesToAccept.thunk';
 import {EmpoyeesAccept} from '../../../../../redux/Order/tables/employees/ConfirmNewEmployee.thunk';
 import {EmpoyeesReject} from '../../../../../redux/Order/tables/employees/RejectNewEmployee.thunk';
+import {getMyProfile} from '../../../../../redux/Profile/core/profileCore.thunk';
+import {GetEmployeeList} from '../../../../../redux/Order/tables/employees/GetEmployeeList.thunk';
 
 const EmployeesToAccept = ({establishmentId}: {establishmentId: string}) => {
   const [isEditModeEnabled, setIsEditModeEnabled] = useState(false);
@@ -19,6 +21,10 @@ const EmployeesToAccept = ({establishmentId}: {establishmentId: string}) => {
       dispatch(EmpoyeesToAccept(establishmentId));
     }, []),
   );
+
+  useEffect(() => {
+    dispatch(GetEmployeeList(establishmentId));
+  }, [data]);
   if (data && data?.length > 0)
     return (
       <SimpleSection

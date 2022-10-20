@@ -54,6 +54,15 @@ export interface IWorkspaceEmployeeList {
   endOfWork: string | null;
   isConfirmed: boolean;
   orders: IOrder[];
+  worker: IGetProfileInfo;
+  workerStatus:
+    | 'free'
+    | 'off'
+    | 'driver at restaurant'
+    | 'Order sent to chef'
+    | 'Order Served'
+    | 'Order recived'
+    | 'Order redy to pick up';
   __v: 0;
 }
 
