@@ -6,6 +6,8 @@ import SimpleSection from '../infoScetion/SimpleSection';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import OpenHoursSection from './OpenHours/section';
 import TablesSection from './TablesSection/section';
+import EmployeesToAccept from './WorkSpaceSection/section';
+import EmployeeList from './WorkSpaceSection/EmployeeList';
 
 const EstablishmentJobSection = () => {
   const Establishment = useAppSelector(state => state.establishment);
@@ -30,6 +32,8 @@ const EstablishmentJobSection = () => {
           {errorText && <Text>{errorText}</Text>}
           <OpenHoursSection />
           <TablesSection />
+          <EmployeesToAccept establishmentId={establishment._id} />
+          <EmployeeList establishmentId={establishment._id} />
         </>
       ) : (
         <View>

@@ -23,7 +23,7 @@ const MyProfileSlice = createSlice({
   name: 'myProfile',
   initialState,
   reducers: {
-    cleanUpGetMyProfile: state => {
+    cleanUpJobRequests: state => {
       state.data = initialState.data;
       state.message = initialState.message;
       state.isLoading = initialState.isLoading;
@@ -232,5 +232,5 @@ const MyProfileSlice = createSlice({
 
 export const getMyRecipesError = () =>
   useAppSelector(state => state.profile.error);
-export const {cleanUpGetMyProfile} = MyProfileSlice.actions;
+export const {cleanUpJobRequests} = MyProfileSlice.actions;
 export default MyProfileSlice.reducer;

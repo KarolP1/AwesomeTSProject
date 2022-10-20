@@ -9,7 +9,7 @@ import {getMyProfile} from '../../../../redux/Profile/core/profileCore.thunk';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import SingleItem from '../../ProfileMenu/SingleItem';
 import OnOfButton from './OnOfButton';
-import EstablishmentJobSection from './EstablishmentJobSection';
+import EstablishmentJobSection from './EmployeesJobSection';
 
 const MainComponents = () => {
   const dispatch = useAppDispatch();

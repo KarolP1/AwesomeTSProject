@@ -13,6 +13,8 @@ import getShoppingListSlice from './recipes/shoppingList/getShoppingList.slice';
 import editShoopingListSlice from './recipes/shoppingList/updateShoppingList.slice';
 import AppSetupSlice from './App/setup.sicle';
 import EstablishmentSlice from './Order/Establishment.slice';
+import EmployeesListSlice from './Order/tables/employees/GetEmployeeList.slice';
+import EmployeesAcceptSlice from './Order/tables/employees/establishmentEmployees.slice';
 
 import getProfileSlice from './Profile/profileCore.slice';
 
@@ -31,6 +33,8 @@ export const store = configureStore({
     edistShoppingList: editShoopingListSlice,
     profile: getProfileSlice,
     establishment: EstablishmentSlice,
+    employees: EmployeesListSlice,
+    employeesAccept: EmployeesAcceptSlice,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

@@ -30,7 +30,14 @@ const SimpleSection = ({
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-        <Text style={{color: '#fff', fontWeight: 'bold'}}>{title}</Text>
+        <Text
+          style={{
+            color: '#fff',
+            fontWeight: 'bold',
+            textTransform: 'capitalize',
+          }}>
+          {title}
+        </Text>
         {Button && <Button />}
         {balance && currency && (
           <Text style={{color: '#fff', fontWeight: '900'}}>

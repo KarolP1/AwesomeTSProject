@@ -12,7 +12,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {deleteJobRequests} from '../../redux/Profile/Jobs/deleteJob.thunk';
 
 const StandardJobDisplaySection = ({jobs}: {jobs: IJobsGet[] | undefined}) => {
-  const user = useAppSelector(state => state.profile);
+  const {error} = useAppSelector(state => state.profile);
   const dispatch = useAppDispatch();
   const [jobRequestForm, setJobRequestForm] = useState({
     workPlace: '',
@@ -51,6 +51,19 @@ const StandardJobDisplaySection = ({jobs}: {jobs: IJobsGet[] | undefined}) => {
       dispatch(getJobRequests());
     }, []),
   );
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert(error, undefined, [
+        {
+          text: "I've got this",
+          onPress: () => {
+            dispatch(getJobRequests());
+          },
+        },
+      ]);
+    }
+  }, [error]);
 
   return (
     <View>
