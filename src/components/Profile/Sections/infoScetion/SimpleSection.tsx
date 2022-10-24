@@ -7,6 +7,7 @@ const SimpleSection = ({
   balance,
   currency,
   Button,
+  ExtraButton,
   isEditModeEnabled,
 }: {
   children: React.ReactNode;
@@ -14,6 +15,7 @@ const SimpleSection = ({
   balance?: number;
   currency?: string;
   Button?: () => JSX.Element;
+  ExtraButton?: () => JSX.Element | null;
   isEditModeEnabled?: boolean;
 }) => {
   return (
@@ -38,12 +40,15 @@ const SimpleSection = ({
           }}>
           {title}
         </Text>
-        {Button && <Button />}
-        {balance && currency && (
-          <Text style={{color: '#fff', fontWeight: '900'}}>
-            {balance.toString()} {currency}
-          </Text>
-        )}
+        <View style={{flexDirection: 'row'}}>
+          {ExtraButton && <ExtraButton />}
+          {Button && <Button />}
+          {balance && currency && (
+            <Text style={{color: '#fff', fontWeight: '900'}}>
+              {balance.toString()} {currency}
+            </Text>
+          )}
+        </View>
       </View>
       <View>{children}</View>
     </View>

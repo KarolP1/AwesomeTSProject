@@ -1,3 +1,4 @@
+import {EditEstablishmentMenuCategories} from './Establishment.menycategory.thunk';
 import {IEstablishment} from './../Profile/types';
 import {useAppSelector} from './../hooks';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
@@ -18,7 +19,7 @@ const MyEstablishmentSlice = createSlice({
   name: 'myProfile',
   initialState,
   reducers: {
-    cleanUpGetMyProfile: state => {
+    cleanUpEstablishment: state => {
       state.data = initialState.data;
       state.message = initialState.message;
       state.isLoading = initialState.isLoading;
@@ -107,10 +108,42 @@ const MyEstablishmentSlice = createSlice({
       state.isLoading = true;
     });
     ////////////////////////////////////////////////////////////////
+    builder.addCase(
+      EditEstablishmentMenuCategories.rejected,
+      (state, {payload}) => {
+        state.error = payload;
+        state.succes = false;
+
+        state.isLoading = false;
+      },
+    );
+    builder.addCase(
+      EditEstablishmentMenuCategories.fulfilled,
+      (state, {payload}: PayloadAction<IEstablishment | any>) => {
+        const returnDataId = payload.data._id;
+        const dataFiltered = state.data?.filter(menu => {
+          if (menu._id === returnDataId) return payload.data;
+          else return menu;
+        });
+
+        state.error = null;
+        state.succes = true;
+        if (state.data) state.data = dataFiltered;
+        state.isLoading = false;
+        state.message = payload.message;
+      },
+    );
+    builder.addCase(
+      EditEstablishmentMenuCategories.pending,
+      (state, {payload}) => {
+        state.isLoading = true;
+      },
+    );
+    ////////////////////////////////////////////////////////////////
   },
 });
 
 export const getMyRecipesError = () =>
   useAppSelector(state => state.establishment.error);
-export const {cleanUpGetMyProfile} = MyEstablishmentSlice.actions;
+export const {cleanUpEstablishment} = MyEstablishmentSlice.actions;
 export default MyEstablishmentSlice.reducer;

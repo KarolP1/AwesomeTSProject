@@ -17,7 +17,6 @@ export const addNewJobRequest = createAsyncThunk<
           headers: {Authorization: 'Bearer ' + tokens?.access_token},
         })
         .then(response => {
-          console.log(response.data.data);
           return response.data;
         })
         .catch(error => {

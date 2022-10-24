@@ -21,9 +21,6 @@ export const addMyProfileDocumentImage = createAsyncThunk<
         },
       })
       .then(response => {
-        console.log();
-        console.log(response.data.data);
-        console.log();
         return response.data;
       })
       .catch(error => {

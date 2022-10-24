@@ -31,7 +31,6 @@ const RecipeAddToShoppingList = ({route}: RecipeAddShoppingListScreenProps) => {
   useEffect(() => {
     if (succes === true) {
       dispatch(cleanUpshoppingListAdd());
-      console.log('should be clean up');
       navigation.navigate('Shopping Lists');
     }
   }, [succes]);

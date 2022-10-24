@@ -8,6 +8,7 @@ import OpenHoursSection from './OpenHours/section';
 import TablesSection from './TablesSection/section';
 import EmployeesToAccept from './WorkSpaceSection/section';
 import EmployeeList from './WorkSpaceSection/EmployeeList';
+import MenuListUpdateAndGet from './MenuListUpdateAndGet/section';
 
 const EstablishmentJobSection = () => {
   const Establishment = useAppSelector(state => state.establishment);
@@ -34,6 +35,7 @@ const EstablishmentJobSection = () => {
           <TablesSection />
           <EmployeesToAccept establishmentId={establishment._id} />
           <EmployeeList establishmentId={establishment._id} />
+          <MenuListUpdateAndGet establishment={establishment} />
         </>
       ) : (
         <View>

@@ -14,7 +14,7 @@ const HugeMenuRecipes = () => {
           textAlign: 'left',
         }}>
         We <Text style={{color: '#EA3651'}}>fix</Text> you up in a
-        <Text style={{color: '#474641'}}> blink</Text> of the eye.
+        <Text style={{color: '#474641'}}> blink</Text> of an eye.
       </Text>
       <View style={styles.main}>
         <View style={styles.rowContainer}>

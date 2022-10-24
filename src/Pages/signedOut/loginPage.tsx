@@ -39,7 +39,6 @@ const LoginPage = () => {
           }
         });
       } catch (error) {
-        console.log("Keychain couldn't be accessed!", error);
         dispatch(setAuthStatus(false));
         dispatch(cleanUpLogin());
       }

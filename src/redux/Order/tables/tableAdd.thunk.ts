@@ -10,7 +10,6 @@ export const AddTableToEstablishment = createAsyncThunk<
 >('Establishment/table/post', async (state, {rejectWithValue}) => {
   try {
     const tokens = await getTokensKeychain();
-    console.log(state.table);
     if (
       state.table.numberOfPlaces === '' ||
       state.table.numberOfTables == '' ||
@@ -31,7 +30,6 @@ export const AddTableToEstablishment = createAsyncThunk<
         return response.data;
       })
       .catch(error => {
-        console.log(error.response.data);
         return rejectWithValue(error.response.data.message);
       });
 

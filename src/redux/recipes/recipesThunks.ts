@@ -20,7 +20,6 @@ export const getAllRecipes = createAsyncThunk<
 
     const tokenAuth = `Bearer ${token?.access_token}`;
     if (state) {
-      console.log('running get Recipes by cuisine and ');
       const {category, cuisine} = state;
       let QueryString = '?';
       if (category) {
@@ -60,7 +59,6 @@ export const getAllRecipes = createAsyncThunk<
       });
     return res;
   } catch (error: any) {
-    console.log(error);
     return rejectWithValue({
       message: error,
       error: error,
@@ -90,7 +88,6 @@ export const getAllRecipesByTag = createAsyncThunk<
       });
     return res;
   } catch (error: any) {
-    console.log(error);
     return rejectWithValue({
       message: error,
       error: 'login failed',
@@ -119,7 +116,6 @@ export const getAllRecipesByCategory = createAsyncThunk<
       });
     return res;
   } catch (error: any) {
-    console.log(error);
     return rejectWithValue({
       message: error,
       error: 'login failed',
@@ -148,7 +144,6 @@ export const getAllRecipesByCuisine = createAsyncThunk<
       });
     return res;
   } catch (error: any) {
-    console.log(error);
     return rejectWithValue({
       message: error,
       error: 'login failed',
@@ -177,7 +172,6 @@ export const deleteRecipe = createAsyncThunk<IResponseRecipeDelete, string>(
         });
       return res;
     } catch (error: any) {
-      console.log(error);
       return rejectWithValue({
         message: error,
         error: 'login failed',

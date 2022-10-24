@@ -118,9 +118,7 @@ const initialState: IRecipe = {
 const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<RecipesHomePageScreenProp>();
-  console.log(route.params.params?.recipeGet);
   const recipe = route.params.params?.recipeGet;
-  console.log({recipe});
 
   const [recipeAdd, setRecipeAdd] = useState<IRecipe>(
     recipe ? recipe : initialState,

@@ -63,7 +63,6 @@ const MainComponents = () => {
           <StandardJobDisplaySection jobs={jobs} />
           {jobs.length > 0 && <WorkspaceSection jobs={jobs} />}
           <TipDisplaySection balance={123.32} currency="pln" />
-          <Text>standatd</Text>
         </>
       ) : (
         <EstablishmentJobSection />

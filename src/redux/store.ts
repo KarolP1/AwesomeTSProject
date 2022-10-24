@@ -15,6 +15,7 @@ import AppSetupSlice from './App/setup.sicle';
 import EstablishmentSlice from './Order/Establishment.slice';
 import EmployeesListSlice from './Order/tables/employees/GetEmployeeList.slice';
 import EmployeesAcceptSlice from './Order/tables/employees/establishmentEmployees.slice';
+import MyEstabishmentMenus from './Profile/establishmentMenus/EstablishmentMenu.slice';
 
 import getProfileSlice from './Profile/profileCore.slice';
 
@@ -35,6 +36,7 @@ export const store = configureStore({
     establishment: EstablishmentSlice,
     employees: EmployeesListSlice,
     employeesAccept: EmployeesAcceptSlice,
+    MyEstabishmentMenus: MyEstabishmentMenus,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

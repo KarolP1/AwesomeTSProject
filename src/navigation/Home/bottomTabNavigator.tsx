@@ -9,6 +9,7 @@ import RecipesNavigation from '../recipes/recipesNavigation';
 import {HomeTabParamList} from '../types';
 import Tabbar from '../../components/background/Tabbar';
 import {HomepageHomeMenuNavigationContainer} from '../order/initialOrderNavigation';
+import {ProfileNavigationContainer} from '../Profile/ProfileRootNavigator';
 
 const BottomTabNavigator = () => {
   const Tab = createBottomTabNavigator<HomeTabParamList>();
@@ -70,7 +71,7 @@ const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={ProfileNavigationContainer}
         options={{
           tabBarIconStyle: {backgroundColor: 'red'},
           tabBarActiveBackgroundColor: 'rgba(80,80,80,1)',

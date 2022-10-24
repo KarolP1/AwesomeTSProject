@@ -5,7 +5,6 @@ import {instance} from '../../../redux/interceptors';
 import {useFocusEffect} from '@react-navigation/native';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import ProfileByRole from './ProfileByRole';
-import {cleanUpGetMyProfile} from '../../../redux/Profile/profileCore.slice';
 import {logout} from '../../../utils/localStorage';
 import {getMyProfile} from '../../../redux/Profile/core/profileCore.thunk';
 
@@ -23,7 +22,6 @@ const Profile = () => {
   useFocusEffect(
     React.useCallback(() => {
       dispatch(getMyProfile());
-      // logout();
     }, []),
   );
   return (

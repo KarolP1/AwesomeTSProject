@@ -6,6 +6,7 @@ import {StackDefaultOptions} from '../../options/stackDefaultOptions';
 import HugeMenu from '../../Pages/signedIn/menu/HugeMenu';
 import HomeRecipesNavigation from '../recipes/HomeRecipesNavigation.Stack';
 import Oreder from '../../Pages/signedIn/Order/Oreder';
+import {ProfileNavigationContainer} from '../Profile/ProfileRootNavigator';
 
 const HomepageHomeNavigationContainer = () => {
   const Stack = createNativeStackNavigator<HomeTabParamList>();
@@ -15,7 +16,7 @@ const HomepageHomeNavigationContainer = () => {
       initialRouteName="Order">
       <Stack.Screen name="Order" component={Oreder} />
       <Stack.Screen name="Recipes" component={HomeRecipesNavigation} />
-      <Stack.Screen name="Profile" component={HomeRecipesNavigation} />
+      <Stack.Screen name="Profile" component={ProfileNavigationContainer} />
       <Stack.Screen name="Coming soon" component={HomeRecipesNavigation} />
     </Stack.Navigator>
   );

@@ -15,7 +15,6 @@ export const GetEmployeeList = createAsyncThunk<
         headers: {Authorization: 'Bearer ' + tokens?.access_token},
       })
       .then(response => {
-        console.log(response.data);
         return response.data;
       })
       .catch(error => {

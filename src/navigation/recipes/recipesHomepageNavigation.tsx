@@ -18,7 +18,9 @@ const RecipesHomeNavigation = () => {
       screenOptions={StackDefaultOptions}
       initialRouteName="Find Recipes">
       <Stack.Screen name="Find Recipes" component={RecipesFind} />
+      {/*@ts-ignore**/}
       <Stack.Screen name="Edit Recipe" component={EditRecipes} />
+      {/*@ts-ignore**/}
       <Stack.Screen name="Single Recipe" component={SingleRecipe} />
       <Stack.Screen name="My Recipes" component={Recipesmy} />
       <Stack.Screen name="Add Recipes" component={Recipesadd} />

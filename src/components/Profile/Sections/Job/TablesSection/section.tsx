@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Alert, Image, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SimpleSection from '../../infoScetion/SimpleSection';
 import DropShadow from 'react-native-drop-shadow';
@@ -7,6 +7,7 @@ import {ITable} from '../../../../../redux/Profile/types';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {AddTableToEstablishment} from '../../../../../redux/Order/tables/tableAdd.thunk';
 import {DeleteTableEstablishment} from '../../../../../redux/Order/tables/tableDelete.thunk';
+import {cleanUpEstablishment} from '../../../../../redux/Order/Establishment.slice';
 
 const TablesSection = () => {
   const initialNewTable = {
@@ -23,6 +24,13 @@ const TablesSection = () => {
     if (data && data[0]) setTableState(data[0].tables);
   }, [data]);
   const [isEditModeEnabled, setIsEditModeEnabled] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (error)
+      Alert.alert('Something went wrong', error, [
+        {onPress: () => dispatch(cleanUpEstablishment())},
+      ]);
+  }, [error]);
 
   return (
     <SimpleSection
@@ -51,7 +59,6 @@ const TablesSection = () => {
           </TouchableOpacity>
         )
       }>
-      {error && <Text>{error.response.data.message}</Text>}
       {isEditModeEnabled && (
         <>
           <DropShadow
