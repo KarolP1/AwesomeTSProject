@@ -50,7 +50,6 @@ export interface ICounter {
   numberOfShares: number;
   whoLike: string[];
   whoShare: string[];
-  __v: 0;
 }
 
 export interface IIngredient {

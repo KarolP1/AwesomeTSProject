@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {Image, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {IGetProfileInfo} from '../../redux/Profile/types';
 import ImageController from '../../controllers/recipe/ImageController';
@@ -10,6 +10,8 @@ import RecipesSection from './Sections/recipesSection/RecipesSection';
 import MainComponents from './Sections/Job/MainComponents';
 import {useFocusEffect} from '@react-navigation/native';
 import {getMyProfile} from '../../redux/Profile/core/profileCore.thunk';
+import SimpleSection from './Sections/infoScetion/SimpleSection';
+import {ICounter} from '../../redux/recipes/types';
 
 const EstablishmentContent = ({
   profileInfo,
@@ -46,14 +48,103 @@ const EstablishmentContent = ({
         <></>;
     }
   };
+
   return (
     <View style={{width: '100%', flex: 1}}>
       <ImageController user={profileInfo} />
-
       <ProfileMenu selected={selected} setSelected={setSelected} />
+
       <View style={{flex: 1}}>{renderSeciton(selected)}</View>
     </View>
   );
 };
 
 export default EstablishmentContent;
+export const Counters = ({counter}: {counter: ICounter}) => {
+  return (
+    <SimpleSection title={'Counters of your establishment'}>
+      <View
+        style={{
+          flexDirection: 'row',
+          paddingBottom: 10,
+          paddingHorizontal: 10,
+        }}>
+        <View
+          style={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            margin: 2,
+            backgroundColor: 'rgba(255,255,255,0.2)',
+            flexDirection: 'row',
+            flex: 1,
+            borderRadius: 5,
+            paddingVertical: 5,
+            paddingHorizontal: 10,
+          }}>
+          <Image
+            style={{width: 20, height: 20}}
+            source={require('../../assets/utilityIcons/heart.png')}
+          />
+          <Text
+            style={{
+              color: '#fff',
+              fontFamily: 'Handlee-Regular',
+              fontSize: 15,
+            }}>
+            {counter?.numberOfLikes}
+          </Text>
+        </View>
+        <View
+          style={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            margin: 2,
+            backgroundColor: 'rgba(255,255,255,0.2)',
+            flexDirection: 'row',
+            flex: 1,
+            borderRadius: 5,
+            paddingVertical: 5,
+            paddingHorizontal: 10,
+          }}>
+          <Image
+            style={{width: 20, height: 20}}
+            source={require('../../assets/utilityIcons/share.png')}
+          />
+          <Text
+            style={{
+              color: '#fff',
+              fontFamily: 'Handlee-Regular',
+              fontSize: 15,
+            }}>
+            {counter?.numberOfShares}
+          </Text>
+        </View>
+        <View
+          style={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            margin: 2,
+            backgroundColor: 'rgba(255,255,255,0.2)',
+            flexDirection: 'row',
+            flex: 1,
+            borderRadius: 5,
+            paddingVertical: 5,
+            paddingHorizontal: 10,
+          }}>
+          <Image
+            style={{width: 20, height: 20}}
+            source={require('../../assets/utilityIcons/click.png')}
+          />
+          <Text
+            style={{
+              color: '#fff',
+              fontFamily: 'Handlee-Regular',
+              fontSize: 15,
+            }}>
+            {counter?.numberOfClicks}
+          </Text>
+        </View>
+      </View>
+    </SimpleSection>
+  );
+};

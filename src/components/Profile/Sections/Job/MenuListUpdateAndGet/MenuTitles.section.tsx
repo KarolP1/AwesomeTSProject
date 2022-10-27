@@ -67,7 +67,7 @@ const MenuTitles = ({
       Alert.alert('Problem', error, [
         {
           onPress: () => {
-            dispatch(cleanUpMyEstablishmentMenusGet());
+            dispatch(getMyEstabishmentMenus(establishmentId));
           },
         },
       ]);

@@ -1,32 +1,107 @@
-import {StyleSheet, Text, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useState} from 'react';
-import {allCategoriesRecipe} from './allCategories';
+import {allCategoriesRecipe, category} from './allCategories';
 import SingleCategory from './SingleCategory';
+import DropShadow from 'react-native-drop-shadow';
+import InsetShadow from 'react-native-inset-shadow';
 
 const CategoryRecipesSelector = ({
   selected,
   setSelected,
   size,
+  categoriesProp,
 }: {
-  selected: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null;
+  selected: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | null;
   setSelected: React.Dispatch<
-    React.SetStateAction<0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null>
+    React.SetStateAction<0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | null>
   >;
   size?: number;
+  categoriesProp?: category[];
 }) => {
-  const categories = allCategoriesRecipe();
+  const categories = categoriesProp ? categoriesProp : allCategoriesRecipe();
   return (
-    <ScrollView
-      horizontal
-      contentContainerStyle={{height: size ? size : 100}}
-      style={{maxHeight: 100}}>
+    <ScrollView horizontal style={{maxHeight: 110}}>
       {categories.map(category => (
-        <SingleCategory
+        <TouchableOpacity
+          activeOpacity={1}
           key={category.index}
-          singleCategory={category}
-          setSelected={setSelected}
-          isSelected={selected === category.index}
-        />
+          //   disabled={isEditModeEnabled}
+          onPress={() => {
+            setSelected(category.index);
+          }}>
+          {selected !== category.index ? (
+            <DropShadow
+              style={{
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: -2,
+                  height: 4,
+                },
+                shadowOpacity: 0.2,
+                shadowRadius: 15,
+                elevation: 1,
+                borderRadius: 10,
+                padding: 10,
+                overflow: 'hidden',
+                aspectRatio: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'rgba(0,0,0,0.05)',
+                marginHorizontal: 5,
+                position: 'relative',
+                height: 100,
+                width: 100,
+              }}>
+              <Image
+                style={{width: 40, height: 40, alignSelf: 'center'}}
+                source={category.categoryIcon}
+              />
+              <Text style={{fontSize: 12, marginTop: 10}}>
+                {category.cagetoryName}
+              </Text>
+            </DropShadow>
+          ) : (
+            <>
+              <InsetShadow
+                key={category.index}
+                containerStyle={{
+                  width: 100,
+                  height: 100,
+                  shadowColor: 'rgba(0,0,0,.1)',
+                  shadowOffset: {
+                    width: -2,
+                    height: 4,
+                  },
+                  shadowOpacity: 1,
+                  shadowRadius: 15,
+                  elevation: 1,
+                  borderRadius: 10,
+                  padding: 10,
+                  overflow: 'hidden',
+                  aspectRatio: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: 'rgba(0,0,0,0.01)',
+                  marginHorizontal: 5,
+                  position: 'relative',
+                }}>
+                <Image
+                  style={{width: 40, height: 40, alignSelf: 'center'}}
+                  source={category.categoryIcon}
+                />
+                <Text style={{fontSize: 12, marginTop: 10}}>
+                  {category.cagetoryName}
+                </Text>
+              </InsetShadow>
+            </>
+          )}
+        </TouchableOpacity>
       ))}
     </ScrollView>
   );

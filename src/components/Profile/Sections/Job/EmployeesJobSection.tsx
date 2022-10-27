@@ -2,7 +2,6 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useAppSelector} from '../../../../redux/hooks';
 import {IEstablishment} from '../../../../redux/Profile/types';
-import SimpleSection from '../infoScetion/SimpleSection';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import OpenHoursSection from './OpenHours/section';
 import TablesSection from './TablesSection/section';

@@ -3,9 +3,13 @@ import {useAppSelector} from '../../hooks';
 import {
   deleteMyEstabishmentMenus,
   getMyEstabishmentMenus,
-  PostMyEstabishmentMenuItem,
   PostMyEstabishmentMenus,
 } from './EstablishmentMenu.thunk';
+import {
+  PostMyEstabishmentMenuItem,
+  EditMyEstabishmentMenuItem,
+  DeleteMyEstabishmentMenuItem,
+} from './establishmentMenuItem/addEstablishmentMenuItem';
 import {IResponseGetMyEstablishmentMenus} from './types';
 
 const initialState: IResponseGetMyEstablishmentMenus = {
@@ -102,13 +106,9 @@ const MyEstabishmentMenus = createSlice({
     builder.addCase(
       PostMyEstabishmentMenuItem.fulfilled,
       (state, {payload}: AnyAction) => {
-        const updatedData = state.data?.map(menu => {
-          if (menu._id === payload.data._id) return payload.data;
-          else return menu;
-        });
         state.error = null;
         state.succes = true;
-        state.data = updatedData;
+        state.data = payload.data;
         state.isLoading = false;
         state.message = payload.message;
       },
@@ -116,6 +116,54 @@ const MyEstabishmentMenus = createSlice({
     builder.addCase(PostMyEstabishmentMenuItem.pending, (state, {payload}) => {
       state.isLoading = true;
     });
+    //#endregion
+    //#region get profile
+    builder.addCase(EditMyEstabishmentMenuItem.rejected, (state, {payload}) => {
+      state.error = payload;
+      state.succes = false;
+
+      state.isLoading = false;
+    });
+    builder.addCase(
+      EditMyEstabishmentMenuItem.fulfilled,
+      (state, {payload}: AnyAction) => {
+        state.error = null;
+        state.succes = true;
+        state.data = payload.data;
+        state.isLoading = false;
+        state.message = payload.message;
+      },
+    );
+    builder.addCase(EditMyEstabishmentMenuItem.pending, (state, {payload}) => {
+      state.isLoading = true;
+    });
+    //#endregion
+    //#region get profile
+    builder.addCase(
+      DeleteMyEstabishmentMenuItem.rejected,
+      (state, {payload}) => {
+        state.error = payload;
+        state.succes = false;
+
+        state.isLoading = false;
+      },
+    );
+    builder.addCase(
+      DeleteMyEstabishmentMenuItem.fulfilled,
+      (state, {payload}: AnyAction) => {
+        state.error = null;
+        state.succes = true;
+        state.data = payload.data;
+        state.isLoading = false;
+        state.message = payload.message;
+      },
+    );
+    builder.addCase(
+      DeleteMyEstabishmentMenuItem.pending,
+      (state, {payload}) => {
+        state.isLoading = true;
+      },
+    );
     //#endregion
   },
 });

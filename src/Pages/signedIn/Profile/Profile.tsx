@@ -7,17 +7,12 @@ import LoggedInBackground from '../../../components/background/loggedInBackgroun
 import ProfileByRole from './ProfileByRole';
 import {logout} from '../../../utils/localStorage';
 import {getMyProfile} from '../../../redux/Profile/core/profileCore.thunk';
+import {getMyEstabishmentMenus} from '../../../redux/Profile/establishmentMenus/EstablishmentMenu.thunk';
 
 const Profile = () => {
   const {data, error} = useAppSelector(state => state.profile);
   const dispatch = useAppDispatch();
   const userRole = data?.userRole;
-
-  useEffect(() => {
-    if (error) {
-      console.log({error});
-    }
-  }, [error]);
 
   useFocusEffect(
     React.useCallback(() => {

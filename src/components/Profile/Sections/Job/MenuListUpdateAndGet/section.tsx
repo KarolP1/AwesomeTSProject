@@ -1,18 +1,19 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import React, {useState} from 'react';
 import {IEstablishment} from '../../../../../redux/Profile/types';
-import SimpleSection from '../../infoScetion/SimpleSection';
-import {ScrollView} from 'react-native-gesture-handler';
 import MenuTitles from './MenuTitles.section';
 import MenuItemsListSection from './MenuItemsListSection';
 import MenuCatoegryListSection from './MenuCatoegryListSection';
-
+import {useAppDispatch} from '../../../../../redux/hooks';
 const MenuListUpdateAndGet = ({
   establishment,
 }: {
   establishment: IEstablishment;
 }) => {
+  const dispatch = useAppDispatch();
+
   const [selected, setSelected] = useState<string | null>(null);
+
   return (
     <>
       <MenuTitles

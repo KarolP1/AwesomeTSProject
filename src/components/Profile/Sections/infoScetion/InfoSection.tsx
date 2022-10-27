@@ -9,6 +9,8 @@ import {IEstablishment, IGetProfileInfo} from '../../../../redux/Profile/types';
 import {useFocusEffect} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../../../../redux/hooks';
 import {GetEstablishment} from '../../../../redux/Order/order.thunk';
+import {Counters} from '../../EstablishmentContent';
+import {ICounter} from '../../../../redux/recipes/types';
 
 const InfoSection = ({
   profileInfo,
@@ -34,8 +36,13 @@ const InfoSection = ({
     }
   }, [estabData]);
 
+  const [counter, setCounter] = useState<ICounter | undefined>();
+  useEffect(() => {
+    if (establishment) setCounter(establishment.counter[0]);
+  });
   return (
     <>
+      {counter && <Counters counter={counter} />}
       <BalanceSection />
       <UserDataSection info={profileInfo} />
       <UserDataAdderssSection info={profileInfo?.address[0]} />

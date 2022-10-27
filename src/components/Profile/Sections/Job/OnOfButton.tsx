@@ -8,13 +8,23 @@ const OnOfButton = ({
   title,
   selected,
   setSelected,
+  height,
+  width,
 }: {
   title: string;
   selected: boolean;
   setSelected: () => void;
+  height?: number;
+  width?: number | string;
 }) => {
   return (
-    <View style={{flex: 1, height: '100%', width: '100%'}}>
+    <View
+      style={{
+        flex: 1,
+        height: height ? height : '100%',
+        maxHeight: height ? height : '100%',
+        width: width ? width : '100%',
+      }}>
       {!selected ? (
         <TouchableOpacity onPress={setSelected} style={styles.buttonStyle}>
           <Shadow

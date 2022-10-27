@@ -70,6 +70,7 @@ const TextInputProfile = ({
         shadowRadius: 30.84,
 
         elevation: 5,
+        width: '100%',
       }}>
       <View
         style={{

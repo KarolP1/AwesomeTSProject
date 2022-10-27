@@ -141,5 +141,13 @@ export interface IEstablishment {
   tables: ITable[];
   reservations: [];
   image: [];
+  counter: {
+    _id: string;
+    numberOfClicks: number;
+    numberOfLikes: number;
+    numberOfShares: number;
+    whoLike: string[];
+    whoShare: string[];
+  }[];
   __v: 0;
 }

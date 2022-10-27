@@ -14,7 +14,6 @@ export const EditEstablishmentMenuCategories = createAsyncThunk<
 >('Establishment/openHours/edit}', async (state, {rejectWithValue}) => {
   try {
     const tokens = await getTokensKeychain();
-    console.log({state});
     const res = await instance
       .put(
         `/order/establishment/menu/edit/categories/${state.menuId}`,
