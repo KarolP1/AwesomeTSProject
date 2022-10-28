@@ -18,6 +18,9 @@ import {
   RootNavigationWithRecipeProp,
 } from '../../navigation/rootNavigation.navigation';
 import {RecipesToProfilePageNavigation} from '../../navigation/types';
+import {WEBCONST} from '../../constants/webConstants';
+import recipes from '../../redux/recipes';
+import {Counters} from '../Profile/EstablishmentContent';
 
 const SingleRecipe = ({
   Recipe,
@@ -80,13 +83,90 @@ const SingleRecipe = ({
         )}
       </View>
       <View style={styles.image}>
-        <View style={{marginTop: 10, marginLeft: 10}}>
-          <SmallIconBG>
-            <Text>{Recipe.counter.numberOfLikes}</Text>
-          </SmallIconBG>
-          <SmallIconBG>
-            <Text>{Recipe.counter.numberOfShares}</Text>
-          </SmallIconBG>
+        {Recipe.image && (
+          <Image
+            style={{height: '100%', width: '100%', position: 'absolute'}}
+            source={{uri: `${WEBCONST().APIURL}${Recipe.image.path}`}}
+          />
+        )}
+        <View
+          style={{
+            paddingBottom: 10,
+            paddingHorizontal: 10,
+            maxWidth: '30%',
+          }}>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              margin: 2,
+              backgroundColor: 'rgba(0,0,0,0.6)',
+              flexDirection: 'row',
+              borderRadius: 5,
+              paddingVertical: 5,
+              paddingHorizontal: 10,
+            }}>
+            <Image
+              style={{width: 15, height: 15}}
+              source={require('../../assets/utilityIcons/heart.png')}
+            />
+            <Text
+              style={{
+                color: '#fff',
+                fontFamily: 'Handlee-Regular',
+                fontSize: 15,
+              }}>
+              {Recipe.counter?.numberOfLikes}
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              margin: 2,
+              backgroundColor: 'rgba(0,0,0,0.6)',
+              flexDirection: 'row',
+              borderRadius: 5,
+              paddingVertical: 5,
+              paddingHorizontal: 10,
+            }}>
+            <Image
+              style={{width: 15, height: 15}}
+              source={require('../../assets/utilityIcons/share.png')}
+            />
+            <Text
+              style={{
+                color: '#fff',
+                fontFamily: 'Handlee-Regular',
+                fontSize: 15,
+              }}>
+              {Recipe.counter?.numberOfShares}
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              margin: 2,
+              backgroundColor: 'rgba(0,0,0,0.6)',
+              flexDirection: 'row',
+              borderRadius: 5,
+              paddingVertical: 5,
+              paddingHorizontal: 10,
+            }}>
+            <Image
+              style={{width: 15, height: 15}}
+              source={require('../../assets/utilityIcons/click.png')}
+            />
+            <Text
+              style={{
+                color: '#fff',
+                fontFamily: 'Handlee-Regular',
+                fontSize: 15,
+              }}>
+              {Recipe.counter?.numberOfClicks}
+            </Text>
+          </View>
         </View>
       </View>
       <Text style={styles.title}>{Recipe.title}</Text>
@@ -200,6 +280,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginBottom: 20,
     height: '30%',
+    position: 'relative',
   },
   title: {
     width: '100%',

@@ -34,14 +34,16 @@ const AddImage = ({
         borderRadius: 35,
         padding: 20,
       }}>
-      {image && image.assets ? (
+      {image && image.assets && (
         <Image
-          style={{flex: 1, width: '100%'}}
+          style={{flex: 1, width: '100%', borderRadius: 25}}
           source={{uri: image?.assets[0].uri}}
         />
-      ) : (
+      )}
+      {}
+      {!image && (
         <Image
-          style={{flex: 1, width: '100%'}}
+          style={{flex: 1, width: '100%', borderRadius: 50}}
           source={require('../../assets/utilityIcons/addImage.png')}
         />
       )}

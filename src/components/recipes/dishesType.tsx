@@ -18,7 +18,7 @@ const DishesType = ({dishType}: {dishType: string}) => {
             source={require('../../static/icons/dishesType/salad.png')}
           />
         );
-      case 'Bakeris':
+      case 'Bakeries':
         return (
           <Image
             style={styles.imageIcon}

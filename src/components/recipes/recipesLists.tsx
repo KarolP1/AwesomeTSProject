@@ -56,7 +56,6 @@ const RecipesLists = ({
                 marginVertical: 10,
                 borderRadius: 15,
               }}
-              //TODO:fix unknown undefined issue
               onPress={() => {
                 if (recipe)
                   navigation.navigate('Recipes Home', {

@@ -1,4 +1,11 @@
-import {Text, View, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  Platform,
+} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
@@ -13,7 +20,10 @@ import ManualController from './ManualController';
 import IngredientController from './IngredientController';
 import TagController from '../../../components/recipes/TagController';
 import {cleanUpAddRecipe} from '../../../redux/recipes/addRecipe/addRecipe';
-import {addRecipeThunk as addRecipe} from '../../../redux/recipes/addRecipe/addRecipe.thunk';
+import {
+  addRecipeMainImageThunk,
+  addRecipeThunk as addRecipe,
+} from '../../../redux/recipes/addRecipe/addRecipe.thunk';
 import {allCategoriesRecipe} from '../../../components/categorySelector/allCategories';
 import {instance} from '../../../redux/interceptors';
 import AdvancementButton from '../../../components/recipes/AdvancementButton';
@@ -22,6 +32,7 @@ import {RecipesHomePageScreenProp} from '../../../navigation/types';
 import {checkStringNull} from '../../../redux/recipes/addRecipe/functions';
 import PillButton from '../../../components/recipes/PillButton';
 import uuid from 'react-native-uuid';
+import {createFormData} from '../../../utils/photos/handleFormdata';
 
 //#region initial
 export interface IIngredientList {
@@ -117,7 +128,6 @@ const Recipesadd = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<RecipesHomePageScreenProp>();
 
-  const {lastRecipeAdded} = useAppSelector(state => state.addRecipe);
   useEffect(() => {
     console.log(lastRecipeAdded);
   }, []);
@@ -195,7 +205,9 @@ const Recipesadd = () => {
   }, [isEstablishment]);
   //#endregion
 
-  const {succes, error} = useAppSelector(state => state.addRecipe);
+  const {succes, error, lastRecipeAdded} = useAppSelector(
+    state => state.addRecipe,
+  );
   useEffect(() => {
     if (error)
       Alert.alert('Problem with validation', JSON.stringify(error), [
@@ -214,9 +226,15 @@ const Recipesadd = () => {
       dispatch(cleanUpAddRecipe());
     }
     if (succes === true && image && lastRecipeAdded) {
-      // navigation.navigate('My Recipes');
       console.log('hello');
       //TODO: add image dispatch
+      if (image.assets && image.assets[0] && image.assets[0].fileName) {
+        const data = createFormData(image.assets[0], 'recipeItem');
+        dispatch(
+          addRecipeMainImageThunk({recipeId: lastRecipeAdded, image: data}),
+        );
+        navigation.navigate('My Recipes');
+      }
       dispatch(cleanUpAddRecipe());
     }
   }, [succes, lastRecipeAdded, image]);

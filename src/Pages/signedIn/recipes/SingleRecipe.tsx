@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+  Image,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import {
@@ -10,6 +17,8 @@ import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch} from '../../../redux/hooks';
 import {cleanUpshoppingListAdd} from '../../../redux/recipes/shoppingList/addShoppingList.slice';
 import {IRecipe} from '../../../redux/recipes/types';
+import {WEBCONST} from '../../../constants/webConstants';
+import {ShadowStyle} from '../../../components/backgrounds/menuSquareCartContainerRecipes';
 
 const SingleRecipe = ({route}: RecipesToProfilePageScreenProp) => {
   const dispatch = useAppDispatch();
@@ -22,7 +31,9 @@ const SingleRecipe = ({route}: RecipesToProfilePageScreenProp) => {
   let ingNumber = 0;
   let ingNumberTips = 0;
   const navigation = useNavigation<RecipesHomePageScreenProp>();
-
+  useEffect(() => {
+    console.log();
+  }, [recipe]);
   return (
     <LoggedInBackground>
       <View style={{flexGrow: 1, width: '100%', paddingHorizontal: 10}}>
@@ -30,10 +41,16 @@ const SingleRecipe = ({route}: RecipesToProfilePageScreenProp) => {
           style={{
             width: '100%',
             aspectRatio: 1.5,
-            backgroundColor: 'lightgrey',
-            borderRadius: 5,
-            overflow: 'hidden',
-          }}></View>
+            backgroundColor: 'rgba(80,80,80,.2)',
+            borderRadius: 15,
+          }}>
+          {recipe && recipe.image && (
+            <Image
+              style={[ShadowStyle.underImage, {width: '100%', height: '100%'}]}
+              source={{uri: `${WEBCONST().APIURL}${recipe.image.path}`}}
+            />
+          )}
+        </View>
         <View style={styles.MenuList}>
           <Text style={styles.RecipeTitle}>{recipe?.title}</Text>
           <Text style={styles.clasicText}>{recipe?.description}</Text>

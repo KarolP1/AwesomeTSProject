@@ -27,7 +27,7 @@ const RecipesSection = ({}: {}) => {
 
   const dispatch = useAppDispatch();
   const [selected, setSelected] = useState<
-    0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null
+    0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | null
   >(null);
   const [dishesType, setDishesType] = useState<category>();
 

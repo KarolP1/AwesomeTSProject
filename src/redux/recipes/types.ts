@@ -2,10 +2,15 @@ import {
   IManualList,
   IRecipeAdd,
 } from './../../Pages/signedIn/recipes/Recipesadd';
-import {ImagePickerResponse} from 'react-native-image-picker';
 
+export interface IIMageRecipe {
+  _id: string;
+  path: string;
+  relatedId: string;
+}
 export interface IRecipe {
   _id: string;
+  image: IIMageRecipe;
   owner: {
     _id: string;
     first_name: string;
