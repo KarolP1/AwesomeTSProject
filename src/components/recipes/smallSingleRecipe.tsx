@@ -94,6 +94,9 @@ const SingleRecipe = ({
             paddingBottom: 10,
             paddingHorizontal: 10,
             maxWidth: '30%',
+            maxHeight: '100%',
+            height: '100%',
+            justifyContent: 'center',
           }}>
           <View
             style={{
@@ -103,7 +106,7 @@ const SingleRecipe = ({
               backgroundColor: 'rgba(0,0,0,0.6)',
               flexDirection: 'row',
               borderRadius: 5,
-              paddingVertical: 5,
+              paddingVertical: 2,
               paddingHorizontal: 10,
             }}>
             <Image
@@ -127,7 +130,7 @@ const SingleRecipe = ({
               backgroundColor: 'rgba(0,0,0,0.6)',
               flexDirection: 'row',
               borderRadius: 5,
-              paddingVertical: 5,
+              paddingVertical: 2,
               paddingHorizontal: 10,
             }}>
             <Image
@@ -151,7 +154,7 @@ const SingleRecipe = ({
               backgroundColor: 'rgba(0,0,0,0.6)',
               flexDirection: 'row',
               borderRadius: 5,
-              paddingVertical: 5,
+              paddingVertical: 2,
               paddingHorizontal: 10,
             }}>
             <Image
