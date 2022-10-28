@@ -129,68 +129,69 @@ const MenuTitles = ({
             </View>
           </InsetShadow>
         )}
-        {data?.map(item =>
-          selected === item._id ? (
-            <View key={item._id}>
-              <InsetShadow
-                containerStyle={{
-                  borderRadius: 5,
-                  position: 'relative',
-                  height: 30,
-                }}
-                key={item._id}>
+        {data &&
+          data?.map(item =>
+            selected === item._id ? (
+              <View key={item._id}>
+                <InsetShadow
+                  containerStyle={{
+                    borderRadius: 5,
+                    position: 'relative',
+                    height: 30,
+                  }}
+                  key={item._id}>
+                  <TouchableOpacity
+                    disabled={isEditModeEnabled}
+                    style={{
+                      paddingVertical: 5,
+                      paddingHorizontal: 10,
+                      borderRadius: 5,
+                      marginHorizontal: 5,
+                    }}>
+                    <Text style={{color: '#fff'}}>{item.menuName}</Text>
+                  </TouchableOpacity>
+                </InsetShadow>
+              </View>
+            ) : (
+              <View key={item._id}>
                 <TouchableOpacity
                   disabled={isEditModeEnabled}
-                  style={{
-                    paddingVertical: 5,
-                    paddingHorizontal: 10,
-                    borderRadius: 5,
-                    marginHorizontal: 5,
-                  }}>
-                  <Text style={{color: '#fff'}}>{item.menuName}</Text>
-                </TouchableOpacity>
-              </InsetShadow>
-            </View>
-          ) : (
-            <View key={item._id}>
-              <TouchableOpacity
-                disabled={isEditModeEnabled}
-                style={{position: 'relative'}}
-                onPress={() => {
-                  setSelected(item._id);
-                }}
-                key={item._id}>
-                <View
-                  style={{
-                    paddingVertical: 5,
-                    paddingHorizontal: 10,
-                    borderRadius: 5,
-                    marginHorizontal: 5,
-                  }}>
-                  <Text style={{color: '#fff'}}>{item.menuName}</Text>
-                </View>
-              </TouchableOpacity>
-              {isEditModeEnabled && (
-                <TouchableOpacity
+                  style={{position: 'relative'}}
                   onPress={() => {
-                    dispatch(deleteMyEstabishmentMenus(item._id));
+                    setSelected(item._id);
                   }}
-                  style={{
-                    borderRadius: 5,
-                    marginHorizontal: 5,
-                    top: -10,
-                    right: -10,
-                    position: 'absolute',
-                  }}>
-                  <Image
-                    style={{width: 20, height: 20}}
-                    source={require('../../../../../assets/utilityIcons/deleteC.png')}
-                  />
+                  key={item._id}>
+                  <View
+                    style={{
+                      paddingVertical: 5,
+                      paddingHorizontal: 10,
+                      borderRadius: 5,
+                      marginHorizontal: 5,
+                    }}>
+                    <Text style={{color: '#fff'}}>{item.menuName}</Text>
+                  </View>
                 </TouchableOpacity>
-              )}
-            </View>
-          ),
-        )}
+                {isEditModeEnabled && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      dispatch(deleteMyEstabishmentMenus(item._id));
+                    }}
+                    style={{
+                      borderRadius: 5,
+                      marginHorizontal: 5,
+                      top: -10,
+                      right: -10,
+                      position: 'absolute',
+                    }}>
+                    <Image
+                      style={{width: 20, height: 20}}
+                      source={require('../../../../../assets/utilityIcons/deleteC.png')}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
+            ),
+          )}
       </ScrollView>
     </SimpleSection>
   );

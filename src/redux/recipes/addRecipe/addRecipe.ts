@@ -42,6 +42,7 @@ const AddRecipe = createSlice({
       state.data = payload.data;
       state.isLoading = false;
       state.message = payload.message;
+      state.lastRecipeAdded = payload.lastRecipeAdded;
     });
     builder.addCase(addRecipeThunk.pending, (state, {payload}) => {
       state.isLoading = true;

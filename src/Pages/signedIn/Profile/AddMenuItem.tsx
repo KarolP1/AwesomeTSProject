@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, Image, Platform, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import {
@@ -22,12 +22,15 @@ import {
 import {cleanUpMyEstablishmentMenusGet} from '../../../redux/Profile/establishmentMenus/EstablishmentMenu.slice';
 import {useNavigation} from '@react-navigation/native';
 import IngredientForEstablishmentController from '../../../components/Profile/Sections/Job/MenuListUpdateAndGet/IngredientForEstablishmentController';
+import ImagePicker, {Image as ImageProps} from 'react-native-image-crop-picker';
+import {PostMyEstabishmentMenusItemImages} from '../../../redux/Profile/establishmentMenus/EstablishmentMenu.thunk';
+import {createFormData} from '../../../utils/photos/handleFormdata';
 
 const ProfileNavigationAddMenuItemsPage = (
   props: ProfileNavigationPropsAddMenuItems,
 ) => {
   const navigation = useNavigation<ProfileNavigationAddMenuItems>();
-  const [haveBeenrun, setHaveBeenRun] = useState<boolean>(false);
+  const [isDispatchFired, setIsDispatchFired] = useState<boolean>(false);
 
   const menuId = props.route.params.menuId;
   const [newMenuItemState, setNewMenuItemState] = useState<IMenuItem>({
@@ -44,6 +47,9 @@ const ProfileNavigationAddMenuItemsPage = (
     dishIngredients: [],
   });
   const dispatch = useAppDispatch();
+  const {isLoading, lastAddedId} = useAppSelector(
+    state => state.MyEstabishmentMenus,
+  );
 
   const [selected, setSelected] = useState<
     0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | null
@@ -59,15 +65,91 @@ const ProfileNavigationAddMenuItemsPage = (
   }, [selected]);
 
   const {succes} = useAppSelector(state => state.MyEstabishmentMenus);
+
   useEffect(() => {
-    if (succes && haveBeenrun) {
+    if (isLoading) setIsDispatchFired(true);
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (succes && isDispatchFired && itemImage === null) {
       navigation.navigate('ProfileHome');
-      setHaveBeenRun(false);
+      setIsDispatchFired(false);
+      console.log('running wo photos');
     }
-  }, [succes, haveBeenrun]);
+  }, [succes, isDispatchFired]);
+
+  useEffect(() => {
+    if (lastAddedId && succes && isDispatchFired && itemImage !== null) {
+      console.log('running with photos');
+
+      if (itemImage.filename) {
+        const data = createFormData(
+          {
+            uri:
+              Platform.OS === 'ios'
+                ? `file:///${itemImage?.path}`
+                : itemImage.path,
+            type: 'image/png',
+            fileName: itemImage.filename,
+          },
+          'menuItem',
+        );
+        dispatch(
+          PostMyEstabishmentMenusItemImages({
+            menuItemId: lastAddedId,
+            image: data,
+          }),
+        );
+      }
+      navigation.navigate('ProfileHome');
+      setIsDispatchFired(false);
+    }
+    console.log({lastAddedId});
+  }, [lastAddedId]);
+
+  const [itemImage, setItemImage] = useState<ImageProps | null>(null);
 
   return (
     <LoggedInBackground>
+      <Text style={styles.title}>Add image to menu item</Text>
+      <TouchableOpacity
+        onPress={() => {
+          ImagePicker.openPicker({
+            freeStyleCropEnabled: true,
+            cropping: true,
+            cropperCircleOverlay: true,
+            mediaType: 'photo',
+            compressImageQuality: 1,
+          })
+            .then(image => {
+              if (image) setItemImage(image);
+            })
+            .catch(err =>
+              Alert.alert('error', JSON.stringify(err), [
+                {onPress: () => setItemImage(null)},
+              ]),
+            );
+        }}
+        style={{
+          padding: 10,
+          backgroundColor: 'rgba(255,255,255,.1)',
+          borderRadius: 50,
+          marginVertical: 10,
+        }}>
+        {!itemImage ? (
+          <Image
+            style={{width: 200, height: 200}}
+            source={require('../../../assets/utilityIcons/addImage.png')}
+          />
+        ) : (
+          <>
+            <Image
+              style={{width: 200, height: 200, borderRadius: 50}}
+              source={{uri: itemImage.path}}
+            />
+          </>
+        )}
+      </TouchableOpacity>
       <Text style={styles.title}>Title</Text>
       <TextInputProfile
         placeholder={'Dish Name'}
@@ -153,7 +235,7 @@ const ProfileNavigationAddMenuItemsPage = (
               menuItem: newMenuItemState,
             }),
           );
-          setHaveBeenRun(true);
+          setIsDispatchFired(true);
         }}
       />
     </LoggedInBackground>

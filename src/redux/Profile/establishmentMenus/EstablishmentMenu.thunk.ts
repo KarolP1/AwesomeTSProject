@@ -100,4 +100,41 @@ export const PostMyEstabishmentMenus = createAsyncThunk<
     });
   }
 });
+
+export const PostMyEstabishmentMenusItemImages = createAsyncThunk<
+  IResponseGetMyEstablishmentMenus,
+  {menuItemId: string; image: FormData}
+>(
+  'profile/establishmentMenusItemImage/post}',
+  async (state, {rejectWithValue}) => {
+    try {
+      const tokens = await getTokensKeychain();
+
+      const res = await instance
+        .post(
+          `/order/establishment/menu/addPhotoToItem/${state.menuItemId}`,
+          state.image,
+          {
+            headers: {
+              Authorization: 'Bearer ' + tokens?.access_token,
+            },
+          },
+        )
+        .then(response => {
+          return response.data;
+        })
+        .catch(error => {
+          return rejectWithValue(error.response.data.message);
+        });
+
+      return res;
+    } catch (error: any) {
+      return rejectWithValue({
+        message: error.message,
+        error: 'login failed',
+        data: null,
+      });
+    }
+  },
+);
 //#endregion

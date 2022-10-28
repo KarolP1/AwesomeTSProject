@@ -17,12 +17,14 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {ProfileNavigationAddMenuItems} from '../../../../../navigation/Profile/ProfileNavigator.types';
 import {getMyEstabishmentMenus} from '../../../../../redux/Profile/establishmentMenus/EstablishmentMenu.thunk';
 import {DeleteMyEstabishmentMenuItem} from '../../../../../redux/Profile/establishmentMenus/establishmentMenuItem/addEstablishmentMenuItem';
+import {WEBCONST} from '../../../../../constants/webConstants';
 
 const MenuItemsListSection = ({selectedMenuId}: {selectedMenuId: string}) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<ProfileNavigationAddMenuItems>();
   const {data} = useAppSelector(state => state.MyEstabishmentMenus);
-  const filteredMenu = data?.filter(menu => menu._id === selectedMenuId)[0];
+  const filteredMenu =
+    data && data?.filter(menu => menu._id === selectedMenuId)[0];
 
   const [isEditModeEnabled, setIsEditModeEnabled] = useState(false);
 
@@ -48,7 +50,6 @@ const MenuItemsListSection = ({selectedMenuId}: {selectedMenuId: string}) => {
       <ScrollView horizontal>
         {filteredMenu &&
           filteredMenu.menuItems.map(menuItem => {
-            if (menuItem._id) console.log({[menuItem._id]: menuItem});
             return (
               <View style={{position: 'relative'}} key={menuItem._id}>
                 <SingleMenuItem menuItem={menuItem} key={menuItem._id} />

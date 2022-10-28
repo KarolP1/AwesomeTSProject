@@ -156,6 +156,7 @@ export interface IResponseAddRecipe {
   data?: ResponseDataAddRecipe | null;
   isLoading: boolean;
   succes: boolean;
+  lastRecipeAdded?: string;
 }
 export interface IResponseGetMyRecipes {
   error: any | undefined;

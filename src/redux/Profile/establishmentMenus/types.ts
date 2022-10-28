@@ -6,6 +6,7 @@ export interface IResponseGetMyEstablishmentMenus {
   data?: IGetMenuTitles[] | null;
   isLoading: boolean;
   succes: boolean;
+  lastAddedId?: string | null;
 }
 
 export interface IIngredientEstablishment {
@@ -14,6 +15,12 @@ export interface IIngredientEstablishment {
   name: string;
   isIngredientVisible: boolean;
   isIngredientEditable: boolean;
+}
+
+interface IImageInterFace {
+  _id: string;
+  path: string;
+  relatedId: string;
 }
 
 export interface IMenuItem {
@@ -30,6 +37,7 @@ export interface IMenuItem {
   isHalal: boolean;
   category: string;
   counter?: ICounter;
+  image?: IImageInterFace;
 }
 
 export interface IIsCategoryVisible {

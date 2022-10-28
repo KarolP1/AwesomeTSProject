@@ -1,6 +1,8 @@
 import {Image, StyleSheet, Text, useWindowDimensions, View} from 'react-native';
 import React from 'react';
 import {IMenuItem} from '../../../../../redux/Profile/establishmentMenus/types';
+import {WEBCONST} from '../../../../../constants/webConstants';
+import DropShadow from 'react-native-drop-shadow';
 
 const SingleMenuItem = ({menuItem}: {menuItem: IMenuItem}) => {
   const {width} = useWindowDimensions();
@@ -15,12 +17,42 @@ const SingleMenuItem = ({menuItem}: {menuItem: IMenuItem}) => {
       }}>
       <View
         style={{
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 6,
+            height: 6,
+          },
+          shadowOpacity: 0.29,
+          shadowRadius: 2.65,
+          elevation: 7,
+
           width: '100%',
           aspectRatio: 2,
-          backgroundColor: '#646464',
+          backgroundColor: 'rgba(80,80,80,0.2)',
+          borderRadius: 15,
+          marginBottom: 10,
         }}>
+        {menuItem.image && (
+          <Image
+            style={{
+              width: '100%',
+              height: '100%',
+              resizeMode: 'cover',
+              borderRadius: 15,
+            }}
+            source={{
+              uri: `${WEBCONST().APIURL}${menuItem.image.path}`,
+            }}
+          />
+        )}
         {counter && (
-          <View style={{width: '30%', marginLeft: 10, marginTop: 10}}>
+          <View
+            style={{
+              width: '30%',
+              marginLeft: 10,
+              marginTop: 10,
+              position: 'absolute',
+            }}>
             <View
               style={{
                 justifyContent: 'space-between',

@@ -4,6 +4,7 @@ import {
   deleteMyEstabishmentMenus,
   getMyEstabishmentMenus,
   PostMyEstabishmentMenus,
+  PostMyEstabishmentMenusItemImages,
 } from './EstablishmentMenu.thunk';
 import {
   PostMyEstabishmentMenuItem,
@@ -108,9 +109,10 @@ const MyEstabishmentMenus = createSlice({
       (state, {payload}: AnyAction) => {
         state.error = null;
         state.succes = true;
-        state.data = payload.data;
+        state.data = payload.data.allItems;
         state.isLoading = false;
         state.message = payload.message;
+        state.lastAddedId = payload.data.newItemId;
       },
     );
     builder.addCase(PostMyEstabishmentMenuItem.pending, (state, {payload}) => {
@@ -160,6 +162,33 @@ const MyEstabishmentMenus = createSlice({
     );
     builder.addCase(
       DeleteMyEstabishmentMenuItem.pending,
+      (state, {payload}) => {
+        state.isLoading = true;
+      },
+    );
+    //#endregion
+    //#region get profile
+    builder.addCase(
+      PostMyEstabishmentMenusItemImages.rejected,
+      (state, {payload}) => {
+        state.error = payload;
+        state.succes = false;
+
+        state.isLoading = false;
+      },
+    );
+    builder.addCase(
+      PostMyEstabishmentMenusItemImages.fulfilled,
+      (state, {payload}: AnyAction) => {
+        state.error = null;
+        state.succes = true;
+        state.isLoading = false;
+        state.message = payload.message;
+        state.lastAddedId = null;
+      },
+    );
+    builder.addCase(
+      PostMyEstabishmentMenusItemImages.pending,
       (state, {payload}) => {
         state.isLoading = true;
       },

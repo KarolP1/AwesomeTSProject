@@ -117,11 +117,16 @@ const Recipesadd = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<RecipesHomePageScreenProp>();
 
+  const {lastRecipeAdded} = useAppSelector(state => state.addRecipe);
+  useEffect(() => {
+    console.log(lastRecipeAdded);
+  }, []);
+
   const [recipeAdd, setRecipeAdd] = useState<IRecipeAdd>(initialState);
   //#region state for manualList
   const [image, setImage] = useState<ImagePickerResponse | null>(null);
   const [selected, setSelected] = useState<
-    0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null
+    0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | null
   >(0);
   const [cuisine, setCuisine] = useState<string | null>(null);
   const [cuisineCode, setCuisineCode] = useState<string | null>(null);
@@ -204,11 +209,17 @@ const Recipesadd = () => {
   }, [error]);
 
   useEffect(() => {
-    if (succes === true) {
+    if (succes === true && !image) {
       navigation.navigate('My Recipes');
       dispatch(cleanUpAddRecipe());
     }
-  }, [succes]);
+    if (succes === true && image && lastRecipeAdded) {
+      // navigation.navigate('My Recipes');
+      console.log('hello');
+      //TODO: add image dispatch
+      dispatch(cleanUpAddRecipe());
+    }
+  }, [succes, lastRecipeAdded, image]);
 
   const [isTipsVisible, setIsTipsVisible] = useState<boolean>(false);
 

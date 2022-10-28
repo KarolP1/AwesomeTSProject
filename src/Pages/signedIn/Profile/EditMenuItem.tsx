@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, Image, Platform, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import {
@@ -12,18 +12,18 @@ import BooleansSelectors from '../../../components/selectors/BooleansSelectors';
 import TextInputProfile from '../../../components/TextInputs/TextInputCuisine';
 import SubmitButton from '../../../components/touchables/SubmitButton';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
-import {
-  EditMyEstabishmentMenuItem,
-  PostMyEstabishmentMenuItem,
-} from '../../../redux/Profile/establishmentMenus/establishmentMenuItem/addEstablishmentMenuItem';
+import {EditMyEstabishmentMenuItem} from '../../../redux/Profile/establishmentMenus/establishmentMenuItem/addEstablishmentMenuItem';
 import {
   ProfileNavigation,
-  ProfileNavigationAddMenuItems,
   ProfileNavigationPropsEditMenuItems,
 } from '../../../navigation/Profile/ProfileNavigator.types';
-import {cleanUpMyEstablishmentMenusGet} from '../../../redux/Profile/establishmentMenus/EstablishmentMenu.slice';
 import {useNavigation} from '@react-navigation/native';
 import IngredientForEstablishmentController from '../../../components/Profile/Sections/Job/MenuListUpdateAndGet/IngredientForEstablishmentController';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import ImagePicker, {Image as ImageProps} from 'react-native-image-crop-picker';
+import {createFormData} from '../../../utils/photos/handleFormdata';
+import {PostMyEstabishmentMenusItemImages} from '../../../redux/Profile/establishmentMenus/EstablishmentMenu.thunk';
+import {WEBCONST} from '../../../constants/webConstants';
 
 const ProfileNavigationEditMenuItemsPage = (
   props: ProfileNavigationPropsEditMenuItems,
@@ -52,11 +52,36 @@ const ProfileNavigationEditMenuItemsPage = (
 
   const dispatch = useAppDispatch();
 
+  const [itemImage, setItemImage] = useState<ImageProps | null>(null);
+
   useEffect(() => {
     if (isLoading) setIsDispatchFired(true);
   }, [isLoading]);
   useEffect(() => {
-    if (succes && isDispatchFired) {
+    if (succes && isDispatchFired && itemImage === null) {
+      navigation.navigate('ProfileHome');
+      setIsDispatchFired(false);
+    }
+    if (item._id && succes && isDispatchFired && itemImage !== null) {
+      if (itemImage.filename) {
+        const data = createFormData(
+          {
+            uri:
+              Platform.OS === 'ios'
+                ? `file:///${itemImage?.path}`
+                : itemImage.path,
+            type: 'image/png',
+            fileName: itemImage.filename,
+          },
+          'menuItem',
+        );
+        dispatch(
+          PostMyEstabishmentMenusItemImages({
+            menuItemId: item._id,
+            image: data,
+          }),
+        );
+      }
       navigation.navigate('ProfileHome');
       setIsDispatchFired(false);
     }
@@ -64,6 +89,54 @@ const ProfileNavigationEditMenuItemsPage = (
 
   return (
     <LoggedInBackground>
+      <Text style={styles.title}>Add image to menu item</Text>
+      <TouchableOpacity
+        onPress={() => {
+          ImagePicker.openPicker({
+            freeStyleCropEnabled: true,
+            cropping: true,
+            cropperCircleOverlay: true,
+            mediaType: 'photo',
+            compressImageQuality: 1,
+          })
+            .then(image => {
+              if (image) setItemImage(image);
+            })
+            .catch(err =>
+              Alert.alert('error', JSON.stringify(err), [
+                {onPress: () => setItemImage(null)},
+              ]),
+            );
+        }}
+        style={{
+          padding: 10,
+          backgroundColor: 'rgba(255,255,255,.1)',
+          borderRadius: 50,
+          marginVertical: 10,
+        }}>
+        {item.image && !itemImage && (
+          <Image
+            style={{width: 200, height: 200, borderRadius: 50}}
+            source={{
+              uri: `${WEBCONST().APIURL}${
+                item.image.path
+              }?${new Date().getTime()}`,
+            }}
+          />
+        )}
+        {!item.image && !itemImage && (
+          <Image
+            style={{width: 200, height: 200, borderRadius: 50}}
+            source={require('../../../assets/utilityIcons/addImage.png')}
+          />
+        )}
+        {itemImage && (
+          <Image
+            style={{width: 200, height: 200, borderRadius: 50}}
+            source={{uri: itemImage.path}}
+          />
+        )}
+      </TouchableOpacity>
       <Text style={styles.title}>Title</Text>
       <TextInputProfile
         placeholder={'Dish Name'}

@@ -1,7 +1,4 @@
 import {
-  Alert,
-  Image,
-  ImageBackground,
   Modal,
   Pressable,
   StyleSheet,
@@ -9,18 +6,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {IGetProfileInfo} from '../../redux/Profile/types';
-import {
-  ImagePickerResponse,
-  launchImageLibrary,
-} from 'react-native-image-picker';
+import {ImagePickerResponse} from 'react-native-image-picker';
 import {WEBCONST} from '../../constants/webConstants';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {addMyProfileImage} from '../../redux/Profile/core/profileAddImageProfile.thunk';
-import DocumentPicker, {
-  DocumentPickerResponse,
-} from 'react-native-document-picker';
+
 import {
   createFormData,
   handleChoosePhoto,
