@@ -5,7 +5,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {SetStateAction, useState} from 'react';
 import {allCategoriesRecipe, category} from './allCategories';
 import SingleCategory from './SingleCategory';
 import DropShadow from 'react-native-drop-shadow';
@@ -17,17 +17,17 @@ const CategoryRecipesSelector = ({
   size,
   categoriesProp,
 }: {
-  selected: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | null;
+  selected: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null;
   setSelected: React.Dispatch<
-    React.SetStateAction<0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | null>
+    SetStateAction<0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null>
   >;
   size?: number;
-  categoriesProp?: category[];
+  categoriesProp: category[];
 }) => {
-  const categories = categoriesProp ? categoriesProp : allCategoriesRecipe();
+  const categories = categoriesProp;
   return (
     <ScrollView horizontal style={{maxHeight: 110}}>
-      {categories.map(category => (
+      {categories?.map(category => (
         <TouchableOpacity
           activeOpacity={1}
           key={category.index}

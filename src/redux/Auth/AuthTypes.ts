@@ -26,7 +26,7 @@ export interface IResponseRecipes {
   isLoading?: boolean;
   message?: string;
   error: any;
-  data?: IRecipe[] | [];
+  data: IRecipe[] | null;
   succes: boolean;
 }
 export interface IResponseRecipesByTag {

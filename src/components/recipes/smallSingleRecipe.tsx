@@ -13,14 +13,8 @@ import {
 import {useAppDispatch} from '../../redux/hooks';
 import {deleteRecipe} from '../../redux/recipes/recipesThunks';
 import {useNavigation} from '@react-navigation/native';
-import {
-  RootNavigationWithRecipeAndRecipePagesProp,
-  RootNavigationWithRecipeProp,
-} from '../../navigation/rootNavigation.navigation';
 import {RecipesToProfilePageNavigation} from '../../navigation/types';
 import {WEBCONST} from '../../constants/webConstants';
-import recipes from '../../redux/recipes';
-import {Counters} from '../Profile/EstablishmentContent';
 
 const SingleRecipe = ({
   Recipe,
@@ -86,7 +80,11 @@ const SingleRecipe = ({
         {Recipe.image && (
           <Image
             style={{height: '100%', width: '100%', position: 'absolute'}}
-            source={{uri: `${WEBCONST().APIURL}${Recipe.image.path}`}}
+            source={{
+              uri: `${WEBCONST().APIURL}${
+                Recipe.image.path
+              }?${new Date().getTime()}`,
+            }}
           />
         )}
         <View

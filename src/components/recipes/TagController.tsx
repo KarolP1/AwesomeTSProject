@@ -7,8 +7,8 @@ const TagController = ({
   tags,
   setTags,
 }: {
-  tags: string[];
-  setTags: React.Dispatch<React.SetStateAction<string[]>>;
+  tags?: string[];
+  setTags: (data: string[]) => void;
 }) => {
   const [tag, setTag] = useState<string>('');
 
@@ -20,7 +20,7 @@ const TagController = ({
         justifyContent: 'flex-end',
       }}>
       {tags?.length !== 0 &&
-        tags.map((tag, index) => (
+        tags?.map((tag, index) => (
           <View
             key={index}
             style={{
@@ -69,7 +69,7 @@ const TagController = ({
           onPress={async () => {
             if (tag === '') Alert.alert('Warning', 'You have to type tag');
             else {
-              setTags([...tags, tag]);
+              if (tags) setTags([...tags, tag]);
               setTag('');
             }
           }}>

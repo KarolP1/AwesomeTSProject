@@ -5,13 +5,21 @@ import {
   launchCamera,
   launchImageLibrary,
 } from 'react-native-image-picker';
+import {IIMageRecipe} from '../../redux/recipes/types';
+import {WEBCONST} from '../../constants/webConstants';
 
 const AddImage = ({
   image,
   setImage,
+  imageFromRecipe,
 }: {
-  image: ImagePickerResponse | null;
-  setImage: React.Dispatch<React.SetStateAction<ImagePickerResponse | null>>;
+  image: ImagePickerResponse | null | undefined;
+  setImage:
+    | React.Dispatch<React.SetStateAction<ImagePickerResponse | null>>
+    | React.Dispatch<
+        React.SetStateAction<ImagePickerResponse | null | undefined>
+      >;
+  imageFromRecipe?: IIMageRecipe;
 }) => {
   useEffect(() => {
     if (image && image.assets) console.log(image?.assets[0].uri);
@@ -34,14 +42,23 @@ const AddImage = ({
         borderRadius: 35,
         padding: 20,
       }}>
+      {imageFromRecipe && !image && (
+        <Image
+          style={{flex: 1, width: '100%', borderRadius: 25}}
+          source={{
+            uri: `${WEBCONST().APIURL}${
+              imageFromRecipe.path
+            }?${new Date().getTime()}`,
+          }}
+        />
+      )}
       {image && image.assets && (
         <Image
           style={{flex: 1, width: '100%', borderRadius: 25}}
           source={{uri: image?.assets[0].uri}}
         />
       )}
-      {}
-      {!image && (
+      {!image && !imageFromRecipe && (
         <Image
           style={{flex: 1, width: '100%', borderRadius: 50}}
           source={require('../../assets/utilityIcons/addImage.png')}

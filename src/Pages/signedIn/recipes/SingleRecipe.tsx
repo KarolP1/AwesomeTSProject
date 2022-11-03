@@ -47,7 +47,11 @@ const SingleRecipe = ({route}: RecipesToProfilePageScreenProp) => {
           {recipe && recipe.image && (
             <Image
               style={[ShadowStyle.underImage, {width: '100%', height: '100%'}]}
-              source={{uri: `${WEBCONST().APIURL}${recipe.image.path}`}}
+              source={{
+                uri: `${WEBCONST().APIURL}${
+                  recipe.image.path
+                }?${new Date().getTime()}`,
+              }}
             />
           )}
         </View>

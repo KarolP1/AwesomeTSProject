@@ -1,5 +1,5 @@
 import {Image, Text, StyleSheet} from 'react-native';
-export const convertAdvancement = (advancement: number) => {
+export const convertAdvancement = (advancement: 1 | 2 | 3 | 4 | 5 | null) => {
   switch (advancement) {
     case 1:
       return (

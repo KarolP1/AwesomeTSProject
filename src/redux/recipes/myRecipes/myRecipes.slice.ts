@@ -1,3 +1,4 @@
+import {editRecipeThunk} from './../editRecipe/editRecipe.thunk';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store';
 import {AnyAction, createSlice} from '@reduxjs/toolkit';
@@ -56,6 +57,20 @@ const MyRecipes = createSlice({
     });
     builder.addCase(deleteRecipe.pending, (state, {payload}) => {
       state.isLoading = true;
+    });
+    builder.addCase(editRecipeThunk.fulfilled, (state, {payload}) => {
+      state.error = null;
+      state.succes = true;
+      console.info({payload: payload});
+      console.info({state: state.data});
+      if (state.data && payload.data) {
+        console.info({payload: payload.data._id});
+        state.data = state.data.map(recipe =>
+          recipe._id === payload.data?._id ? payload.data : recipe,
+        );
+      }
+      state.isLoading = false;
+      state.message = payload.message;
     });
     ///
   },

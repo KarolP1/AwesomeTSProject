@@ -33,7 +33,7 @@ const ProfileNavigationEditMenuItemsPage = (
   const {menuId, item} = props.route.params;
   const [EditMenuItemState, setEditMenuItemState] = useState<IMenuItem>(item);
   const [selected, setSelected] = useState<
-    0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | null
+    0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null
   >(null);
   const categories = allCategoriesOrder();
   const {isLoading} = useAppSelector(state => state.MyEstabishmentMenus);

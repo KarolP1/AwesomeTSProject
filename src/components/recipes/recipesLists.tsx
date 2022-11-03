@@ -15,7 +15,7 @@ const RecipesLists = ({
   title,
   isEditModeEnabled,
 }: {
-  recipes?: IRecipe[];
+  recipes?: IRecipe[] | null;
   tag?: string;
   title?: string | null;
   isEditModeEnabled?: boolean;

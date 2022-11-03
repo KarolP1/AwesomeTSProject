@@ -52,7 +52,7 @@ const ProfileNavigationAddMenuItemsPage = (
   );
 
   const [selected, setSelected] = useState<
-    0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | null
+    0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null
   >(null);
   const categories = allCategoriesOrder();
 
@@ -74,14 +74,11 @@ const ProfileNavigationAddMenuItemsPage = (
     if (succes && isDispatchFired && itemImage === null) {
       navigation.navigate('ProfileHome');
       setIsDispatchFired(false);
-      console.log('running wo photos');
     }
   }, [succes, isDispatchFired]);
 
   useEffect(() => {
     if (lastAddedId && succes && isDispatchFired && itemImage !== null) {
-      console.log('running with photos');
-
       if (itemImage.filename) {
         const data = createFormData(
           {
@@ -188,7 +185,7 @@ const ProfileNavigationAddMenuItemsPage = (
       <CategoryRecipesSelector
         selected={selected}
         setSelected={setSelected}
-        categoriesProp={categories}
+        categoriesProp={allCategoriesOrder()}
       />
       <Text style={styles.title}>Spiceness category</Text>
 

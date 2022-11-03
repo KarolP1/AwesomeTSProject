@@ -1,62 +1,73 @@
-import {
-  StyleSheet,
-  Image,
-  View,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {default as cuisines} from '../../static/cuisines.json';
-import CuisinePage from './CuisinePage';
+import SelectDropdown from 'react-native-select-dropdown';
 
 const CuisineSearchbar = ({
-  cuisine,
-  setCuisine,
+  initialSelectedCuisine,
   setCuisineCode,
 }: {
-  cuisine: string | null;
-  setCuisine: React.Dispatch<React.SetStateAction<string | null>>;
-  setCuisineCode: React.Dispatch<React.SetStateAction<string | null>>;
+  initialSelectedCuisine: string | undefined;
+  setCuisineCode: (cuisineCode: string) => void;
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  useEffect(() => {
+    const initialCode = cuisines.filter(cuisine => {
+      return cuisine.CodeURL;
+    })[0];
+    if (initialCode) setCuisineCode(initialCode.CodeURL);
+  }, [initialSelectedCuisine]);
+
   return (
     <View style={{maxHeight: 200, marginVertical: 5}}>
-      <View style={[styles.container, {position: 'relative'}]}>
-        <TouchableOpacity
-          style={styles.iconContainer}
-          onPress={() => {
-            setIsMenuOpen(!isMenuOpen);
-          }}>
-          <Image
-            style={styles.searchIcon}
-            source={require('../../assets/utilityIcons/find.png')}
-          />
-        </TouchableOpacity>
-        <TextInput
-          style={styles.input}
-          value={cuisine || ''}
-          selectTextOnFocus
-          onChangeText={text => {
-            setIsMenuOpen(true);
-            setCuisine(text);
-          }}
-          onFocus={() => {
-            setCuisine('');
-            setIsMenuOpen(true);
-          }}
-        />
-      </View>
-      {isMenuOpen && (
-        <ScrollView style={{flex: 1}}>
-          <CuisinePage
-            cuisine={cuisine}
-            setCuisine={setCuisine}
-            setIsCuisinesVisible={() => setIsMenuOpen(false)}
-            setCuisineCode={setCuisineCode}
-          />
-        </ScrollView>
-      )}
+      <SelectDropdown
+        data={cuisines ? cuisines : []}
+        onSelect={(selectedItem, index) => {
+          setCuisineCode(selectedItem.CodeURL);
+          console.log(selectedItem, index);
+        }}
+        buttonTextAfterSelection={(selectedItem, index) => {
+          return `${selectedItem.NameEnglish} / ${selectedItem.NameNative}`;
+        }}
+        rowTextForSelection={(item, index) => {
+          return `${item.NameEnglish} / ${item.NameNative}`;
+        }}
+        rowStyle={{
+          borderRadius: 10,
+          backgroundColor: 'rgba(0,0,0,0.1)',
+        }}
+        buttonStyle={{
+          width: '100%',
+          height: 50,
+          borderRadius: 8,
+          backgroundColor: 'rgba(0,0,0,0.15)',
+          margin: 0,
+          padding: 0,
+        }}
+        searchPlaceHolder={'Search for cuisine'}
+        dropdownOverlayColor="rgba(0,0,0,0)"
+        renderDropdownIcon={isOpen => (
+          <View style={styles.iconContainer}>
+            <Image
+              style={styles.searchIcon}
+              source={
+                isOpen
+                  ? require('../../assets/utilityIcons/close.png')
+                  : require('../../assets/utilityIcons/find.png')
+              }
+            />
+          </View>
+        )}
+        dropdownIconPosition="left"
+        defaultButtonText="Select Cuisine"
+        dropdownStyle={{
+          backgroundColor: 'rgba(100,100,100,0.9)',
+          borderRadius: 15,
+        }}
+        buttonTextStyle={{color: '#fff'}}
+        selectedRowTextStyle={{color: '#fff'}}
+        rowTextStyle={{color: '#fff'}}
+        selectedRowStyle={{backgroundColor: 'rgba(0,0,0,0.5)'}}
+      />
     </View>
   );
 };
@@ -91,5 +102,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.25)',
+    padding: 20,
+    margin: -7,
+    left: 0,
   },
 });

@@ -50,7 +50,7 @@ const RecipesFind = ({route}: FindScreenProps) => {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      dispatch(getAllRecipes({cuisine, category: category}));
+      if (cuisine) dispatch(getAllRecipes({cuisine, category: category}));
     }, 1000);
     return () => clearTimeout(timeoutId);
   }, [cuisine, category]);
@@ -63,7 +63,11 @@ const RecipesFind = ({route}: FindScreenProps) => {
         cuisine={cuisine}
         setCuisineCode={setCuisineCode}
       />
-      <CategoryRecipesSelector selected={selected} setSelected={setSelected} />
+      <CategoryRecipesSelector
+        selected={selected}
+        setSelected={setSelected}
+        categoriesProp={allCategoriesRecipe()}
+      />
       {!isLoading ? (
         <>
           {tag && (

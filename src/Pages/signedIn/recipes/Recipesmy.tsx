@@ -45,7 +45,11 @@ const Recipesmy = () => {
   return (
     <LoggedInBackground>
       {/* //TODO: implement best recipes */}
-      <CategoryRecipesSelector selected={selected} setSelected={setSelected} />
+      <CategoryRecipesSelector
+        selected={selected}
+        setSelected={setSelected}
+        categoriesProp={allCategoriesRecipe()}
+      />
       <View style={{flex: 1}}>
         {isLoading ? (
           <View

@@ -1,3 +1,4 @@
+import {IEditRecipe} from './editRecipe/editRecipe.thunk';
 import {
   IManualList,
   IRecipeAdd,
@@ -22,7 +23,7 @@ export interface IRecipe {
   title: string;
   description: string;
   cuisine: ICuisine;
-  advancement: number;
+  advancement: 1 | 2 | 3 | 4 | 5 | null;
   prepTime: string;
   cookTime: string;
   serves: string;
@@ -58,7 +59,7 @@ export interface ICounter {
 }
 
 export interface IIngredient {
-  qtt: number;
+  qtt: string;
   unit: string;
   name: string;
   _id: string;
@@ -158,7 +159,16 @@ export interface ResponseDataAddShoppingList {
 export interface IResponseAddRecipe {
   error: any | undefined;
   message: string | undefined;
-  data?: ResponseDataAddRecipe | null;
+  data?: IRecipe | null;
+  isLoading: boolean;
+  succes: boolean;
+  lastRecipeAdded?: string;
+}
+
+export interface IResponseEditRecipe {
+  error: any | undefined;
+  message: string | undefined;
+  data?: IEditRecipe | null;
   isLoading: boolean;
   succes: boolean;
   lastRecipeAdded?: string;

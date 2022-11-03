@@ -7,6 +7,9 @@ import {
   getAllRecipesByCategory,
   getAllRecipesByCuisine,
 } from './recipesThunks';
+import {addRecipeThunk} from './addRecipe/addRecipe.thunk';
+import {IRecipe} from './types';
+import {editRecipeThunk} from './editRecipe/editRecipe.thunk';
 
 const initialState: IResponseRecipes = {
   error: '',
@@ -34,7 +37,7 @@ const Recipes = createSlice({
       state.isLoading = false;
       state.error = payload;
       state.succes = false;
-      state.data = undefined;
+      state.data = null;
     });
     builder.addCase(getAllRecipes.fulfilled, (state, {payload}: AnyAction) => {
       state.data = payload.data;
@@ -45,6 +48,29 @@ const Recipes = createSlice({
     builder.addCase(getAllRecipes.pending, (state, action: AnyAction) => {
       state.isLoading = true;
       state.succes = false;
+    });
+    builder.addCase(addRecipeThunk.fulfilled, (state, {payload}) => {
+      state.error = null;
+      state.succes = true;
+      if (state.data && payload.data) {
+        state.data.push(payload.data);
+      }
+      state.isLoading = false;
+      state.message = payload.message;
+    });
+    builder.addCase(editRecipeThunk.fulfilled, (state, {payload}) => {
+      state.error = null;
+      state.succes = true;
+      console.info({payload: payload});
+      console.info({state: state.data});
+      if (state.data && payload.data) {
+        console.info({payload: payload.data._id});
+        state.data = state.data.map(recipe =>
+          recipe._id === payload.data?._id ? payload.data : recipe,
+        );
+      }
+      state.isLoading = false;
+      state.message = payload.message;
     });
     ///
   },

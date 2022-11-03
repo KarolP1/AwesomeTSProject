@@ -19,7 +19,6 @@ export const addRecipeThunk = createAsyncThunk<IResponseAddRecipe, IRecipeAdd>(
           return response.data;
         })
         .catch(error => {
-          console.error(error.response.data);
           return rejectWithValue(error.response.data.message);
         });
 

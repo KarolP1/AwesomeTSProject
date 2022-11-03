@@ -9,11 +9,13 @@ import CuisineSearchbar from '../../../components/categorySelector/cuisineSearch
 import OnOfButton from '../../../components/recipes/OnOfButton';
 import CategoryRecipesSelector from '../../../components/categorySelector';
 import SpicenessSelector from '../../../components/TextInputs/SpicenessSelector';
-import ManualController from './ManualController';
-import IngredientController from './IngredientController';
+import {ManualControllerEdit} from './ManualController';
+import {
+  IngredientController,
+  IngredientControllerEdit,
+} from './IngredientController';
 import TagController from '../../../components/recipes/TagController';
 import {cleanUpAddRecipe} from '../../../redux/recipes/addRecipe/addRecipe';
-import {addRecipeThunk as addRecipe} from '../../../redux/recipes/addRecipe/addRecipe.thunk';
 import {allCategoriesRecipe} from '../../../components/categorySelector/allCategories';
 import AdvancementButton from '../../../components/recipes/AdvancementButton';
 import {useNavigation} from '@react-navigation/native';
@@ -21,181 +23,91 @@ import {
   RecipesHomePageScreenProp,
   RecipesToProfilePageScreenProp,
 } from '../../../navigation/types';
-import {checkStringNull} from '../../../redux/recipes/addRecipe/functions';
+import {
+  isStringValid,
+  isHoursValid,
+} from '../../../redux/recipes/addRecipe/functions';
 import PillButton from '../../../components/recipes/PillButton';
-import {ProfileRecipeScreenProps} from '../../../navigation/rootNavigation.navigation';
-import {IRecipe} from '../../../redux/recipes/types';
+import {convertIRecipeToIEditRecipe} from '../../../redux/recipes/editRecipe/functions';
+import {
+  editRecipeThunk,
+  IEditRecipe,
+  IIngredientEdit,
+  IManualEdit,
+} from '../../../redux/recipes/editRecipe/editRecipe.thunk';
+import {cleanUpRecipeEdit} from '../../../redux/recipes/editRecipe/editRecipe.slice';
 
 //#region initial
-export interface IIngredientList {
-  _id?: string | null;
-  qtt?: string;
-  unit: string;
-  name: string;
-}
-export interface IManualList {
-  _id?: string | null;
-  stepNumber?: string;
-  description?: string;
-  imageUrl?: ImagePickerResponse;
-}
-export interface IRecipeAdd {
-  title: string;
-  description: string;
-  cuisineCode: string | null;
-  isKosher: boolean;
-  isVegan: boolean;
-  isHalal: boolean;
-  dishesType: string;
-  spiceness: 'extra hot' | 'Hot' | 'Mild' | 'normal';
-  ingredientsList: IIngredientList[];
-  isEstablishment: boolean;
-  advancement: 1 | 2 | 3 | 4 | 5;
-  prepTime: string;
-  cookTime: string;
-  serves: string;
-  manualList: IManualList[];
-  tipTitle: string;
-  tipDescription: string;
-  tipIngredientsList: IIngredientList[];
-  tipManualList: IManualList[];
-  tags: string[];
-}
-const initialState: IRecipe = {
-  title: 'test Edit from pc',
-  description: 'tes2',
-  isKosher: false,
-  isVegan: false,
-  isHalal: false,
-  dishesType: 'Bakeries',
-  spiceness: 'normal',
-  isEstablishment: false,
-  advancement: 1,
-  prepTime: '01:30',
-  cookTime: '02:00',
-  serves: '12',
-  ingredientsList: [
-    {
-      name: 'a',
-      unit: 'b',
-      qtt: '12',
-    },
-    {
-      name: 'b',
-      unit: 'c',
-      qtt: '1',
-    },
-    {
-      name: 'b',
-      unit: 'c',
-      qtt: '11',
-    },
-  ],
-  manualList: [
-    {
-      description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, nobis?',
-      stepNumber: '1',
-    },
-    {
-      description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, nobis?',
-      stepNumber: '2',
-    },
-    {
-      description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim, nobis?',
-      stepNumber: '3',
-    },
-  ],
-  tipTitle: '',
-  tipDescription: '',
-  tipIngredientsList: [],
-  tipManualList: [],
-  tags: [],
-};
 //#endregion
 const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<RecipesHomePageScreenProp>();
-  const recipe = route.params.params?.recipeGet;
+  //@ts-ignore
+  const recipe = route.params.recipeGet;
 
-  const [recipeAdd, setRecipeAdd] = useState<IRecipe>(
-    recipe ? recipe : initialState,
-  );
+  const [recipeEdit, setRecipeEdit] = useState<IEditRecipe | null>(null);
+  useEffect(() => {
+    if (recipe) {
+      const recipeToEdit = convertIRecipeToIEditRecipe(recipe);
+      setRecipeEdit(recipeToEdit);
+    }
+  }, [recipe]);
   //#region state for manualList
-  const [image, setImage] = useState<ImagePickerResponse | null>(null);
+  const [image, setImage] = useState<ImagePickerResponse | null>();
   const [selected, setSelected] = useState<
-    0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null
+    0 | 8 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 9 | null
   >(0);
-  const [cuisine, setCuisine] = useState<string | null>(null);
+
   const [cuisineCode, setCuisineCode] = useState<string | null>(null);
-  const [isEstablishment, setIsEstablishment] = useState<boolean>(false);
   const [spiceness, setSpiceness] = useState<
     'normal' | 'extra hot' | 'Hot' | 'Mild'
   >('normal');
-  const [advancement, setAdvancement] = useState<1 | 2 | 3 | 4 | 5>(
-    initialState.advancement,
+
+  const [advancement, setAdvancement] = useState<1 | 2 | 3 | 4 | 5 | null>(
+    null,
   );
-  const [manualList, setManualList] = useState<IManualList[]>(
-    initialState.manualList,
-  );
-  const [ingredientsList, setIngredientsList] = useState<IIngredientList[]>(
-    initialState.ingredientsList,
-  );
-  const [tipManualList, setTipManualList] = useState<IManualList[]>(
-    initialState.tipManualList,
-  );
-  const [tipIngredientsList, setTipIngredientsList] = useState<
-    IIngredientList[]
-  >(initialState.tipIngredientsList);
-  const [tags, setTags] = useState<string[]>([]);
 
   //#endregion
+  useEffect(() => {
+    // console.log({?.:recipe?.}image);
+  }, [recipeEdit]);
 
   //#region effects
   useEffect(() => {
-    setRecipeAdd({
-      ...recipeAdd,
-      advancement,
-    });
+    if (recipeEdit)
+      setRecipeEdit({
+        ...recipeEdit,
+        advancement: advancement,
+      });
   }, [advancement]);
+
+  //
   useEffect(() => {
-    setRecipeAdd({
-      ...recipeAdd,
-      spiceness,
-    });
+    if (recipeEdit && spiceness !== null)
+      setRecipeEdit({
+        ...recipeEdit,
+        spiceness,
+      });
   }, [spiceness]);
 
   useEffect(() => {
-    if (cuisineCode) setRecipeAdd({...recipeAdd, cuisineCode: cuisineCode});
+    if (recipeEdit && cuisineCode)
+      setRecipeEdit({...recipeEdit, cuisineCode: cuisineCode});
   }, [cuisineCode]);
 
-  useEffect(() => {
-    setRecipeAdd({
-      ...recipeAdd,
-      manualList: manualList,
-      ingredientsList,
-      tipManualList,
-      tipIngredientsList,
-      tags,
-    });
-  }, [manualList, ingredientsList, tipManualList, tipIngredientsList, tags]);
   useEffect(() => {
     const allDishesType = allCategoriesRecipe();
     const selectedType = allDishesType.find(
       element => element.index === selected,
     );
-    if (selectedType)
-      setRecipeAdd({...recipeAdd, dishesType: selectedType.cagetoryName});
+    if (recipeEdit && selectedType)
+      setRecipeEdit({...recipeEdit, dishesType: selectedType.cagetoryName});
   }, [selected]);
 
-  useEffect(() => {
-    setRecipeAdd({...recipeAdd, isEstablishment});
-  }, [isEstablishment]);
+  useEffect(() => {}, [recipeEdit, image]);
   //#endregion
 
-  const {succes, error} = useAppSelector(state => state.addRecipe);
+  const {succes, error} = useAppSelector(state => state.editRecipe);
   useEffect(() => {
     if (error)
       Alert.alert('Problem with validation', JSON.stringify(error), [
@@ -210,78 +122,86 @@ const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
 
   useEffect(() => {
     if (succes === true) {
-      navigation.navigate('My Recipes');
+      // navigation.navigate('My Recipes');
       dispatch(cleanUpAddRecipe());
     }
   }, [succes]);
+
+  function SubmitEditRecipe() {
+    return async () => {
+      if (recipeEdit) {
+        const validation = await validateRecipeAdd(recipeEdit);
+        if (validation)
+          dispatch(editRecipeThunk({data: recipeEdit, recipeId: recipe._id}));
+        dispatch(cleanUpRecipeEdit());
+      }
+    };
+  }
 
   const [isTipsVisible, setIsTipsVisible] = useState<boolean>(false);
 
   return (
     <LoggedInBackground>
-      <View style={{flex: 1, flexGrow: 1, width: '100%', alignItems: 'center'}}>
-        <AddImage image={image} setImage={setImage} />
-        {/* is establishment */}
-        {/* //TODO: if in profile not establishment dont allowa as establishment */}
-        <View style={{flexDirection: 'row', width: '100%', marginVertical: 10}}>
-          <OnOfButton
-            isOpen={isEstablishment}
-            name="Establishment"
-            setIsOpen={() => setIsEstablishment(true)}
-          />
-          <OnOfButton
-            isOpen={!isEstablishment}
-            name="User"
-            setIsOpen={() => setIsEstablishment(false)}
+      <>
+        <View
+          style={{flex: 1, flexGrow: 1, width: '100%', alignItems: 'center'}}>
+          <AddImage
+            image={image}
+            setImage={setImage}
+            imageFromRecipe={recipe.image}
           />
         </View>
         <Text style={styles.TextSimple}>Title:</Text>
         <TextInputRecipe
           name="title"
           placeholder="Title"
-          value={recipeAdd?.title}
-          onChange={setRecipeAdd}
-          state={recipeAdd}
+          value={recipeEdit?.title}
+          onChange={setRecipeEdit}
+          state={recipeEdit}
         />
         <Text style={styles.TextSimple}>Description:</Text>
         <TextInputRecipe
           name="description"
           placeholder="Description"
-          value={recipeAdd?.description}
-          onChange={setRecipeAdd}
-          state={recipeAdd}
+          value={recipeEdit?.description}
+          onChange={setRecipeEdit}
+          state={recipeEdit}
         />
         <Text style={styles.TextSimple}>Advancement:</Text>
         <AdvancementButton
-          selected={advancement}
+          selected={recipeEdit ? recipeEdit.advancement : null}
           setSelected={setAdvancement}
         />
         <Text style={styles.TextSimple}>Cuisine:</Text>
         <CuisineSearchbar
-          cuisine={cuisine}
-          setCuisine={setCuisine}
-          setCuisineCode={setCuisineCode}
+          setCuisineCode={(cuisineCode: string) => {
+            if (recipeEdit) setRecipeEdit({...recipeEdit, cuisineCode});
+          }}
+          initialSelectedCuisine={recipeEdit ? recipeEdit.cuisineCode : 'dupa'}
         />
         <View style={{flexDirection: 'row', marginVertical: 10}}>
           <OnOfButton
-            isOpen={recipeAdd?.isHalal}
+            isOpen={recipeEdit?.isHalal}
             name="isHalal"
-            setIsOpen={() =>
-              setRecipeAdd({...recipeAdd, isHalal: !recipeAdd.isHalal})
-            }
+            setIsOpen={() => {
+              if (recipeEdit)
+                setRecipeEdit({...recipeEdit, isHalal: !recipeEdit?.isHalal});
+            }}
           />
           <OnOfButton
-            isOpen={recipeAdd?.isVegan}
+            isOpen={recipeEdit?.isVegan}
             name="isVegan"
             setIsOpen={() =>
-              setRecipeAdd({...recipeAdd, isVegan: !recipeAdd.isVegan})
+              recipeEdit &&
+              setRecipeEdit({...recipeEdit, isVegan: !recipeEdit?.isVegan})
             }
           />
           <OnOfButton
-            isOpen={recipeAdd?.isKosher}
+            isOpen={recipeEdit?.isKosher}
             name="isKosher"
             setIsOpen={() =>
-              setRecipeAdd({...recipeAdd, isKosher: !recipeAdd.isKosher})
+              recipeEdit &&
+              setRecipeEdit({...recipeEdit, isKosher: !recipeEdit?.isKosher})
             }
           />
         </View>
@@ -289,6 +209,7 @@ const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
         <CategoryRecipesSelector
           selected={selected}
           setSelected={setSelected}
+          categoriesProp={allCategoriesRecipe()}
         />
         <Text style={styles.TextSimple}>Spiceness:</Text>
         <SpicenessSelector setSpiceness={setSpiceness} />
@@ -296,68 +217,80 @@ const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
         <TextInputRecipe
           name="cookTime"
           placeholder="Cook time (HH:MM)"
-          value={recipeAdd?.cookTime}
-          onChange={setRecipeAdd}
-          state={recipeAdd}
+          value={recipeEdit?.cookTime}
+          onChange={setRecipeEdit}
+          state={recipeEdit}
         />
         <Text style={styles.TextSimple}>Prep time (HH:MM):</Text>
         <TextInputRecipe
           name="prepTime"
           placeholder="Prep time (HH:MM)"
-          value={recipeAdd?.prepTime}
-          onChange={setRecipeAdd}
-          state={recipeAdd}
+          value={recipeEdit?.prepTime}
+          onChange={setRecipeEdit}
+          state={recipeEdit}
         />
         <Text style={styles.TextSimple}>Serves:</Text>
         <TextInputRecipe
           name="serves"
           placeholder="Number of serves"
-          value={recipeAdd?.serves}
-          onChange={setRecipeAdd}
-          state={recipeAdd}
+          value={recipeEdit?.serves.toString()}
+          onChange={setRecipeEdit}
+          state={recipeEdit}
         />
-        {ingredientsList.length > 0 && (
+      </>
+      {recipeEdit?.ingredientsList &&
+        recipeEdit?.ingredientsList.length > 0 && (
           <Text style={styles.TextTitle}>Ingredients</Text>
         )}
-        <IngredientController
-          ingredientsList={ingredientsList}
-          setIngredientsList={setIngredientsList}
+
+      <IngredientControllerEdit
+        ingredientsList={recipeEdit ? recipeEdit.ingredientsList : null}
+        setIngredientsList={props =>
+          recipeEdit && setRecipeEdit({...recipeEdit, ingredientsList: props})
+        }
+      />
+
+      {recipeEdit?.manualList.length !== 0 && (
+        <Text style={styles.TextTitle}>Manual</Text>
+      )}
+
+      <Text style={styles.TextSimple}>Add recipe step:</Text>
+      <View
+        style={{
+          backgroundColor: 'rgba(0,0,0,0.15)',
+          width: '100%',
+          padding: 10,
+          marginVertical: 10,
+          borderRadius: 5,
+        }}>
+        <ManualControllerEdit
+          manualList={recipeEdit ? recipeEdit.manualList : null}
+          setManualList={(value: IManualEdit[]) => {
+            if (recipeEdit) setRecipeEdit({...recipeEdit, manualList: value});
+          }}
         />
-        {recipeAdd.manualList.length !== 0 && (
-          <Text style={styles.TextTitle}>Manual</Text>
-        )}
+      </View>
 
-        <Text style={styles.TextSimple}>Add recipe step:</Text>
-        <View
-          style={{
-            backgroundColor: 'rgba(0,0,0,0.15)',
-            width: '100%',
-            padding: 10,
-            marginVertical: 10,
-            borderRadius: 5,
-          }}>
-          <ManualController
-            manualList={manualList}
-            setManualList={setManualList}
-          />
-        </View>
-
-        {recipeAdd.tags.length !== 0 && (
-          <Text style={styles.TextTitle}>Tags</Text>
-        )}
-        <Text style={styles.TextSimple}>Add Tag</Text>
-        <TagController tags={tags} setTags={setTags} />
-        <View
-          style={{
-            width: '100%',
-            marginVertical: 10,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <Text style={styles.TextTitle}>Do you want to add extra steps</Text>
-          <PillButton status={isTipsVisible} setStatus={setIsTipsVisible} />
-        </View>
+      {recipeEdit?.tags.length !== 0 && (
+        <Text style={styles.TextTitle}>Tags</Text>
+      )}
+      <Text style={styles.TextSimple}>Add Tag</Text>
+      <TagController
+        tags={recipeEdit?.tags}
+        setTags={(data: string[]) => {
+          if (recipeEdit) setRecipeEdit({...recipeEdit, tags: data});
+        }}
+      />
+      <View
+        style={{
+          width: '100%',
+          marginVertical: 10,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+        <Text style={styles.TextTitle}>Do you want to add extra steps</Text>
+        <PillButton status={isTipsVisible} setStatus={setIsTipsVisible} />
       </View>
       {isTipsVisible && (
         <View
@@ -374,28 +307,32 @@ const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
           <TextInputRecipe
             name="tipTitle"
             placeholder="Title for the tip"
-            value={recipeAdd?.tipTitle}
-            onChange={setRecipeAdd}
-            state={recipeAdd}
+            value={recipeEdit?.tipTitle}
+            onChange={setRecipeEdit}
+            state={recipeEdit}
           />
           <Text style={styles.TextSimple}>Desciption for tips:</Text>
 
           <TextInputRecipe
             name="tipDescription"
             placeholder="description for the tip"
-            value={recipeAdd?.tipDescription}
-            onChange={setRecipeAdd}
-            state={recipeAdd}
+            value={recipeEdit?.tipDescription}
+            onChange={setRecipeEdit}
+            state={recipeEdit}
           />
 
-          {tipIngredientsList.length > 0 && (
-            <Text style={styles.TextTitle}>Ingredients for tips</Text>
-          )}
-          <IngredientController
-            ingredientsList={tipIngredientsList}
-            setIngredientsList={setTipIngredientsList}
+          {recipeEdit?.tipIngredientsList &&
+            recipeEdit?.tipIngredientsList.length > 0 && (
+              <Text style={styles.TextTitle}>Ingredients for tips</Text>
+            )}
+          <IngredientControllerEdit
+            ingredientsList={recipeEdit?.tipIngredientsList}
+            setIngredientsList={props =>
+              recipeEdit &&
+              setRecipeEdit({...recipeEdit, tipIngredientsList: props})
+            }
           />
-          {recipeAdd.tipManualList.length !== 0 && (
+          {recipeEdit?.tipManualList.length !== 0 && (
             <Text style={styles.TextTitle}>Manual for tips</Text>
           )}
 
@@ -408,9 +345,12 @@ const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
               marginVertical: 10,
               borderRadius: 5,
             }}>
-            <ManualController
-              manualList={tipManualList}
-              setManualList={setTipManualList}
+            <ManualControllerEdit
+              manualList={recipeEdit ? recipeEdit.tipManualList : null}
+              setManualList={(value: IManualEdit[]) => {
+                if (recipeEdit)
+                  setRecipeEdit({...recipeEdit, tipManualList: value});
+              }}
             />
           </View>
         </View>
@@ -425,13 +365,8 @@ const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
             justifyContent: 'center',
             borderRadius: 5,
           }}
-          onPress={async () => {
-            const validation = await validateRecipeAdd(recipeAdd);
-            if (!validation) dispatch(addRecipe(recipeAdd));
-          }}>
-          <Text style={{color: '#fff', fontWeight: 'bold'}}>
-            Submit new Recipe
-          </Text>
+          onPress={SubmitEditRecipe()}>
+          <Text style={{color: '#fff', fontWeight: 'bold'}}>Edit Recipe</Text>
         </TouchableOpacity>
       </View>
     </LoggedInBackground>
@@ -470,28 +405,61 @@ const styles = StyleSheet.create({
 export {styles as RecipeStyles};
 export default EditRecipes;
 
-const validateRecipeAdd = async (recipe: IRecipeAdd): Promise<boolean> => {
+const validateRecipeAdd = async (recipe: IEditRecipe): Promise<boolean> => {
+  console.info(recipe);
   try {
-    if (!checkStringNull(recipe.title, 'title')) return false;
-    if (!checkStringNull(recipe.description, 'description')) return false;
-    if (!checkStringNull(recipe.cuisineCode, 'cuisine')) return false;
-    if (!checkStringNull(recipe.cookTime, 'Cook Time')) return false;
-    if (!checkStringNull(recipe.prepTime, 'Prep Time')) return false;
-    if (!checkStringNull(recipe.serves, 'Serves')) return false;
-    if (checkList(recipe.ingredientsList, 'Ingredient List')) return false;
-    if (!checkList(recipe.manualList, 'Manual List')) return false;
+    if (!isStringValid(recipe.title, 'title')) {
+      console.log({title: recipe.title});
+      return false;
+    }
+    if (!isStringValid(recipe.description, 'description')) {
+      console.log({description: recipe.description});
+      return false;
+    }
+    if (!isStringValid(recipe.cuisineCode, 'cuisine')) {
+      console.log({cuisineCode: recipe.cuisineCode});
+      return false;
+    }
+    if (!isHoursValid(recipe.cookTime, 'Cook Time')) {
+      console.log({cookTime: recipe.cookTime});
+      return false;
+    }
+    if (!isHoursValid(recipe.prepTime, 'Prep Time')) {
+      console.log({prepTime: recipe.prepTime});
+      return false;
+    }
+    if (!isStringValid(recipe.serves, 'Serves')) {
+      console.log({serves: recipe.serves});
+      return false;
+    }
+    if (!checkList(recipe.ingredientsList, 'Ingredient List')) {
+      console.log({ingredientsList: recipe.ingredientsList});
+      return false;
+    }
+    if (!checkList(recipe.manualList, 'Manual List')) {
+      console.log({manualList: recipe.manualList});
+      return false;
+    }
     if (recipe.tipTitle) {
-      if (!checkList(recipe.tipIngredientsList, 'Tip Ingredient List'))
+      if (!checkList(recipe.tipIngredientsList, 'Tip Ingredient List')) {
+        console.log({tipIngredientsList: recipe.tipIngredientsList});
         return false;
-      if (!checkList(recipe.tipManualList, 'Tip Manual List')) return false;
+      }
+      if (!checkList(recipe.tipManualList, 'Tip Manual List')) {
+        console.log({tipManualList: recipe.tipManualList});
+        return false;
+      }
     }
   } catch (error) {
-    return false;
+    {
+      console.log();
+      return false;
+    }
   }
   return true;
 };
 const checkList = (
-  ingredientsList: IIngredientList[] | IManualList[] | string[],
+  ingredientsList: IIngredientEdit[] | IManualEdit[] | string[],
   title: string,
 ): boolean => {
   if (ingredientsList.length === 0) {

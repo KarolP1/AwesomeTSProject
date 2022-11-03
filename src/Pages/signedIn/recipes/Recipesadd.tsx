@@ -16,8 +16,8 @@ import CuisineSearchbar from '../../../components/categorySelector/cuisineSearch
 import OnOfButton from '../../../components/recipes/OnOfButton';
 import CategoryRecipesSelector from '../../../components/categorySelector';
 import SpicenessSelector from '../../../components/TextInputs/SpicenessSelector';
-import ManualController from './ManualController';
-import IngredientController from './IngredientController';
+import {ManualController} from './ManualController';
+import {IngredientController} from './IngredientController';
 import TagController from '../../../components/recipes/TagController';
 import {cleanUpAddRecipe} from '../../../redux/recipes/addRecipe/addRecipe';
 import {
@@ -58,7 +58,7 @@ export interface IRecipeAdd {
   spiceness: 'extra hot' | 'Hot' | 'Mild' | 'normal';
   ingredientsList: IIngredientList[];
   isEstablishment: boolean;
-  advancement: 1 | 2 | 3 | 4 | 5;
+  advancement: 1 | 2 | 3 | 4 | 5 | null;
   prepTime: string;
   cookTime: string;
   serves: string;
@@ -127,16 +127,13 @@ const initialState: IRecipeAdd = {
 const Recipesadd = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<RecipesHomePageScreenProp>();
-
-  useEffect(() => {
-    console.log(lastRecipeAdded);
-  }, []);
+  const allRecipes = useAppSelector(state => state.recipes.data);
 
   const [recipeAdd, setRecipeAdd] = useState<IRecipeAdd>(initialState);
   //#region state for manualList
   const [image, setImage] = useState<ImagePickerResponse | null>(null);
   const [selected, setSelected] = useState<
-    0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | null
+    0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null
   >(0);
   const [cuisine, setCuisine] = useState<string | null>(null);
   const [cuisineCode, setCuisineCode] = useState<string | null>(null);
@@ -144,7 +141,7 @@ const Recipesadd = () => {
   const [spiceness, setSpiceness] = useState<
     'normal' | 'extra hot' | 'Hot' | 'Mild'
   >('normal');
-  const [advancement, setAdvancement] = useState<1 | 2 | 3 | 4 | 5>(
+  const [advancement, setAdvancement] = useState<1 | 2 | 3 | 4 | 5 | null>(
     initialState.advancement,
   );
   const [manualList, setManualList] = useState<IManualList[]>(
@@ -222,11 +219,9 @@ const Recipesadd = () => {
 
   useEffect(() => {
     if (succes === true && !image) {
-      navigation.navigate('My Recipes');
       dispatch(cleanUpAddRecipe());
     }
     if (succes === true && image && lastRecipeAdded) {
-      console.log('hello');
       //TODO: add image dispatch
       if (image.assets && image.assets[0] && image.assets[0].fileName) {
         const data = createFormData(image.assets[0], 'recipeItem');
@@ -236,6 +231,17 @@ const Recipesadd = () => {
         navigation.navigate('My Recipes');
       }
       dispatch(cleanUpAddRecipe());
+    }
+    if (succes === true && lastRecipeAdded) {
+      if (allRecipes) {
+        const recipe = allRecipes.filter(
+          recipe => recipe._id === lastRecipeAdded,
+        )[0];
+        if (recipe) {
+          navigation.navigate('Single Recipe', {recipe});
+          dispatch(cleanUpAddRecipe());
+        }
+      }
     }
   }, [succes, lastRecipeAdded, image]);
 
@@ -313,6 +319,7 @@ const Recipesadd = () => {
         <CategoryRecipesSelector
           selected={selected}
           setSelected={setSelected}
+          categoriesProp={allCategoriesRecipe()}
         />
         <Text style={styles.TextSimple}>Spiceness:</Text>
         <SpicenessSelector setSpiceness={setSpiceness} />

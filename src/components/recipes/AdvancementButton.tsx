@@ -1,17 +1,24 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 const AdvancementButton = ({
   selected,
   setSelected,
 }: {
-  selected: number;
-  setSelected: React.Dispatch<React.SetStateAction<1 | 2 | 3 | 4 | 5>>;
+  selected: 1 | 2 | 3 | 4 | 5 | null;
+  setSelected: React.Dispatch<React.SetStateAction<1 | 2 | 3 | 4 | 5 | null>>;
 }) => {
+  const [advancementSelected, setAdvancementSelected] = useState<
+    1 | 2 | 3 | 4 | 5 | null
+  >(null);
   const isSelected = (number: number) => {
-    if (selected === number) return true;
+    if (advancementSelected === number) return true;
     else return false;
   };
+  useEffect(() => {
+    setAdvancementSelected(selected);
+    setSelected(selected);
+  }, [selected]);
   const onPressFunction = (number: 1 | 2 | 3 | 4 | 5) => {
     setSelected(number);
   };

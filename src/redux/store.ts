@@ -7,6 +7,7 @@ import registerSlice from './Auth/registerReducer';
 import recipesSlice from './recipes';
 import recipesByTagSlice from './recipes/searchByTag';
 import addRecipeSlice from './recipes/addRecipe/addRecipe';
+import editRecipeSlice from './recipes/editRecipe/editRecipe.slice';
 import myRecipesSlice from './recipes/myRecipes/myRecipes.slice';
 import addShoppingListSlice from './recipes/shoppingList/addShoppingList.slice';
 import getShoppingListSlice from './recipes/shoppingList/getShoppingList.slice';
@@ -28,6 +29,7 @@ export const store = configureStore({
     recipes: recipesSlice,
     recipesByTag: recipesByTagSlice,
     addRecipe: addRecipeSlice,
+    editRecipe: editRecipeSlice,
     myRecipes: myRecipesSlice,
     addShoppingList: addShoppingListSlice,
     getShoppinglists: getShoppingListSlice,
