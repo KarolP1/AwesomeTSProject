@@ -7,17 +7,24 @@ import {
   HomeStackParamList,
   TabPageScreenProp,
 } from '../../navigation/types';
+import {useAppDispatch} from '../../redux/hooks';
+import {setLastNavigationDirection} from '../../redux/App/setup.sicle';
 
 const MenuSquareCartContainer = (props: {
   name: 'Order' | 'Recipes' | 'Profile' | 'Coming soon';
   image: any;
 }) => {
   const navigation = useNavigation<HomePageScreenProp>();
+  const dispatch = useAppDispatch();
   return (
     <TouchableOpacity
       style={styles.container}
-      //@ts-ignore
-      onPress={() => navigation.navigate('Home Page', {screen: props.name})}>
+      onPress={() => {
+        dispatch(setLastNavigationDirection(props.name));
+
+        //@ts-ignore
+        navigation.navigate('Home Page', {screen: props.name});
+      }}>
       <DropShadow style={styles.MenuSquareCartContainer}>
         <Image
           source={props.image}

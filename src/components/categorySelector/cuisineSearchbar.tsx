@@ -7,7 +7,7 @@ const CuisineSearchbar = ({
   initialSelectedCuisine,
   setCuisineCode,
 }: {
-  initialSelectedCuisine: string | undefined;
+  initialSelectedCuisine?: string | undefined;
   setCuisineCode: (cuisineCode: string) => void;
 }) => {
   useEffect(() => {

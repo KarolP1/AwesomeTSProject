@@ -5,6 +5,9 @@ import SingleEmployee from '../../Pages/signedIn/Profile/SingleEmployee';
 import {ProfileParamList} from './ProfileNavigator.types';
 import ProfileNavigationAddMenuItems from '../../Pages/signedIn/Profile/AddMenuItem';
 import ProfileNavigationEditMenuItemsPage from '../../Pages/signedIn/Profile/EditMenuItem';
+import EditRecipes from '../../Pages/signedIn/recipes/EditRecipePage';
+import Recipesadd from '../../Pages/signedIn/recipes/Recipesadd';
+import SingleRecipe from '../../Pages/signedIn/recipes/SingleRecipe';
 
 export const ProfileNavigationContainer = () => {
   const Stack = createNativeStackNavigator<ProfileParamList>();
@@ -22,6 +25,9 @@ export const ProfileNavigationContainer = () => {
         name="EditMenuItem"
         component={ProfileNavigationEditMenuItemsPage}
       />
+      <Stack.Screen name="AddRecipeFromProfile" component={Recipesadd} />
+      <Stack.Screen name="EditRecipeFromProfile" component={EditRecipes} />
+      <Stack.Screen name="SingleRecipeFromProfile" component={SingleRecipe} />
     </Stack.Navigator>
   );
 };

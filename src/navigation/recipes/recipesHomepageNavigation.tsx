@@ -4,7 +4,7 @@ import EditRecipes from '../../Pages/signedIn/recipes/EditRecipePage';
 import RecipeAddToShoppingList from '../../Pages/signedIn/recipes/recipeAddToShoppingList';
 import Recipesadd from '../../Pages/signedIn/recipes/Recipesadd';
 import RecipesFind from '../../Pages/signedIn/recipes/Recipesfind';
-import RecipesShoppinglists from '../../Pages/signedIn/recipes/Recipeslists';
+import RecipesShoppinglists from '../../Pages/signedIn/recipes/ShoppingList';
 import Recipesmy from '../../Pages/signedIn/recipes/Recipesmy';
 import SingleRecipe from '../../Pages/signedIn/recipes/SingleRecipe';
 import SingleShoppingListEdit from '../../Pages/signedIn/recipes/SingleShoppingListEdit';

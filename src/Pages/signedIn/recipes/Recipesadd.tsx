@@ -27,12 +27,18 @@ import {
 import {allCategoriesRecipe} from '../../../components/categorySelector/allCategories';
 import {instance} from '../../../redux/interceptors';
 import AdvancementButton from '../../../components/recipes/AdvancementButton';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {RecipesHomePageScreenProp} from '../../../navigation/types';
-import {checkStringNull} from '../../../redux/recipes/addRecipe/functions';
+import {isStringValid} from '../../../redux/recipes/addRecipe/functions';
 import PillButton from '../../../components/recipes/PillButton';
 import uuid from 'react-native-uuid';
 import {createFormData} from '../../../utils/photos/handleFormdata';
+import {
+  ProfileAddRecipeNavigationProps,
+  ProfileNavigation,
+  ProfileNavigationProps,
+} from '../../../navigation/Profile/ProfileNavigator.types';
+import {IRecipe} from '../../../redux/recipes/types';
 
 //#region initial
 export interface IIngredientList {
@@ -125,8 +131,14 @@ const initialState: IRecipeAdd = {
 };
 //#endregion
 const Recipesadd = () => {
+  //
+  const route = useRoute<ProfileAddRecipeNavigationProps['route']>();
+  const from = route.params.from;
+
   const dispatch = useAppDispatch();
   const navigation = useNavigation<RecipesHomePageScreenProp>();
+  const navigationProfile = useNavigation<ProfileNavigation>();
+
   const allRecipes = useAppSelector(state => state.recipes.data);
 
   const [recipeAdd, setRecipeAdd] = useState<IRecipeAdd>(initialState);
@@ -135,7 +147,6 @@ const Recipesadd = () => {
   const [selected, setSelected] = useState<
     0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | null
   >(0);
-  const [cuisine, setCuisine] = useState<string | null>(null);
   const [cuisineCode, setCuisineCode] = useState<string | null>(null);
   const [isEstablishment, setIsEstablishment] = useState<boolean>(false);
   const [spiceness, setSpiceness] = useState<
@@ -200,6 +211,14 @@ const Recipesadd = () => {
   useEffect(() => {
     setRecipeAdd({...recipeAdd, isEstablishment});
   }, [isEstablishment]);
+
+  const [newRecipe, setNewRecipe] = useState<IRecipe | null>(null);
+  useEffect(() => {
+    const recipefilter = allRecipes?.filter(
+      state => state._id === lastRecipeAdded,
+    )[0];
+    if (recipefilter) setNewRecipe(recipefilter);
+  }, [allRecipes]);
   //#endregion
 
   const {succes, error, lastRecipeAdded} = useAppSelector(
@@ -228,8 +247,13 @@ const Recipesadd = () => {
         dispatch(
           addRecipeMainImageThunk({recipeId: lastRecipeAdded, image: data}),
         );
-        navigation.navigate('My Recipes');
-      }
+        if (from === 'Profile' && newRecipe && newRecipe.image) {
+          if (newRecipe)
+            navigationProfile.navigate('SingleRecipeFromProfile', {
+              recipe: newRecipe,
+            });
+        }
+      } else navigation.navigate('My Recipes');
       dispatch(cleanUpAddRecipe());
     }
     if (succes === true && lastRecipeAdded) {
@@ -238,12 +262,17 @@ const Recipesadd = () => {
           recipe => recipe._id === lastRecipeAdded,
         )[0];
         if (recipe) {
-          navigation.navigate('Single Recipe', {recipe});
+          if (from === 'Profile') {
+            if (newRecipe)
+              navigationProfile.navigate('SingleRecipeFromProfile', {
+                recipe: newRecipe,
+              });
+          } else navigation.navigate('My Recipes');
           dispatch(cleanUpAddRecipe());
         }
       }
     }
-  }, [succes, lastRecipeAdded, image]);
+  }, [succes, lastRecipeAdded, image, newRecipe]);
 
   const [isTipsVisible, setIsTipsVisible] = useState<boolean>(false);
 
@@ -287,11 +316,7 @@ const Recipesadd = () => {
           setSelected={setAdvancement}
         />
         <Text style={styles.TextSimple}>Cuisine:</Text>
-        <CuisineSearchbar
-          cuisine={cuisine}
-          setCuisine={setCuisine}
-          setCuisineCode={setCuisineCode}
-        />
+        <CuisineSearchbar setCuisineCode={setCuisineCode} />
         <View style={{flexDirection: 'row', marginVertical: 10}}>
           <OnOfButton
             isOpen={recipeAdd?.isHalal}
@@ -503,12 +528,12 @@ export default Recipesadd;
 
 const validateRecipeAdd = async (recipe: IRecipeAdd): Promise<boolean> => {
   try {
-    if (!checkStringNull(recipe.title, 'title')) return false;
-    if (!checkStringNull(recipe.description, 'description')) return false;
-    if (!checkStringNull(recipe.cuisineCode, 'cuisine')) return false;
-    if (!checkStringNull(recipe.cookTime, 'Cook Time')) return false;
-    if (!checkStringNull(recipe.prepTime, 'Prep Time')) return false;
-    if (!checkStringNull(recipe.serves, 'Serves')) return false;
+    if (!isStringValid(recipe.title, 'title')) return false;
+    if (!isStringValid(recipe.description, 'description')) return false;
+    if (!isStringValid(recipe.cuisineCode, 'cuisine')) return false;
+    if (!isStringValid(recipe.cookTime, 'Cook Time')) return false;
+    if (!isStringValid(recipe.prepTime, 'Prep Time')) return false;
+    if (!isStringValid(recipe.serves, 'Serves')) return false;
     if (checkList(recipe.ingredientsList, 'Ingredient List')) return false;
     if (!checkList(recipe.manualList, 'Manual List')) return false;
     if (recipe.tipTitle) {

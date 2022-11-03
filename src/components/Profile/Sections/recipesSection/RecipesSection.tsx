@@ -1,13 +1,11 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {IGetProfileInfo} from '../../../../redux/Profile/types';
 import {useAppDispatch, useAppSelector} from '../../../../redux/hooks';
 import CategoryRecipesSelector from '../../../categorySelector';
 import {
   allCategoriesRecipe,
   category,
 } from '../../../categorySelector/allCategories';
-import {useDispatch} from 'react-redux';
 import {getMyRecipes} from '../../../../redux/recipes/myRecipes/myRecipes.thunk';
 import Spinner from 'react-native-spinkit';
 import RecipesLists from '../../../recipes/recipesLists';
@@ -15,7 +13,8 @@ import {IRecipe} from '../../../../redux/recipes/types';
 import SimpleSection from '../infoScetion/SimpleSection';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
-import {RecipesToProfilePageNavigation} from '../../../../navigation/types';
+import {cleanUpAddRecipe} from '../../../../redux/recipes/addRecipe/addRecipe';
+import {ProfileNavigation} from '../../../../navigation/Profile/ProfileNavigator.types';
 
 const RecipesSection = ({}: {}) => {
   const {isLoading, data} = useAppSelector(state => state.myRecipes);
@@ -52,7 +51,7 @@ const RecipesSection = ({}: {}) => {
     dispatch(getMyRecipes({category: dishesType?.cagetoryName}));
   }, [dishesType]);
 
-  const navigation = useNavigation<RecipesToProfilePageNavigation>();
+  const navigationProfile = useNavigation<ProfileNavigation>();
 
   return (
     <View
@@ -118,12 +117,32 @@ const RecipesSection = ({}: {}) => {
                       />
                     </TouchableOpacity>
                   )
+                }
+                ExtraButton={() =>
+                  isEditModeEnabledBest ? (
+                    <TouchableOpacity
+                      onPress={() => {
+                        dispatch(cleanUpAddRecipe());
+                        navigationProfile.navigate('AddRecipeFromProfile', {
+                          from: 'Profile',
+                        });
+                      }}>
+                      <Image
+                        style={{
+                          height: 20,
+                          width: 20,
+                        }}
+                        source={require('../../../../assets/utilityIcons/add.png')}
+                      />
+                    </TouchableOpacity>
+                  ) : null
                 }>
                 <View style={{height: 400}}>
                   <RecipesLists
                     isEditModeEnabled={isEditModeEnabledBest}
                     recipes={recipes}
                     title={null}
+                    from="Profile"
                   />
                 </View>
               </SimpleSection>
@@ -179,7 +198,9 @@ const RecipesSection = ({}: {}) => {
                 </Text>
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate('Recipes Home', {screen: 'Add Recipes'})
+                    navigationProfile.navigate('AddRecipeFromProfile', {
+                      from: 'Profile',
+                    })
                   }
                   style={{
                     backgroundColor: '#EA3651',
@@ -195,7 +216,9 @@ const RecipesSection = ({}: {}) => {
               <>
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate('Recipes Home', {screen: 'Add Recipes'})
+                    navigationProfile.navigate('AddRecipeFromProfile', {
+                      from: 'Profile',
+                    })
                   }
                   style={{
                     backgroundColor: '#EA3651',

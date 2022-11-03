@@ -13,6 +13,7 @@ import {ProfileNavigationContainer} from '../Profile/ProfileRootNavigator';
 
 const BottomTabNavigator = () => {
   const Tab = createBottomTabNavigator<HomeTabParamList>();
+
   return (
     <Tab.Navigator
       screenOptions={TabDefaultOptions}

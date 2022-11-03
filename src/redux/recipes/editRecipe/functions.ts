@@ -51,6 +51,7 @@ export const convertIRecipeToIEditRecipe = (recipe: IRecipe): IEditRecipe => {
   const cuisineCode = convertCuisineCode(recipe.cuisine);
   return {
     title: recipe.title,
+    image: recipe.image,
     description: recipe.description,
     cuisineCode: cuisineCode,
     isKosher: recipe.isKosher,
@@ -75,7 +76,7 @@ export const convertIRecipeToIEditRecipe = (recipe: IRecipe): IEditRecipe => {
         stepNumber: item.stepNumber,
       };
     }),
-    tipTitle: recipe.title,
+    tipTitle: recipe.tipTitle,
     tipDescription: recipe.tipDescription,
     tipIngredientsList: recipe.tipIngredients.map(singredient => {
       return {

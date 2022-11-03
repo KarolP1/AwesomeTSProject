@@ -8,20 +8,23 @@ import {
   RecipesToProfilePageNavigation,
 } from '../../navigation/types';
 import {RootNavigationWithRecipeAndRecipePagesProp} from '../../navigation/rootNavigation.navigation';
+import {ProfileNavigation} from '../../navigation/Profile/ProfileNavigator.types';
 
 const RecipesLists = ({
   recipes,
   tag,
   title,
   isEditModeEnabled,
+  from,
 }: {
   recipes?: IRecipe[] | null;
   tag?: string;
   title?: string | null;
   isEditModeEnabled?: boolean;
+  from?: 'Profile' | 'Recipe';
 }) => {
-  const navigation = useNavigation<RecipesToProfilePageNavigation>();
-
+  const navigationRecipes = useNavigation<RecipesToProfilePageNavigation>();
+  const navigationProfile = useNavigation<ProfileNavigation>();
   return (
     <>
       {tag ? (
@@ -57,17 +60,21 @@ const RecipesLists = ({
                 borderRadius: 15,
               }}
               onPress={() => {
-                if (recipe)
-                  navigation.navigate('Recipes Home', {
-                    screen: 'Single Recipe',
-                    params: {
-                      recipeGet: recipe,
-                    },
+                if (recipe && from === 'Profile')
+                  navigationProfile.navigate('SingleRecipeFromProfile', {
+                    recipe: recipe,
                   });
+                // navigation.navigate('Recipes Home', {
+                //   screen: 'Single Recipe',
+                //   params: {
+                //     recipeGet: recipe,
+                //   },
+                // });
               }}>
               <SingleRecipe
                 Recipe={recipe}
                 isEditModeEnabled={isEditModeEnabled}
+                from={from}
               />
             </TouchableOpacity>
           ))}

@@ -1,10 +1,7 @@
-import {IRecipeEdit} from './../../../navigation/recipes/HomeRecipesNavigation.Stack';
-import {IRecipeAdd} from '../../../Pages/signedIn/recipes/Recipesadd';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {getTokensKeychain} from '../../../utils/localStorage';
 import {instance} from '../../interceptors';
 import {IIMageRecipe, IResponseAddRecipe} from '../types';
-import {IResponseRegisterResponse} from '../../Auth/AuthTypes';
 import {IResponseGetMyEstablishmentMenus} from '../../Profile/establishmentMenus/types';
 import {ImagePickerResponse} from 'react-native-image-picker';
 
@@ -49,7 +46,7 @@ export interface IEditRecipe {
 
 export const editRecipeThunk = createAsyncThunk<
   IResponseAddRecipe,
-  {data: IEditRecipe; recipeId: 'string'}
+  {data: IEditRecipe; recipeId: string}
 >('recipes/editRecipe', async (state, {rejectWithValue}) => {
   try {
     const tokens = await getTokensKeychain();

@@ -11,6 +11,7 @@ import {getMyEstabishmentMenus} from '../../../redux/Profile/establishmentMenus/
 
 const Profile = () => {
   const {data, error} = useAppSelector(state => state.profile);
+
   const dispatch = useAppDispatch();
   const userRole = data?.userRole;
 

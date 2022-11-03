@@ -15,6 +15,7 @@ import CategoryRecipesSelector from '../../../components/categorySelector';
 import {allCategoriesRecipe} from '../../../components/categorySelector/allCategories';
 import Spinner from 'react-native-spinkit';
 import CuisineSearchbar from '../../../components/categorySelector/cuisineSearchbar';
+import addRecipe from '../../../redux/recipes/addRecipe/addRecipe';
 
 const RecipesFind = ({route}: FindScreenProps) => {
   const tag = route.params?.recipesTag;
@@ -58,11 +59,7 @@ const RecipesFind = ({route}: FindScreenProps) => {
   const allRecipes = useAppSelector(state => state.recipes.data);
   return (
     <LoggedInBackground>
-      <CuisineSearchbar
-        setCuisine={setCuisine}
-        cuisine={cuisine}
-        setCuisineCode={setCuisineCode}
-      />
+      <CuisineSearchbar setCuisineCode={setCuisineCode} />
       <CategoryRecipesSelector
         selected={selected}
         setSelected={setSelected}

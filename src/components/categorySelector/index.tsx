@@ -4,6 +4,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React, {SetStateAction, useState} from 'react';
 import {allCategoriesRecipe, category} from './allCategories';
@@ -31,9 +32,9 @@ const CategoryRecipesSelector = ({
         <TouchableOpacity
           activeOpacity={1}
           key={category.index}
-          //   disabled={isEditModeEnabled}
           onPress={() => {
-            setSelected(category.index);
+            if (category.index === selected) setSelected(null);
+            else setSelected(category.index);
           }}>
           {selected !== category.index ? (
             <DropShadow

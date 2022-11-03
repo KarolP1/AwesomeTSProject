@@ -20,11 +20,14 @@ import {setScrollPosition} from '../../redux/App/setup.sicle';
 const LoggedInBackground = ({children}: {children?: ReactNode}) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const isViewScrollable = useAppSelector(state => state.App.isViewScrollable);
+  const {isViewScrollable, lastNavigationDirection} = useAppSelector(
+    state => state.App,
+  );
   const [pos, setPos] = useState(0);
   useEffect(() => {
     dispatch(setScrollPosition(pos));
   }, [pos]);
+
   return (
     <ImageBackground
       style={styles.loggedOutBackground}
@@ -43,6 +46,7 @@ const LoggedInBackground = ({children}: {children?: ReactNode}) => {
             style={{flex: 1, resizeMode: 'center'}}
             source={require('../../assets/BLINKFIX.png')}
           />
+
           <TouchableOpacity
             onPress={() => {
               logout();
@@ -65,6 +69,7 @@ const LoggedInBackground = ({children}: {children?: ReactNode}) => {
               alignItems: 'center',
             }}
             onScroll={e => setPos(e.nativeEvent.contentOffset.y)}>
+            <Text>{lastNavigationDirection}</Text>
             {children ? children : <Text>hello</Text>}
           </ScrollView>
         </KeyboardAvoidingView>

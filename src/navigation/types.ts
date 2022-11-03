@@ -126,7 +126,7 @@ export type RecipesHomeStackParamList = {
     recipesTag?: string | undefined;
   };
   'Edit Recipe': {
-    recipe: IRecipe;
+    recipe: IRecipe | null;
   };
   'My Recipes': undefined;
   'Add Recipes': {recipe: IRecipeAdd} | undefined;

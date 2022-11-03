@@ -10,15 +10,12 @@ import OnOfButton from '../../../components/recipes/OnOfButton';
 import CategoryRecipesSelector from '../../../components/categorySelector';
 import SpicenessSelector from '../../../components/TextInputs/SpicenessSelector';
 import {ManualControllerEdit} from './ManualController';
-import {
-  IngredientController,
-  IngredientControllerEdit,
-} from './IngredientController';
+import {IngredientControllerEdit} from './IngredientController';
 import TagController from '../../../components/recipes/TagController';
 import {cleanUpAddRecipe} from '../../../redux/recipes/addRecipe/addRecipe';
 import {allCategoriesRecipe} from '../../../components/categorySelector/allCategories';
 import AdvancementButton from '../../../components/recipes/AdvancementButton';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {
   RecipesHomePageScreenProp,
   RecipesToProfilePageScreenProp,
@@ -36,12 +33,19 @@ import {
   IManualEdit,
 } from '../../../redux/recipes/editRecipe/editRecipe.thunk';
 import {cleanUpRecipeEdit} from '../../../redux/recipes/editRecipe/editRecipe.slice';
+import {addRecipeMainImageThunk} from '../../../redux/recipes/addRecipe/addRecipe.thunk';
+import {createFormData} from '../../../utils/photos/handleFormdata';
+import {
+  ProfileEditRecipeNavigationProps,
+  ProfileNavigation,
+} from '../../../navigation/Profile/ProfileNavigator.types';
+import {getAllRecipes} from '../../../redux/recipes/recipesThunks';
 
-//#region initial
-//#endregion
-const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
+const EditRecipes = () => {
+  const route = useRoute<ProfileEditRecipeNavigationProps['route']>();
   const dispatch = useAppDispatch();
-  const navigation = useNavigation<RecipesHomePageScreenProp>();
+  const navigationProfile = useNavigation<ProfileNavigation>();
+
   //@ts-ignore
   const recipe = route.params.recipeGet;
 
@@ -58,7 +62,6 @@ const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
     0 | 8 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 9 | null
   >(0);
 
-  const [cuisineCode, setCuisineCode] = useState<string | null>(null);
   const [spiceness, setSpiceness] = useState<
     'normal' | 'extra hot' | 'Hot' | 'Mild'
   >('normal');
@@ -66,11 +69,6 @@ const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
   const [advancement, setAdvancement] = useState<1 | 2 | 3 | 4 | 5 | null>(
     null,
   );
-
-  //#endregion
-  useEffect(() => {
-    // console.log({?.:recipe?.}image);
-  }, [recipeEdit]);
 
   //#region effects
   useEffect(() => {
@@ -91,11 +89,6 @@ const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
   }, [spiceness]);
 
   useEffect(() => {
-    if (recipeEdit && cuisineCode)
-      setRecipeEdit({...recipeEdit, cuisineCode: cuisineCode});
-  }, [cuisineCode]);
-
-  useEffect(() => {
     const allDishesType = allCategoriesRecipe();
     const selectedType = allDishesType.find(
       element => element.index === selected,
@@ -104,10 +97,23 @@ const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
       setRecipeEdit({...recipeEdit, dishesType: selectedType.cagetoryName});
   }, [selected]);
 
-  useEffect(() => {}, [recipeEdit, image]);
   //#endregion
 
-  const {succes, error} = useAppSelector(state => state.editRecipe);
+  const {succes, error, data} = useAppSelector(state => state.editRecipe);
+
+  useEffect(() => {
+    if (data && succes && !image)
+      navigationProfile.navigate('SingleRecipeFromProfile', {
+        recipe: data,
+      });
+
+    if (data && succes && image)
+      navigationProfile.navigate('SingleRecipeFromProfile', {
+        recipe: data,
+      });
+    dispatch(cleanUpRecipeEdit());
+  }, [succes]);
+
   useEffect(() => {
     if (error)
       Alert.alert('Problem with validation', JSON.stringify(error), [
@@ -120,13 +126,6 @@ const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
       ]);
   }, [error]);
 
-  useEffect(() => {
-    if (succes === true) {
-      // navigation.navigate('My Recipes');
-      dispatch(cleanUpAddRecipe());
-    }
-  }, [succes]);
-
   function SubmitEditRecipe() {
     return async () => {
       if (recipeEdit) {
@@ -134,6 +133,13 @@ const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
         if (validation)
           dispatch(editRecipeThunk({data: recipeEdit, recipeId: recipe._id}));
         dispatch(cleanUpRecipeEdit());
+        if (image && image.assets) {
+          const data = createFormData(image.assets[0], 'recipeItem');
+          dispatch(
+            addRecipeMainImageThunk({image: data, recipeId: recipe._id}),
+          );
+        }
+        //TODO: getRecipe by id
       }
     };
   }
@@ -302,8 +308,8 @@ const EditRecipes = ({route}: RecipesToProfilePageScreenProp) => {
             marginVertical: 20,
           }}>
           <Text style={styles.TextTitle}> Exta steps for better taste</Text>
-          <Text style={styles.TextSimple}>Title for tips:</Text>
 
+          <Text style={styles.TextSimple}>Title for tips:</Text>
           <TextInputRecipe
             name="tipTitle"
             placeholder="Title for the tip"
@@ -406,53 +412,41 @@ export {styles as RecipeStyles};
 export default EditRecipes;
 
 const validateRecipeAdd = async (recipe: IEditRecipe): Promise<boolean> => {
-  console.info(recipe);
   try {
     if (!isStringValid(recipe.title, 'title')) {
-      console.log({title: recipe.title});
       return false;
     }
     if (!isStringValid(recipe.description, 'description')) {
-      console.log({description: recipe.description});
       return false;
     }
     if (!isStringValid(recipe.cuisineCode, 'cuisine')) {
-      console.log({cuisineCode: recipe.cuisineCode});
       return false;
     }
     if (!isHoursValid(recipe.cookTime, 'Cook Time')) {
-      console.log({cookTime: recipe.cookTime});
       return false;
     }
     if (!isHoursValid(recipe.prepTime, 'Prep Time')) {
-      console.log({prepTime: recipe.prepTime});
       return false;
     }
     if (!isStringValid(recipe.serves, 'Serves')) {
-      console.log({serves: recipe.serves});
       return false;
     }
     if (!checkList(recipe.ingredientsList, 'Ingredient List')) {
-      console.log({ingredientsList: recipe.ingredientsList});
       return false;
     }
     if (!checkList(recipe.manualList, 'Manual List')) {
-      console.log({manualList: recipe.manualList});
       return false;
     }
     if (recipe.tipTitle) {
       if (!checkList(recipe.tipIngredientsList, 'Tip Ingredient List')) {
-        console.log({tipIngredientsList: recipe.tipIngredientsList});
         return false;
       }
       if (!checkList(recipe.tipManualList, 'Tip Manual List')) {
-        console.log({tipManualList: recipe.tipManualList});
         return false;
       }
     }
   } catch (error) {
     {
-      console.log();
       return false;
     }
   }

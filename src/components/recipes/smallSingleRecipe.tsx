@@ -15,15 +15,20 @@ import {deleteRecipe} from '../../redux/recipes/recipesThunks';
 import {useNavigation} from '@react-navigation/native';
 import {RecipesToProfilePageNavigation} from '../../navigation/types';
 import {WEBCONST} from '../../constants/webConstants';
+import {ProfileNavigation} from '../../navigation/Profile/ProfileNavigator.types';
 
 const SingleRecipe = ({
   Recipe,
   isEditModeEnabled,
+  from,
 }: {
   Recipe: IRecipe;
   isEditModeEnabled?: boolean;
+  from?: 'Profile' | 'Recipe';
 }) => {
   const navigation = useNavigation<RecipesToProfilePageNavigation>();
+  const navigationProfile = useNavigation<ProfileNavigation>();
+
   const dispatch = useAppDispatch();
   return (
     <View style={styles.container}>
@@ -57,12 +62,18 @@ const SingleRecipe = ({
               <TouchableOpacity
                 onPress={async () => {
                   try {
-                    navigation.navigate('Recipes Home', {
-                      screen: 'Edit Recipe',
-                      params: {
+                    if (from === 'Profile') {
+                      navigationProfile.navigate('EditRecipeFromProfile', {
                         recipeGet: Recipe,
-                      },
-                    });
+                      });
+                    } else {
+                      navigation.navigate('Recipes Home', {
+                        screen: 'Edit Recipe',
+                        params: {
+                          recipeGet: Recipe,
+                        },
+                      });
+                    }
                   } catch (error) {
                     console.log(error);
                   }

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   StyleSheet,
   Text,
@@ -8,8 +9,11 @@ import {
 } from 'react-native';
 import React from 'react';
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
+import {useAppDispatch} from '../../redux/hooks';
+import {setLastNavigationDirection} from '../../redux/App/setup.sicle';
 
 const Tabbar = ({state, descriptors, navigation}: BottomTabBarProps) => {
+  const dipsatch = useAppDispatch();
   return (
     <View style={styles.TabContainer}>
       {state.routes.map((route, index, arr) => {
@@ -28,6 +32,7 @@ const Tabbar = ({state, descriptors, navigation}: BottomTabBarProps) => {
           });
 
           if (!isFocused && !event.defaultPrevented) {
+            dipsatch(setLastNavigationDirection(key));
             navigation.navigate(routeName);
           }
         };
