@@ -138,6 +138,7 @@ export type RecipesHomeStackParamList = {
     recipeId: string;
     ingredientsList: IIngredient[];
     tipIngredientsList: IIngredient[];
+    from: 'Profile' | 'Recipe';
   };
   'Single ShoppingList Edit': {
     list: ShoppingListItemGet;

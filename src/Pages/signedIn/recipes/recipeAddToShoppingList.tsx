@@ -14,13 +14,22 @@ import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {instance} from '../../../redux/interceptors';
 import {addShoppingListThunk} from '../../../redux/recipes/shoppingList/addShoppinglist.thunk';
 import {cleanUpshoppingListAdd} from '../../../redux/recipes/shoppingList/addShoppingList.slice';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import SubmitButton from '../../../components/touchables/SubmitButton';
+import {
+  ProfileNavigation,
+  ShoppingListAddScreenParam,
+} from '../../../navigation/Profile/ProfileNavigator.types';
 
-const RecipeAddToShoppingList = ({route}: RecipeAddShoppingListScreenProps) => {
+const RecipeAddToShoppingList = () => {
+  const propRecipes = useRoute<RecipeAddShoppingListScreenProps['route']>();
+  const propProfile = useRoute<ShoppingListAddScreenParam['route']>();
+  const isFromProfile = propProfile.params.from === 'Profile';
+
   const dispatch = useAppDispatch();
   const navigation = useNavigation<RecipesHomePageScreenProp>();
-
+  const navigationFromProfile = useNavigation<ProfileNavigation>();
+  const route = isFromProfile ? propProfile : propRecipes;
   const {ingredientsList, tipIngredientsList, recipeId} = route.params;
 
   const [isTipIngredients, setIsTipIngredients] = useState<boolean>(true);
@@ -31,7 +40,13 @@ const RecipeAddToShoppingList = ({route}: RecipeAddShoppingListScreenProps) => {
   useEffect(() => {
     if (succes === true) {
       dispatch(cleanUpshoppingListAdd());
-      navigation.navigate('Shopping Lists');
+      if (isFromProfile) {
+        navigationFromProfile.navigate('ShoppingListsFromProfile', {
+          from: 'Profile',
+        });
+      } else {
+        navigation.navigate('Shopping Lists');
+      }
     }
   }, [succes]);
 

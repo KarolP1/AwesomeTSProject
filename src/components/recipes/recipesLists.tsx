@@ -63,13 +63,16 @@ const RecipesLists = ({
                 if (recipe && from === 'Profile')
                   navigationProfile.navigate('SingleRecipeFromProfile', {
                     recipe: recipe,
+                    from: 'Profile',
                   });
-                // navigation.navigate('Recipes Home', {
-                //   screen: 'Single Recipe',
-                //   params: {
-                //     recipeGet: recipe,
-                //   },
-                // });
+                else {
+                  navigationRecipes.navigate('Recipes Home', {
+                    screen: 'Single Recipe',
+                    params: {
+                      recipeGet: recipe,
+                    },
+                  });
+                }
               }}>
               <SingleRecipe
                 Recipe={recipe}

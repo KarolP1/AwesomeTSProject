@@ -2,10 +2,11 @@ import {View} from 'react-native';
 import React from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useRoute} from '@react-navigation/native';
 import {getShoppinglists} from '../../../redux/recipes/shoppingList/getShoppinglists.thunk';
 import GetSingleShoppingList from '../../../components/recipes/ShoppingList/GetSingleShoppingList';
 import {instance} from '../../../redux/interceptors';
+import {ShoppingListsFromProfileScreenParam} from '../../../navigation/Profile/ProfileNavigator.types';
 
 const RecipesShoppinglists = () => {
   const dispatch = useAppDispatch();

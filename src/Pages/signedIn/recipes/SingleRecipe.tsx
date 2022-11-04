@@ -19,10 +19,17 @@ import {cleanUpshoppingListAdd} from '../../../redux/recipes/shoppingList/addSho
 import {IRecipe} from '../../../redux/recipes/types';
 import {WEBCONST} from '../../../constants/webConstants';
 import {ShadowStyle} from '../../../components/backgrounds/menuSquareCartContainerRecipes';
+import {
+  ProfileNavigation,
+  ProfileSingleRecipeNavigationProps,
+} from '../../../navigation/Profile/ProfileNavigator.types';
 
 const SingleRecipe = () => {
   const dispatch = useAppDispatch();
-  const route = useRoute<RecipesToProfilePageScreenProp['route']>();
+  const prop1 = useRoute<RecipesToProfilePageScreenProp['route']>();
+  const prop2 = useRoute<ProfileSingleRecipeNavigationProps['route']>();
+  const fromProfile = prop2.params.from === 'Profile';
+  const route = fromProfile ? prop2 : prop1;
 
   //@ts-ignore
   const recipeParam = route.params.recipe
@@ -37,9 +44,8 @@ const SingleRecipe = () => {
   let ingNumber = 0;
   let ingNumberTips = 0;
   const navigation = useNavigation<RecipesHomePageScreenProp>();
-  useEffect(() => {
-    console.log(recipe);
-  }, [recipe]);
+  const navigationFromProfile = useNavigation<ProfileNavigation>();
+
   return (
     <LoggedInBackground>
       <View style={{flexGrow: 1, width: '100%', paddingHorizontal: 10}}>
@@ -83,13 +89,25 @@ const SingleRecipe = () => {
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() =>
-                  navigation.navigate('Add Shopping Lists', {
-                    recipeId: recipe?._id,
-                    ingredientsList: recipe?.ingredients,
-                    tipIngredientsList: recipe?.tipIngredients,
-                  })
-                }>
+                onPress={() => {
+                  if (fromProfile)
+                    navigationFromProfile.navigate(
+                      'AddShoppingListFromProfile',
+                      {
+                        recipeId: recipe?._id,
+                        ingredientsList: recipe?.ingredients,
+                        tipIngredientsList: recipe?.tipIngredients,
+                        from: 'Profile',
+                      },
+                    );
+                  else
+                    navigation.navigate('Add Shopping Lists', {
+                      recipeId: recipe?._id,
+                      ingredientsList: recipe?.ingredients,
+                      tipIngredientsList: recipe?.tipIngredients,
+                      from: 'Recipe',
+                    });
+                }}>
                 <Text style={{color: 'white', fontWeight: '800'}}>
                   Buy Ingredients
                 </Text>
@@ -136,13 +154,23 @@ const SingleRecipe = () => {
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() => {
-                    dispatch(cleanUpshoppingListAdd());
-
-                    navigation.navigate('Add Shopping Lists', {
-                      recipeId: recipe._id,
-                      ingredientsList: recipe.ingredients,
-                      tipIngredientsList: recipe.tipIngredients,
-                    });
+                    if (fromProfile)
+                      navigationFromProfile.navigate(
+                        'AddShoppingListFromProfile',
+                        {
+                          recipeId: recipe?._id,
+                          ingredientsList: recipe?.ingredients,
+                          tipIngredientsList: recipe?.tipIngredients,
+                          from: 'Profile',
+                        },
+                      );
+                    else
+                      navigation.navigate('Add Shopping Lists', {
+                        recipeId: recipe?._id,
+                        ingredientsList: recipe?.ingredients,
+                        tipIngredientsList: recipe?.tipIngredients,
+                        from: 'Recipe',
+                      });
                   }}>
                   <Text style={{color: 'white', fontWeight: '800'}}>
                     Buy Ingredients

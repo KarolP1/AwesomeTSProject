@@ -121,6 +121,7 @@ const RecipesSection = ({}: {}) => {
                 ExtraButton={() =>
                   isEditModeEnabledBest ? (
                     <TouchableOpacity
+                      style={{marginRight: 10}}
                       onPress={() => {
                         dispatch(cleanUpAddRecipe());
                         navigationProfile.navigate('AddRecipeFromProfile', {

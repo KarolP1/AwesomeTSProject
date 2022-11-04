@@ -144,7 +144,12 @@ export interface ShoppingListItemGet extends ITimesstamps {
   recipeId: string;
   ingredients: ShoppingListItem[];
   tipIngredients: ShoppingListItem[];
-  recipe: IRecipe[];
+  recipe: IRecipe;
+  image?: {
+    _id: string;
+    path: string;
+    relatedId: string;
+  };
 }
 
 export interface ResponseDataAddShoppingList {
