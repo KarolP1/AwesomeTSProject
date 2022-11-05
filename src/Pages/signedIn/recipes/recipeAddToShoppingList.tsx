@@ -13,13 +13,13 @@ import {IIngredient} from '../../../redux/recipes/types';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {instance} from '../../../redux/interceptors';
 import {addShoppingListThunk} from '../../../redux/recipes/shoppingList/addShoppinglist.thunk';
-import {cleanUpshoppingListAdd} from '../../../redux/recipes/shoppingList/addShoppingList.slice';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {StackActions, useNavigation, useRoute} from '@react-navigation/native';
 import SubmitButton from '../../../components/touchables/SubmitButton';
 import {
   ProfileNavigation,
   ShoppingListAddScreenParam,
 } from '../../../navigation/Profile/ProfileNavigator.types';
+import {cleanUpshoppingList} from '../../../redux/recipes/shoppingList/shoppinList.slice';
 
 const RecipeAddToShoppingList = () => {
   const propRecipes = useRoute<RecipeAddShoppingListScreenProps['route']>();
@@ -36,24 +36,26 @@ const RecipeAddToShoppingList = () => {
   const [shoppingList, setShoppingList] = useState<IIngredient[]>([]);
   const [tipShoppingList, setTipShoppingList] = useState<IIngredient[]>([]);
 
-  const {succes, error} = useAppSelector(state => state.addShoppingList);
+  const {succes, error} = useAppSelector(state => state.shoppingList);
   useEffect(() => {
     if (succes === true) {
-      dispatch(cleanUpshoppingListAdd());
       if (isFromProfile) {
-        navigationFromProfile.navigate('ShoppingListsFromProfile', {
-          from: 'Profile',
-        });
+        navigationFromProfile.dispatch(
+          StackActions.replace('ShoppingListsFromProfile', {
+            from: 'Profile',
+          }),
+        );
       } else {
-        navigation.navigate('Shopping Lists');
+        navigation.dispatch(StackActions.replace('Shopping Lists'));
       }
+      dispatch(cleanUpshoppingList());
     }
   }, [succes]);
 
   useEffect(() => {
     if (error) {
       Alert.alert('there was a problem', JSON.stringify(error));
-      dispatch(cleanUpshoppingListAdd());
+      dispatch(cleanUpshoppingList());
     }
   }, [error]);
 

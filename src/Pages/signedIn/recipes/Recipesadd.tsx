@@ -1,11 +1,4 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  Platform,
-} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
@@ -25,13 +18,11 @@ import {
   addRecipeThunk as addRecipe,
 } from '../../../redux/recipes/addRecipe/addRecipe.thunk';
 import {allCategoriesRecipe} from '../../../components/categorySelector/allCategories';
-import {instance} from '../../../redux/interceptors';
 import AdvancementButton from '../../../components/recipes/AdvancementButton';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {RecipesHomePageScreenProp} from '../../../navigation/types';
 import {isStringValid} from '../../../redux/recipes/addRecipe/functions';
 import PillButton from '../../../components/recipes/PillButton';
-import uuid from 'react-native-uuid';
 import {createFormData} from '../../../utils/photos/handleFormdata';
 import {
   ProfileAddRecipeNavigationProps,
@@ -133,7 +124,7 @@ const initialState: IRecipeAdd = {
 const Recipesadd = () => {
   //
   const route = useRoute<ProfileAddRecipeNavigationProps['route']>();
-  const from = route.params.from;
+  const from = route.params?.from;
 
   const dispatch = useAppDispatch();
   const navigation = useNavigation<RecipesHomePageScreenProp>();
@@ -251,6 +242,7 @@ const Recipesadd = () => {
           if (newRecipe)
             navigationProfile.navigate('SingleRecipeFromProfile', {
               recipe: newRecipe,
+              from: 'Profile',
             });
         }
       } else navigation.navigate('My Recipes');
@@ -266,6 +258,7 @@ const Recipesadd = () => {
             if (newRecipe)
               navigationProfile.navigate('SingleRecipeFromProfile', {
                 recipe: newRecipe,
+                from: 'Profile',
               });
           } else navigation.navigate('My Recipes');
           dispatch(cleanUpAddRecipe());

@@ -17,7 +17,13 @@ import {cleanUpLogin, setAuthState} from '../../redux/Auth/loginReducer';
 import {useNavigation} from '@react-navigation/native';
 import {setScrollPosition} from '../../redux/App/setup.sicle';
 
-const LoggedInBackground = ({children}: {children?: ReactNode}) => {
+const LoggedInBackground = ({
+  children,
+  stickyButton,
+}: {
+  children?: ReactNode;
+  stickyButton?: () => JSX.Element;
+}) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const {isViewScrollable} = useAppSelector(state => state.App);
@@ -69,6 +75,21 @@ const LoggedInBackground = ({children}: {children?: ReactNode}) => {
             onScroll={e => setPos(e.nativeEvent.contentOffset.y)}>
             {children ? children : <Text>hello</Text>}
           </ScrollView>
+          {stickyButton && (
+            <View
+              style={{
+                width: 40,
+                height: 40,
+                position: 'absolute',
+                margin: 5,
+                bottom: 10,
+                right: 10,
+                borderRadius: 500,
+                overflow: 'hidden',
+              }}>
+              {stickyButton()}
+            </View>
+          )}
         </KeyboardAvoidingView>
       </SafeAreaView>
     </ImageBackground>

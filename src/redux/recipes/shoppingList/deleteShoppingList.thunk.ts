@@ -1,12 +1,16 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {getTokensKeychain} from '../../../utils/localStorage';
 import {instance} from '../../interceptors';
-import {IResponseAddShoppingList, ShoppingListItem} from '../types';
+import {
+  IResponseAddShoppingList,
+  IResponseGetSingleShoppingList,
+  ShoppingListItem,
+} from '../types';
 
 export const deleteShoppingListThunk = createAsyncThunk<
-  IResponseAddShoppingList,
+  IResponseGetSingleShoppingList,
   string
->('shoppingList/update', async (state, {rejectWithValue}) => {
+>('shoppingList/delete', async (state, {rejectWithValue}) => {
   try {
     const tokens = await getTokensKeychain();
     const res = await instance
@@ -14,7 +18,7 @@ export const deleteShoppingListThunk = createAsyncThunk<
         headers: {Authorization: 'Bearer ' + tokens?.access_token},
       })
       .then(response => {
-        return response.data.data;
+        return response.data;
       })
       .catch(error => {
         return rejectWithValue(error.response.data.message);

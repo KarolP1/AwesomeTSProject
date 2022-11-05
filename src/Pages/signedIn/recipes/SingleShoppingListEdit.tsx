@@ -1,4 +1,4 @@
-import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
   ISingleShoppingListEdit,
@@ -11,13 +11,16 @@ import SubmitButton from '../../../components/touchables/SubmitButton';
 import {ShoppingListItem} from '../../../redux/recipes/types';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {editShoppingListThunk} from '../../../redux/recipes/shoppingList/updateShoppinglist.thunk';
-import {instance} from '../../../redux/interceptors';
-import {useNavigation} from '@react-navigation/native';
-import {cleanUpListEdit} from '../../../redux/recipes/shoppingList/updateShoppingList.slice';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {deleteShoppingListThunk} from '../../../redux/recipes/shoppingList/deleteShoppingList.thunk';
-import {cleanupDeleteShoppingList} from '../../../redux/recipes/shoppingList/deleteShoppingList.slice';
+import {cleanUpshoppingList} from '../../../redux/recipes/shoppingList/shoppinList.slice';
 
 const SingleShoppingListEdit = (props: ISingleShoppingListEdit) => {
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(cleanUpshoppingList());
+    }, []),
+  );
   const navigation = useNavigation<RecipesHomePageScreenProp>();
   const dispatch = useAppDispatch();
   const list = props.route.params.list;
@@ -29,12 +32,12 @@ const SingleShoppingListEdit = (props: ISingleShoppingListEdit) => {
     list.tipIngredients,
   );
 
-  const {succes, error} = useAppSelector(state => state.edistShoppingList);
+  const {succes, error} = useAppSelector(state => state.shoppingList);
 
   useEffect(() => {
     if (error) {
       Alert.alert('there was an error', JSON.stringify(error), [
-        {text: 'OK', onPress: () => dispatch(cleanUpListEdit())},
+        {text: 'OK', onPress: () => dispatch(cleanUpshoppingList())},
       ]);
     }
   }, [error]);
@@ -48,29 +51,35 @@ const SingleShoppingListEdit = (props: ISingleShoppingListEdit) => {
       const ingredientsTest = mapIngredientsIfAllAreDone(ingredients);
       const tipingredientsTest = mapIngredientsIfAllAreDone(tipIngredients);
       if (ingredientsTest === tipingredientsTest) {
-        Alert.alert('Your shopping list is finished', '', [
-          {
-            text: 'delete',
-            onPress: () => {
-              dispatch(deleteShoppingListThunk(list._id));
-              dispatch(cleanUpListEdit());
-              dispatch(cleanupDeleteShoppingList());
-              navigation.navigate('Shopping Lists');
+        Alert.alert(
+          'Message',
+          'It is looking like You already finished this shoppingl list',
+          [
+            {
+              text: 'delete',
+              onPress: () => {
+                dispatch(deleteShoppingListThunk(list._id));
+                dispatch(cleanUpshoppingList());
+                navigation.navigate('Shopping Lists');
+              },
             },
-          },
-          {
-            text: 'lets keep it for now',
-            onPress: () => {
-              dispatch(cleanUpListEdit());
-              dispatch(cleanupDeleteShoppingList());
-              navigation.navigate('Shopping Lists');
+            {
+              text: 'lets keep it for now',
+              onPress: () => {
+                dispatch(cleanUpshoppingList());
+                navigation.navigate('Shopping Lists');
+              },
             },
-          },
-        ]);
+            {
+              text: 'cancel',
+              onPress: () => {
+                dispatch(cleanUpshoppingList());
+              },
+            },
+          ],
+        );
       } else {
-        dispatch(cleanUpListEdit());
-        dispatch(cleanupDeleteShoppingList());
-        navigation.navigate('Shopping Lists');
+        dispatch(cleanUpshoppingList());
       }
     }
   }, [succes]);

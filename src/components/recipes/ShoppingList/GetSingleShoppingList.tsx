@@ -7,20 +7,12 @@ import {RecipeStyles} from '../../../Pages/signedIn/recipes/Recipesadd';
 import {WEBCONST} from '../../../constants/webConstants';
 
 const GetSingleShoppingList = ({List}: {List: ShoppingListItemGet}) => {
-  const navigation = useNavigation<RecipesHomePageScreenProp>();
   const dateYear = List.createdAt;
   const createdDate = new Date(dateYear);
   const recipe = List.recipe;
-  console.log(
-    `${WEBCONST().APIURL}${List.image?.path}?${new Date().getTime()}`,
-  );
+
   return (
-    <TouchableOpacity
-      style={styles.listContainer}
-      activeOpacity={0.75}
-      onPress={() =>
-        navigation.navigate('Single ShoppingList Edit', {list: List})
-      }>
+    <View style={styles.listContainer}>
       <View style={styles.pseudoImage}>
         {List.image && (
           <Image
@@ -45,7 +37,7 @@ const GetSingleShoppingList = ({List}: {List: ShoppingListItemGet}) => {
           {createdDate.toLocaleTimeString()}
         </Text>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 

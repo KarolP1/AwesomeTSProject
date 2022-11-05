@@ -24,6 +24,9 @@ const App = () => {
   LogBox.ignoreLogs([
     "ViewPropTypes will be removed from React Native. Migrate to ViewPropTypes exported from 'deprecated-react-native-prop-types'.",
   ]);
+  LogBox.ignoreLogs([
+    'Sending `onAnimatedValueUpdate` with no listeners registered.',
+  ]);
   return (
     <>
       <AuthNavigation isAuth={authSucces} />

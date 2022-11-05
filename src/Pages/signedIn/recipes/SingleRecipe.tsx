@@ -1,21 +1,12 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Alert,
-  Image,
-} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import {
   RecipesHomePageScreenProp,
   RecipesToProfilePageScreenProp,
-  SigneRecipeScreenProps,
 } from '../../../navigation/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useAppDispatch} from '../../../redux/hooks';
-import {cleanUpshoppingListAdd} from '../../../redux/recipes/shoppingList/addShoppingList.slice';
 import {IRecipe} from '../../../redux/recipes/types';
 import {WEBCONST} from '../../../constants/webConstants';
 import {ShadowStyle} from '../../../components/backgrounds/menuSquareCartContainerRecipes';
@@ -23,6 +14,7 @@ import {
   ProfileNavigation,
   ProfileSingleRecipeNavigationProps,
 } from '../../../navigation/Profile/ProfileNavigator.types';
+import {cleanUpshoppingList} from '../../../redux/recipes/shoppingList/shoppinList.slice';
 
 const SingleRecipe = () => {
   const dispatch = useAppDispatch();
@@ -107,6 +99,7 @@ const SingleRecipe = () => {
                       tipIngredientsList: recipe?.tipIngredients,
                       from: 'Recipe',
                     });
+                  dispatch(cleanUpshoppingList());
                 }}>
                 <Text style={{color: 'white', fontWeight: '800'}}>
                   Buy Ingredients

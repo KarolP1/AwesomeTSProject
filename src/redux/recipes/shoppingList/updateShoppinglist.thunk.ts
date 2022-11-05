@@ -1,10 +1,15 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {getTokensKeychain} from '../../../utils/localStorage';
 import {instance} from '../../interceptors';
-import {IResponseAddShoppingList, ShoppingListItem} from '../types';
+import {
+  IResponseAddShoppingList,
+  IResponseGetShoppingLists,
+  IResponseGetSingleShoppingList,
+  ShoppingListItem,
+} from '../types';
 
 export const editShoppingListThunk = createAsyncThunk<
-  IResponseAddShoppingList,
+  IResponseGetSingleShoppingList,
   {
     shoppingListId: string;
     recipeIngredients: ShoppingListItem[];

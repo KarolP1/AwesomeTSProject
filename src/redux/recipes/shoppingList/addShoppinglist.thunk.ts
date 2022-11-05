@@ -1,10 +1,15 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {getTokensKeychain} from '../../../utils/localStorage';
 import {instance} from '../../interceptors';
-import {IIngredient, IResponseAddShoppingList} from './../types';
+import {
+  IIngredient,
+  IResponseAddShoppingList,
+  IResponseGetShoppingLists,
+  IResponseGetSingleShoppingList,
+} from './../types';
 
 export const addShoppingListThunk = createAsyncThunk<
-  IResponseAddShoppingList,
+  IResponseGetSingleShoppingList,
   {
     recipeId: string;
     recipeIngredients: IIngredient[];
@@ -25,7 +30,7 @@ export const addShoppingListThunk = createAsyncThunk<
         },
       )
       .then(response => {
-        return response.data.data;
+        return response.data;
       })
       .catch(error => {
         return rejectWithValue(error.response.data.message);

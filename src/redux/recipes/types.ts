@@ -199,3 +199,10 @@ export interface IResponseGetShoppingLists {
   isLoading: boolean;
   succes: boolean;
 }
+export interface IResponseGetSingleShoppingList {
+  data?: ShoppingListItemGet | null;
+  error: any | undefined;
+  message: string | undefined;
+  isLoading: boolean;
+  succes: boolean;
+}
