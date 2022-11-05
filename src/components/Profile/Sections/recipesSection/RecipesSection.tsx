@@ -16,7 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import {cleanUpAddRecipe} from '../../../../redux/recipes/addRecipe/addRecipe';
 import {ProfileNavigation} from '../../../../navigation/Profile/ProfileNavigator.types';
 
-const RecipesSection = ({}: {}) => {
+const RecipesSection = () => {
   const {isLoading, data} = useAppSelector(state => state.myRecipes);
   const [recipes, setRecipes] = useState<IRecipe[]>(data ? data : []);
 
@@ -186,7 +186,7 @@ const RecipesSection = ({}: {}) => {
               </SimpleSection>
             )}
 
-            {recipes.length === 0 ? (
+            {recipes.length === 0 && (
               <View
                 style={{
                   flex: 1,
@@ -213,27 +213,6 @@ const RecipesSection = ({}: {}) => {
                   <Text style={{fontSize: 20, color: '#fff'}}>Add recipe</Text>
                 </TouchableOpacity>
               </View>
-            ) : (
-              <>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigationProfile.navigate('AddRecipeFromProfile', {
-                      from: 'Profile',
-                    })
-                  }
-                  style={{
-                    backgroundColor: '#EA3651',
-                    paddingVertical: 10,
-                    paddingHorizontal: 20,
-                    borderRadius: 5,
-                    marginTop: 20,
-                    position: 'absolute',
-                    bottom: 30,
-                    right: 10,
-                  }}>
-                  <Text style={{fontSize: 20, color: '#fff'}}>Add recipe</Text>
-                </TouchableOpacity>
-              </>
             )}
           </>
         )}

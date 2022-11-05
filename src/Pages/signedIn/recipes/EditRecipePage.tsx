@@ -105,11 +105,13 @@ const EditRecipes = () => {
     if (data && succes && !image)
       navigationProfile.navigate('SingleRecipeFromProfile', {
         recipe: data,
+        from: 'Recipe',
       });
 
     if (data && succes && image)
       navigationProfile.navigate('SingleRecipeFromProfile', {
         recipe: data,
+        from: 'Recipe',
       });
     dispatch(cleanUpRecipeEdit());
   }, [succes]);

@@ -19,7 +19,6 @@ const EstablishmentContent = ({
   profileInfo: IGetProfileInfo | null | undefined;
 }) => {
   const dispatch = useAppDispatch();
-  const [selected, setSelected] = useState<0 | 1 | 2 | 3 | 4>(0);
   const [userInfo, setUserInfo] = useState<IGetProfileInfo | undefined | null>(
     profileInfo,
   );
@@ -48,6 +47,7 @@ const EstablishmentContent = ({
         <></>;
     }
   };
+  const [selected, setSelected] = useState<0 | 1 | 2 | 3 | 4>(0);
 
   return (
     <View style={{width: '100%', flex: 1}}>

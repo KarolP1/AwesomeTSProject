@@ -232,7 +232,6 @@ const Recipesadd = () => {
       dispatch(cleanUpAddRecipe());
     }
     if (succes === true && image && lastRecipeAdded) {
-      //TODO: add image dispatch
       if (image.assets && image.assets[0] && image.assets[0].fileName) {
         const data = createFormData(image.assets[0], 'recipeItem');
         dispatch(

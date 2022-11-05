@@ -1,5 +1,5 @@
 import {Alert, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {instance} from '../../../redux/interceptors';
 import {useFocusEffect} from '@react-navigation/native';
@@ -20,9 +20,14 @@ const Profile = () => {
       dispatch(getMyProfile());
     }, []),
   );
+  const [selected, setSelected] = useState<0 | 1 | 2 | 3 | 4>(0);
   return (
     <LoggedInBackground>
-      <ProfileByRole role={userRole} />
+      <ProfileByRole
+        role={userRole}
+        selected={selected}
+        setSelected={setSelected}
+      />
     </LoggedInBackground>
   );
 };

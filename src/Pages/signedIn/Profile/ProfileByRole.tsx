@@ -3,14 +3,18 @@ import React from 'react';
 import StudentProfile from './StudentProfile';
 import EstablishmentProfile from './EstablishmentProfile';
 
-const ProfileByRole = ({role}: {role: string | undefined}) => {
+const ProfileByRole = ({
+  role,
+  selected,
+  setSelected,
+}: {
+  role: string | undefined;
+  selected: 0 | 1 | 2 | 3 | 4;
+  setSelected: React.Dispatch<React.SetStateAction<0 | 1 | 2 | 3 | 4>>;
+}) => {
   switch (role) {
     case 'End User':
-      return (
-        <View>
-          <Text>{role}</Text>
-        </View>
-      );
+      return <StudentProfile />;
     case 'Student':
       return <StudentProfile />;
     case 'Local Cook':
