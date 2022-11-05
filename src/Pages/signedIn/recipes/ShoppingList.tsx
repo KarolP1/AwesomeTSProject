@@ -40,14 +40,16 @@ const RecipesShoppinglists = () => {
 
   return (
     <LoggedInBackground
-      stickyButton={() => (
-        <TouchableOpacity style={{backgroundColor: '#4f4f4f', padding: 4}}>
-          <Image
-            style={{width: '100%', height: '100%'}}
-            source={require('../../../assets/utilityIcons/add.png')}
-          />
-        </TouchableOpacity>
-      )}>
+    //TODO: add adding shopping list functionality
+    // stickyButton={() => (
+    //   <TouchableOpacity style={{backgroundColor: '#4f4f4f', padding: 4}}>
+    //     <Image
+    //       style={{width: '100%', height: '100%'}}
+    //       source={require('../../../assets/utilityIcons/add.png')}
+    //     />
+    //   </TouchableOpacity>
+    // )}
+    >
       <View style={{flex: 1, width: '100%', justifyContent: 'center'}}>
         <ScrollView
           horizontal={true}
