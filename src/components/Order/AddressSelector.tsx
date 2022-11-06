@@ -14,10 +14,8 @@ const AddressSelector = ({
 }: {
   addressState: string;
   setAddressState: React.Dispatch<React.SetStateAction<string>>;
-  coordinates: GeolocationResponse | null;
-  setCoordinates: React.Dispatch<
-    React.SetStateAction<GeolocationResponse | null>
-  >;
+  coordinates: GeolocationResponse;
+  setCoordinates: React.Dispatch<React.SetStateAction<GeolocationResponse>>;
 }) => {
   useEffect(() => {
     if (coordinates) {
@@ -45,6 +43,7 @@ const AddressSelector = ({
       }}>
       <TouchableOpacity
         onPress={() => {
+          console.log('first');
           Geolocation.getCurrentPosition(info => setCoordinates(info));
         }}
         activeOpacity={0.8}

@@ -5,14 +5,13 @@ platform :ios, '13.0'
 install! 'cocoapods', :deterministic_uuids => false
 
 target 'AwesomeTSProject' do
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
+  pod 'react-native-google-maps', :path => '../node_modules/react-native-maps'
   config = use_native_modules!
 
   # Flags change depending on the env values.
   flags = get_default_flags()
-  
-  rn_maps_path = '../node_modules/react-native-maps'
-  pod 'react-native-google-maps', :path => rn_maps_path
-
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -29,6 +28,9 @@ target 'AwesomeTSProject' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
+
+  
+
 
   target 'AwesomeTSProjectTests' do
     inherit! :complete

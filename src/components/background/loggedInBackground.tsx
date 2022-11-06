@@ -20,13 +20,14 @@ import {setScrollPosition} from '../../redux/App/setup.sicle';
 const LoggedInBackground = ({
   children,
   stickyButton,
+  disabledScroll,
 }: {
   children?: ReactNode;
+  disabledScroll?: boolean;
   stickyButton?: () => JSX.Element;
 }) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const {isViewScrollable} = useAppSelector(state => state.App);
   const [pos, setPos] = useState(0);
   useEffect(() => {
     dispatch(setScrollPosition(pos));
@@ -67,7 +68,7 @@ const LoggedInBackground = ({
             style={{
               width: '100%',
             }}
-            scrollEnabled={isViewScrollable}
+            scrollEnabled={disabledScroll}
             contentContainerStyle={{
               flexGrow: 1,
               alignItems: 'center',

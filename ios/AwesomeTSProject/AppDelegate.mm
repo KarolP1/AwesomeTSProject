@@ -1,4 +1,6 @@
 #import "AppDelegate.h"
+#import <GoogleMaps/GoogleMaps.h>
+#import <GooglePlaces/GooglePlaces.h>
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -16,7 +18,6 @@
 
 #import <react/config/ReactNativeConfig.h>
 
-#import <GoogleMaps/GoogleMaps.h>
 
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
@@ -33,6 +34,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSPlacesClient provideAPIKey:@"AIzaSyCUXX5MNBjWZpFqo7UotDqS0i7HqXyZo-U"];
   [GMSServices provideAPIKey:@"AIzaSyCUXX5MNBjWZpFqo7UotDqS0i7HqXyZo-U"];
   RCTAppSetupPrepareApp(application);
 

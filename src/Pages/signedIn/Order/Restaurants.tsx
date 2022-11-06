@@ -1,38 +1,53 @@
 import {Platform, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
-import MapView, {PROVIDER_GOOGLE, PROVIDER_DEFAULT} from 'react-native-maps';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import AddressSelector from '../../../components/Order/AddressSelector';
 import {GeolocationResponse} from '@react-native-community/geolocation';
 import Spinner from 'react-native-spinkit';
+import {useAppSelector} from '../../../redux/hooks';
 
 export interface coordinatesType {
   coords: {
-    accuracy: number;
-    altitude: number;
-    altitudeAccuracy: number;
-    heading: number;
+    accuracy?: number;
+    altitude?: number;
+    altitudeAccuracy?: number;
+    heading?: number;
     latitude: number;
     longitude: number;
-    speed: number;
+    speed?: number;
   };
-  mocked: boolean;
-  timestamp: number;
+  mocked?: boolean;
+  timestamp?: number;
 }
 
 const Restaurants = () => {
+  const userInfo = useAppSelector(state => state.profile.data);
   const [addressState, setAddressState] = useState<string>('');
-  const [coordinates, setCoordinates] = useState<GeolocationResponse | null>(
-    null,
-  );
+  const [coordinates, setCoordinates] = useState<GeolocationResponse>({
+    coords: {
+      latitude: 50.0433682,
+      longitude: 19.8822381,
+      accuracy: 1,
+      altitude: null,
+      altitudeAccuracy: null,
+      heading: null,
+      speed: null,
+    },
+    timestamp: new Date().valueOf(),
+  });
 
   const [isMapRedy, setIsMapRedy] = useState<boolean>(false);
   useEffect(() => {
-    console.log(isMapRedy);
-  }, [isMapRedy]);
-
+    console.log({coordinates});
+  }, [coordinates]);
+  const ref = useRef(null);
+  useEffect(() => {
+    //@ts-ignore
+    ref.current.fitToElements(true);
+  }, [coordinates]);
   return (
-    <LoggedInBackground>
+    <LoggedInBackground disabledScroll>
       <AddressSelector
         coordinates={coordinates}
         setCoordinates={setCoordinates}
@@ -40,24 +55,93 @@ const Restaurants = () => {
         setAddressState={setAddressState}
       />
 
+      <View
+        style={{
+          height: '100%',
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'absolute',
+          opacity: !isMapRedy ? 1 : 0,
+          display: isMapRedy ? 'none' : 'flex',
+        }}>
+        <Spinner
+          // style={styles.spinner}
+          isVisible={!isMapRedy}
+          size={100}
+          type={'ThreeBounce'}
+          color={'#EA3651'}
+        />
+      </View>
       <MapView
-        // provider={Platform.OS === 'ios' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
+        ref={ref}
+        mapType="hybrid"
         provider={PROVIDER_GOOGLE}
+        onPress={val => {
+          console.log(val);
+          const {latitude, longitude} = val.nativeEvent.coordinate;
+          const timeout = setTimeout(() => {
+            if (coordinates)
+              setCoordinates({
+                ...coordinates,
+                coords: {...coordinates.coords, latitude, longitude},
+              });
+            else {
+              setCoordinates({
+                timestamp: new Date().valueOf(),
+                coords: {
+                  latitude,
+                  longitude,
+                  altitude: null,
+                  altitudeAccuracy: null,
+                  heading: null,
+                  speed: null,
+                  accuracy: 1,
+                },
+              });
+            }
+          }, 2000);
+          return () => clearTimeout(timeout);
+        }}
         onMapReady={() => {
-          console.log('map ready');
           setIsMapRedy(true);
         }}
         onMapLoaded={() => {
-          console.log('map ready');
+          setIsMapRedy(true);
         }}
-        style={{width: '100%', height: '100%'}}
+        style={{
+          width: '100%',
+          flex: 1,
+          marginTop: 10,
+          marginBottom: 5,
+          opacity: isMapRedy ? 1 : 0,
+          borderRadius: 10,
+        }}
         initialRegion={{
-          latitude: 51.31,
-          longitude: 0.06,
-          latitudeDelta: 0.0922,
+          latitude: coordinates.coords.latitude,
+          longitude: coordinates.coords.longitude,
+          latitudeDelta: 0.01,
           longitudeDelta: 0.0421,
-        }}
-      />
+        }}>
+        <Text>{userInfo?.images?.profileImage?.path}</Text>
+        {/* {userInfo && userInfo.images?.profileImage ? (
+          <Marker
+            style={{backgroundColor: 'red'}}
+            image={{uri: userInfo.images.profileImage.path}}
+            coordinate={{
+              latitude: coordinates.coords.latitude,
+              longitude: coordinates.coords.longitude,
+            }}
+          />
+        ) : ( */}
+        <Marker
+          coordinate={{
+            latitude: coordinates.coords.latitude,
+            longitude: coordinates.coords.longitude,
+          }}
+        />
+        {/* )} */}
+      </MapView>
 
       <Text>Restaurants</Text>
     </LoggedInBackground>
