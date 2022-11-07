@@ -82,7 +82,6 @@ const AddressSelector = ({
         fetchDetails={true}
         numberOfLines={10}
         onPress={(data, details = null) => {
-          console.log({test: 'test'});
           const position = details?.geometry.location;
           if (position)
             setCoordinates({

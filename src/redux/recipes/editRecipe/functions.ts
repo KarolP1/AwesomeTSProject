@@ -9,7 +9,7 @@ import {IEditRecipe} from './editRecipe.thunk';
 
 export const checkStringNull = (
   string: string | null | undefined,
-  title: string,
+  title?: string,
 ): boolean => {
   if (string === undefined) {
     return true;

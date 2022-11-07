@@ -13,6 +13,7 @@ import EmployeesListSlice from './Order/tables/employees/GetEmployeeList.slice';
 import EmployeesAcceptSlice from './Order/tables/employees/establishmentEmployees.slice';
 import MyEstabishmentMenus from './Profile/establishmentMenus/EstablishmentMenu.slice';
 import ShoppingListSlice from './recipes/shoppingList/shoppinList.slice';
+import FindNerbayEstablishmentSlice from './Order/Establishments/getNerbayEstablishments.slice';
 
 import getProfileSlice from './Profile/profileCore.slice';
 
@@ -33,6 +34,7 @@ export const store = configureStore({
     employeesAccept: EmployeesAcceptSlice,
     MyEstabishmentMenus: MyEstabishmentMenus,
     shoppingList: ShoppingListSlice,
+    findNerbayEstablishment: FindNerbayEstablishmentSlice,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

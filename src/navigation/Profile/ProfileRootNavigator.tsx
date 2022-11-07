@@ -8,7 +8,6 @@ import ProfileNavigationEditMenuItemsPage from '../../Pages/signedIn/Profile/Edi
 import EditRecipes from '../../Pages/signedIn/recipes/EditRecipePage';
 import Recipesadd from '../../Pages/signedIn/recipes/Recipesadd';
 import SingleRecipe from '../../Pages/signedIn/recipes/SingleRecipe';
-import SingleShoppingListEdit from '../../Pages/signedIn/recipes/SingleShoppingListEdit';
 import RecipeAddToShoppingList from '../../Pages/signedIn/recipes/recipeAddToShoppingList';
 import RecipesShoppinglists from '../../Pages/signedIn/recipes/ShoppingList';
 
@@ -31,7 +30,6 @@ export const ProfileNavigationContainer = () => {
       <Stack.Screen name="AddRecipeFromProfile" component={Recipesadd} />
       <Stack.Screen name="EditRecipeFromProfile" component={EditRecipes} />
       <Stack.Screen name="SingleRecipeFromProfile" component={SingleRecipe} />
-      {/*  */}
       <Stack.Screen
         name="AddShoppingListFromProfile"
         component={RecipeAddToShoppingList}

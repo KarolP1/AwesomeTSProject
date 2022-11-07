@@ -1,8 +1,7 @@
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import React from 'react';
 import ProfileContentStudent from '../../../components/Profile/StudentContent';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
-import {instance} from '../../../redux/interceptors';
 
 const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 

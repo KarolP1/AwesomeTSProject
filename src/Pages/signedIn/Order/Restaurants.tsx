@@ -1,7 +1,9 @@
 import {
+  Image,
   Platform,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useWindowDimensions,
   View,
 } from 'react-native';
@@ -14,6 +16,13 @@ import Spinner from 'react-native-spinkit';
 import {useAppSelector} from '../../../redux/hooks';
 import {ScrollView} from 'react-native-gesture-handler';
 import Geolocation from '@react-native-community/geolocation';
+import EstablishmentsView from './EstablishmentsView';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+import {MenuItemButton} from '../../../components/Order/MenuItemButton';
 
 Geolocation.setRNConfiguration({skipPermissionRequests: false});
 
@@ -32,6 +41,22 @@ export interface coordinatesType {
 }
 
 const Restaurants = () => {
+  const animationRotation = useSharedValue(0);
+  const animationSide = useSharedValue(-200);
+  const [isExtraButtonRotated, setIsExtraButtonRotated] = useState(false);
+  const animationStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {rotate: withTiming(`${animationRotation.value}deg`, {duration: 400})},
+      ],
+    };
+  });
+  const animationSideStyle = useAnimatedStyle(() => {
+    return {
+      right: withTiming(animationSide.value, {duration: 200}),
+    };
+  });
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const userInfo = useAppSelector(state => state.profile.data);
   const [addressState, setAddressState] = useState<string>('');
   const [coordinates, setCoordinates] = useState<GeolocationResponse>({
@@ -54,7 +79,6 @@ const Restaurants = () => {
   const ref = useRef(null);
   const markerref = useRef(null);
   useEffect(() => {
-    //@ts-ignore
     if (ref)
       //@ts-ignore
       ref.current.animateToRegion(
@@ -68,8 +92,44 @@ const Restaurants = () => {
       );
   }, [coordinates]);
 
+  const extraMenuRef = useRef(null);
+
   return (
-    <LoggedInBackground disabledScroll>
+    <LoggedInBackground
+      disabledScroll
+      stickyButton={() => (
+        <TouchableOpacity
+          onPress={() => {
+            animationRotation.value = isExtraButtonRotated ? 1440 : 0;
+            animationSide.value = isExtraButtonRotated ? -200 : 0;
+            setIsExtraButtonRotated(!isExtraButtonRotated);
+          }}
+          style={{
+            height: '100%',
+            width: '100%',
+            backgroundColor: '#4d4d4d',
+            padding: 2,
+            justifyContent: 'center',
+          }}>
+          <Animated.Image
+            style={[{alignSelf: 'center', margin: 2}, animationStyle]}
+            source={require('../../../assets/utilityIcons/3dots.png')}
+          />
+        </TouchableOpacity>
+      )}>
+      <Animated.View
+        ref={extraMenuRef}
+        style={[
+          {
+            width: 200,
+            position: 'absolute',
+            zIndex: 100,
+            bottom: 60,
+          },
+          animationSideStyle,
+        ]}>
+        <MenuItemButton title="Extra filters" />
+      </Animated.View>
       <ScrollView
         style={{
           width: '100%',
@@ -110,12 +170,14 @@ const Restaurants = () => {
               color={'#EA3651'}
             />
           </View>
+
           <MapView
+            onResponderMove={() => setIsOpen(true)}
             ref={ref}
             mapType="hybrid"
             provider={PROVIDER_GOOGLE}
             onPress={val => {
-              console.log(val);
+              setIsOpen(true);
               const {latitude, longitude} = val.nativeEvent.coordinate;
               if (coordinates)
                 setCoordinates({
@@ -168,7 +230,7 @@ const Restaurants = () => {
             />
           </MapView>
 
-          <Text>Restaurants</Text>
+          <EstablishmentsView isOpen={isOpen} setIsOpen={setIsOpen} />
         </View>
       </ScrollView>
     </LoggedInBackground>

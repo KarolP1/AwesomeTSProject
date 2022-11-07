@@ -446,7 +446,7 @@ PODS:
     - TOCropViewController
   - RNKeychain (8.1.1):
     - React-Core
-  - RNReanimated (2.10.0):
+  - RNReanimated (2.12.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -764,7 +764,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 7673697e7c0e9391adefae4faa087442bc04af33
   RNImageCropPicker: ffbba608264885c241cbf3a8f78eb7aeeb978241
   RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
-  RNReanimated: e6854b25aca98df49641cc5e30e4c490de4e73f3
+  RNReanimated: 2a91e85fcd343f8af3c58d3425b99fdd285590a5
   RNScreens: 0df01424e9e0ed7827200d6ed1087ddd06c493f9
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
