@@ -6,6 +6,12 @@ import AddressSelector from '../../../components/Order/AddressSelector';
 import {GeolocationResponse} from '@react-native-community/geolocation';
 import Spinner from 'react-native-spinkit';
 import {useAppSelector} from '../../../redux/hooks';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {GOOGLE_API_KEY_IOS} from '../../../../enviroments';
+import {ScrollView} from 'react-native-gesture-handler';
+import Geolocation from '@react-native-community/geolocation';
+
+Geolocation.setRNConfiguration({skipPermissionRequests: false});
 
 export interface coordinatesType {
   coords: {
@@ -37,43 +43,50 @@ const Restaurants = () => {
     timestamp: new Date().valueOf(),
   });
 
-  const [isMapRedy, setIsMapRedy] = useState<boolean>(false);
-  useEffect(() => {
-    console.log({coordinates});
-  }, [coordinates]);
-  const ref = useRef(null);
-  useEffect(() => {
-    //@ts-ignore
-    ref.current.fitToElements(true);
-  }, [coordinates]);
+  const [isMapRedy, setIsMapRedy] = useState<boolean>(true);
+
+  // useEffect(() => {
+  //   console.log({coordinates});
+  // }, [coordinates]);
+  // const ref = useRef(null);
+  // useEffect(() => {
+  //   //@ts-ignore
+  //   if (ref) ref.current.fitToElements(true);
+  // }, [coordinates]);
+
   return (
     <LoggedInBackground disabledScroll>
-      <AddressSelector
-        coordinates={coordinates}
-        setCoordinates={setCoordinates}
-        addressState={addressState}
-        setAddressState={setAddressState}
-      />
+      <ScrollView
+        style={{width: '100%', flexDirection: 'column'}}
+        horizontal
+        scrollEnabled={false}>
+        <View style={{width: '100%', flexDirection: 'column'}}>
+          <AddressSelector
+            coordinates={coordinates}
+            setCoordinates={setCoordinates}
+            addressState={addressState}
+            setAddressState={setAddressState}
+          />
 
-      <View
-        style={{
-          height: '100%',
-          width: '100%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'absolute',
-          opacity: !isMapRedy ? 1 : 0,
-          display: isMapRedy ? 'none' : 'flex',
-        }}>
-        <Spinner
-          // style={styles.spinner}
-          isVisible={!isMapRedy}
-          size={100}
-          type={'ThreeBounce'}
-          color={'#EA3651'}
-        />
-      </View>
-      <MapView
+          <View
+            style={{
+              height: '100%',
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'absolute',
+              opacity: !isMapRedy ? 1 : 0,
+              display: isMapRedy ? 'none' : 'flex',
+            }}>
+            <Spinner
+              // style={styles.spinner}
+              isVisible={!isMapRedy}
+              size={100}
+              type={'ThreeBounce'}
+              color={'#EA3651'}
+            />
+          </View>
+          {/* <MapView
         ref={ref}
         mapType="hybrid"
         provider={PROVIDER_GOOGLE}
@@ -124,26 +137,18 @@ const Restaurants = () => {
           longitudeDelta: 0.0421,
         }}>
         <Text>{userInfo?.images?.profileImage?.path}</Text>
-        {/* {userInfo && userInfo.images?.profileImage ? (
-          <Marker
-            style={{backgroundColor: 'red'}}
-            image={{uri: userInfo.images.profileImage.path}}
-            coordinate={{
-              latitude: coordinates.coords.latitude,
-              longitude: coordinates.coords.longitude,
-            }}
-          />
-        ) : ( */}
+
         <Marker
           coordinate={{
             latitude: coordinates.coords.latitude,
             longitude: coordinates.coords.longitude,
           }}
         />
-        {/* )} */}
-      </MapView>
+      </MapView> */}
 
-      <Text>Restaurants</Text>
+          <Text>Restaurants</Text>
+        </View>
+      </ScrollView>
     </LoggedInBackground>
   );
 };

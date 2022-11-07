@@ -5,6 +5,8 @@ import DropShadow from 'react-native-drop-shadow';
 import Geolocation, {
   GeolocationResponse,
 } from '@react-native-community/geolocation';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {GOOGLE_API_KEY_IOS} from '../../../enviroments';
 
 const AddressSelector = ({
   addressState,
@@ -27,72 +29,90 @@ const AddressSelector = ({
   return (
     <DropShadow
       style={{
-        flexDirection: 'row',
-        borderRadius: 15,
-        overflow: 'hidden',
-        height: 60,
-        width: '100%',
-        shadowColor: '#000',
+        shadowColor: 'rgba(0, 0, 0,0.4)',
         shadowOffset: {
           width: -2,
           height: 4,
         },
         shadowOpacity: 1,
         shadowRadius: 5,
-        elevation: 2,
+        elevation: 1,
+        borderRadius: 5,
+        inset: 12,
+        backgroundColor: 'rgba(255, 255, 255,0.1)',
       }}>
-      <TouchableOpacity
-        onPress={() => {
-          console.log('first');
-          Geolocation.getCurrentPosition(info => setCoordinates(info));
+      <GooglePlacesAutocomplete
+        renderLeftButton={() => (
+          <TouchableOpacity
+            onPress={() => {
+              Geolocation.getCurrentPosition(info => setCoordinates(info));
+            }}
+            activeOpacity={0.8}
+            style={{
+              backgroundColor: 'rgba(79,79,79,.9)',
+              height: '100%',
+              width: 50,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Image
+              source={require('../../assets/utilityIcons/pin.png')}
+              style={{width: 30, height: 30}}
+            />
+          </TouchableOpacity>
+        )}
+        styles={{
+          textInputContainer: {
+            backgroundColor: 'transparent',
+            height: 50,
+            borderRadius: 10,
+            overflow: 'hidden',
+          },
+          textInput: {
+            color: '#d7d7d7',
+            fontSize: 16,
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0,0.1)',
+          },
+          predefinedPlacesDescription: {
+            color: '#1faadb',
+          },
         }}
-        activeOpacity={0.8}
-        style={{
-          backgroundColor: 'rgba(79,79,79,.9)',
-          height: '100%',
-          width: 50,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Image
-          source={require('../../assets/utilityIcons/pin.png')}
-          style={{width: 30, height: 30}}
-        />
-      </TouchableOpacity>
-      <TextInput
-        placeholder="Type you address or use geolocation"
-        value={addressState}
-        placeholderTextColor="#ffe"
-        style={{
-          flex: 1,
-          paddingHorizontal: 10,
-          backgroundColor: 'rgba(0,0,0,0.04)',
-          color: '#fff',
+        placeholder="Search"
+        fetchDetails={true}
+        numberOfLines={10}
+        onPress={(data, details = null) => {
+          // 'details' is provided when fetchDetails = true
+          console.log({test: 'test'});
+          // console.log(data, details);
+          console.log(details?.geometry.location);
         }}
-        onChangeText={text => {
-          setAddressState(text);
+        query={{
+          key: GOOGLE_API_KEY_IOS,
+          language: 'en',
         }}
-        onPressIn={() => setAddressState('')}
+        renderRightButton={() => (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={{
+              backgroundColor: 'rgba(79,79,79,.9)',
+              height: '100%',
+              width: 50,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Image
+              source={require('../../assets/utilityIcons/Order/enter.png')}
+              style={{
+                width: 30,
+                height: 30,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            />
+          </TouchableOpacity>
+        )}
       />
-      <TouchableOpacity
-        activeOpacity={0.8}
-        style={{
-          backgroundColor: 'rgba(79,79,79,.9)',
-          height: '100%',
-          width: 50,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Image
-          source={require('../../assets/utilityIcons/Order/enter.png')}
-          style={{
-            width: 30,
-            height: 30,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        />
-      </TouchableOpacity>
     </DropShadow>
   );
 };
