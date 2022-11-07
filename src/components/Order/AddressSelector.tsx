@@ -6,7 +6,7 @@ import Geolocation, {
   GeolocationResponse,
 } from '@react-native-community/geolocation';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {GOOGLE_API_KEY_IOS} from '../../../enviroments';
+import {GOOGLE_API_KEY_PLACES} from '../../../enviroments';
 
 const AddressSelector = ({
   addressState,
@@ -91,7 +91,7 @@ const AddressSelector = ({
           });
         }}
         query={{
-          key: GOOGLE_API_KEY_IOS,
+          key: GOOGLE_API_KEY_PLACES,
           language: 'en',
         }}
         renderRightButton={() => (

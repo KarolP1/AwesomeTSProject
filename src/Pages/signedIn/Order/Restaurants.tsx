@@ -1,4 +1,10 @@
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
@@ -6,8 +12,6 @@ import AddressSelector from '../../../components/Order/AddressSelector';
 import {GeolocationResponse} from '@react-native-community/geolocation';
 import Spinner from 'react-native-spinkit';
 import {useAppSelector} from '../../../redux/hooks';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {GOOGLE_API_KEY_IOS} from '../../../../enviroments';
 import {ScrollView} from 'react-native-gesture-handler';
 import Geolocation from '@react-native-community/geolocation';
 
@@ -43,24 +47,38 @@ const Restaurants = () => {
     timestamp: new Date().valueOf(),
   });
 
-  const [isMapRedy, setIsMapRedy] = useState<boolean>(true);
+  const {height} = useWindowDimensions();
 
-  // useEffect(() => {
-  //   console.log({coordinates});
-  // }, [coordinates]);
-  // const ref = useRef(null);
-  // useEffect(() => {
-  //   //@ts-ignore
-  //   if (ref) ref.current.fitToElements(true);
-  // }, [coordinates]);
+  const [isMapRedy, setIsMapRedy] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log({coordinates: coordinates.coords});
+  }, [coordinates]);
+  const ref = useRef(null);
+  useEffect(() => {
+    //@ts-ignore
+    if (ref) ref.current.fitToElements(true);
+  }, [coordinates]);
 
   return (
     <LoggedInBackground disabledScroll>
       <ScrollView
-        style={{width: '100%', flexDirection: 'column'}}
+        style={{
+          width: '100%',
+          flexDirection: 'column',
+          flex: 1,
+          height: '100%',
+        }}
         horizontal
         scrollEnabled={false}>
-        <View style={{width: '100%', flexDirection: 'column'}}>
+        <View
+          style={{
+            width: '100%',
+            flexDirection: 'column',
+            flexGrow: 1,
+            flex: 1,
+            minHeight: height - 200,
+          }}>
           <AddressSelector
             coordinates={coordinates}
             setCoordinates={setCoordinates}
@@ -70,13 +88,12 @@ const Restaurants = () => {
 
           <View
             style={{
-              height: '100%',
               width: '100%',
               alignItems: 'center',
               justifyContent: 'center',
-              position: 'absolute',
-              opacity: !isMapRedy ? 1 : 0,
+              opacity: isMapRedy ? 0 : 1,
               display: isMapRedy ? 'none' : 'flex',
+              bottom: 0,
             }}>
             <Spinner
               // style={styles.spinner}
@@ -86,65 +103,65 @@ const Restaurants = () => {
               color={'#EA3651'}
             />
           </View>
-          {/* <MapView
-        ref={ref}
-        mapType="hybrid"
-        provider={PROVIDER_GOOGLE}
-        onPress={val => {
-          console.log(val);
-          const {latitude, longitude} = val.nativeEvent.coordinate;
-          const timeout = setTimeout(() => {
-            if (coordinates)
-              setCoordinates({
-                ...coordinates,
-                coords: {...coordinates.coords, latitude, longitude},
-              });
-            else {
-              setCoordinates({
-                timestamp: new Date().valueOf(),
-                coords: {
-                  latitude,
-                  longitude,
-                  altitude: null,
-                  altitudeAccuracy: null,
-                  heading: null,
-                  speed: null,
-                  accuracy: 1,
-                },
-              });
-            }
-          }, 2000);
-          return () => clearTimeout(timeout);
-        }}
-        onMapReady={() => {
-          setIsMapRedy(true);
-        }}
-        onMapLoaded={() => {
-          setIsMapRedy(true);
-        }}
-        style={{
-          width: '100%',
-          flex: 1,
-          marginTop: 10,
-          marginBottom: 5,
-          opacity: isMapRedy ? 1 : 0,
-          borderRadius: 10,
-        }}
-        initialRegion={{
-          latitude: coordinates.coords.latitude,
-          longitude: coordinates.coords.longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.0421,
-        }}>
-        <Text>{userInfo?.images?.profileImage?.path}</Text>
+          <MapView
+            ref={ref}
+            mapType="hybrid"
+            provider={PROVIDER_GOOGLE}
+            onPress={val => {
+              console.log(val);
+              const {latitude, longitude} = val.nativeEvent.coordinate;
+              const timeout = setTimeout(() => {
+                if (coordinates)
+                  setCoordinates({
+                    ...coordinates,
+                    coords: {...coordinates.coords, latitude, longitude},
+                  });
+                else {
+                  setCoordinates({
+                    timestamp: new Date().valueOf(),
+                    coords: {
+                      latitude,
+                      longitude,
+                      altitude: null,
+                      altitudeAccuracy: null,
+                      heading: null,
+                      speed: null,
+                      accuracy: 1,
+                    },
+                  });
+                }
+              }, 2000);
+              return () => clearTimeout(timeout);
+            }}
+            onMapReady={() => {
+              setIsMapRedy(true);
+            }}
+            onMapLoaded={() => {
+              setIsMapRedy(true);
+            }}
+            style={{
+              width: '100%',
+              marginTop: 10,
+              marginBottom: 5,
+              opacity: isMapRedy ? 1 : 0,
+              borderRadius: 10,
+              flex: 1,
+            }}
+            initialRegion={{
+              latitude: coordinates.coords.latitude,
+              longitude: coordinates.coords.longitude,
+              latitudeDelta: 0.1,
+              longitudeDelta: 0.0421,
+            }}>
+            <Text>{userInfo?.images?.profileImage?.path}</Text>
 
-        <Marker
-          coordinate={{
-            latitude: coordinates.coords.latitude,
-            longitude: coordinates.coords.longitude,
-          }}
-        />
-      </MapView> */}
+            <Marker
+              coordinate={{
+                latitude: coordinates.coords.latitude,
+                longitude: coordinates.coords.longitude,
+              }}
+            />
+          </MapView>
 
           <Text>Restaurants</Text>
         </View>
