@@ -51,13 +51,21 @@ const Restaurants = () => {
 
   const [isMapRedy, setIsMapRedy] = useState<boolean>(false);
 
-  useEffect(() => {
-    console.log({coordinates: coordinates.coords});
-  }, [coordinates]);
   const ref = useRef(null);
+  const markerref = useRef(null);
   useEffect(() => {
     //@ts-ignore
-    if (ref) ref.current.fitToElements(true);
+    if (ref)
+      //@ts-ignore
+      ref.current.animateToRegion(
+        {
+          longitude: coordinates.coords.longitude,
+          latitude: coordinates.coords.latitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        },
+        1000,
+      );
   }, [coordinates]);
 
   return (
@@ -91,7 +99,6 @@ const Restaurants = () => {
               width: '100%',
               alignItems: 'center',
               justifyContent: 'center',
-              opacity: isMapRedy ? 0 : 1,
               display: isMapRedy ? 'none' : 'flex',
               bottom: 0,
             }}>
@@ -110,28 +117,25 @@ const Restaurants = () => {
             onPress={val => {
               console.log(val);
               const {latitude, longitude} = val.nativeEvent.coordinate;
-              const timeout = setTimeout(() => {
-                if (coordinates)
-                  setCoordinates({
-                    ...coordinates,
-                    coords: {...coordinates.coords, latitude, longitude},
-                  });
-                else {
-                  setCoordinates({
-                    timestamp: new Date().valueOf(),
-                    coords: {
-                      latitude,
-                      longitude,
-                      altitude: null,
-                      altitudeAccuracy: null,
-                      heading: null,
-                      speed: null,
-                      accuracy: 1,
-                    },
-                  });
-                }
-              }, 2000);
-              return () => clearTimeout(timeout);
+              if (coordinates)
+                setCoordinates({
+                  ...coordinates,
+                  coords: {...coordinates.coords, latitude, longitude},
+                });
+              else {
+                setCoordinates({
+                  timestamp: new Date().valueOf(),
+                  coords: {
+                    latitude,
+                    longitude,
+                    altitude: null,
+                    altitudeAccuracy: null,
+                    heading: null,
+                    speed: null,
+                    accuracy: 1,
+                  },
+                });
+              }
             }}
             onMapReady={() => {
               setIsMapRedy(true);
@@ -156,6 +160,7 @@ const Restaurants = () => {
             <Text>{userInfo?.images?.profileImage?.path}</Text>
 
             <Marker
+              ref={markerref}
               coordinate={{
                 latitude: coordinates.coords.latitude,
                 longitude: coordinates.coords.longitude,

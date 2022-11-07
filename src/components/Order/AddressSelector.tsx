@@ -82,13 +82,21 @@ const AddressSelector = ({
         fetchDetails={true}
         numberOfLines={10}
         onPress={(data, details = null) => {
-          // 'details' is provided when fetchDetails = true
           console.log({test: 'test'});
-          // console.log(data, details);
-          setCoordinates({
-            ...coordinates,
-            coords: {...coordinates.coords, ...details?.geometry.location},
-          });
+          const position = details?.geometry.location;
+          if (position)
+            setCoordinates({
+              timestamp: new Date().valueOf(),
+              coords: {
+                latitude: position?.lat,
+                longitude: position?.lng,
+                altitude: null,
+                altitudeAccuracy: null,
+                heading: null,
+                speed: null,
+                accuracy: 1,
+              },
+            });
         }}
         query={{
           key: GOOGLE_API_KEY_PLACES,
