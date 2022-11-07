@@ -85,7 +85,10 @@ const AddressSelector = ({
           // 'details' is provided when fetchDetails = true
           console.log({test: 'test'});
           // console.log(data, details);
-          console.log(details?.geometry.location);
+          setCoordinates({
+            ...coordinates,
+            coords: {...coordinates.coords, ...details?.geometry.location},
+          });
         }}
         query={{
           key: GOOGLE_API_KEY_IOS,
