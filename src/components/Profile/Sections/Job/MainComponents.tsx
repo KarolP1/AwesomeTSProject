@@ -10,9 +10,11 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import SingleItem from '../../ProfileMenu/SingleItem';
 import OnOfButton from './OnOfButton';
 import EstablishmentJobSection from './EmployeesJobSection';
+import PositionLatLong from '../infoScetion/PositionLatLong';
 
 const MainComponents = () => {
   const dispatch = useAppDispatch();
+  const establishment = useAppSelector(state => state.profile);
   const {data, error} = useAppSelector(state => state.profile);
   const [jobs, setJobs] = useState<IJobsGet[]>(data?.jobs ? data.jobs : []);
   const [userRole, setUserrole] = useState(data?.userRole);
@@ -58,6 +60,7 @@ const MainComponents = () => {
           />
         </View>
       )}
+
       {jobMenuStandardSelected ? (
         <>
           <StandardJobDisplaySection jobs={jobs} />
@@ -65,7 +68,12 @@ const MainComponents = () => {
           <TipDisplaySection balance={123.32} currency="pln" />
         </>
       ) : (
-        <EstablishmentJobSection />
+        <>
+          {establishment.data?.establishment && (
+            <PositionLatLong info={establishment.data?.establishment[0]} />
+          )}
+          <EstablishmentJobSection />
+        </>
       )}
     </View>
   );

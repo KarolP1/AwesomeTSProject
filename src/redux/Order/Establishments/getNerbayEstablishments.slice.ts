@@ -1,4 +1,8 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {
+  CounterLikeEstablishment,
+  IResponseCounterLikeEstablishment,
+} from '../../counters/likeEstablishment.thunk';
 import {useAppSelector} from '../../hooks';
 import {IEstablishment} from '../../Profile/types';
 import {
@@ -44,6 +48,42 @@ const NerbayEstablishmentSlice = createSlice({
         state.data = payload.data;
         state.isLoading = false;
         state.message = payload.message;
+      },
+    );
+    builder.addCase(CounterLikeEstablishment.pending, (state, {payload}) => {
+      state.isLoading = true;
+    });
+    builder.addCase(CounterLikeEstablishment.rejected, (state, {payload}) => {
+      state.error = payload;
+      state.succes = false;
+
+      state.isLoading = false;
+    });
+    builder.addCase(
+      CounterLikeEstablishment.fulfilled,
+      (state, {payload}: PayloadAction<IResponseCounterLikeEstablishment>) => {
+        state.error = null;
+        state.succes = true;
+        if (state.data) {
+          const editedEstblishmentList = state.data.map(establishment => {
+            if (establishment._id === payload.data?.establishmentId) {
+              establishment.counter[0] = payload.data.counterFromDbres;
+              return establishment;
+            } else {
+              return establishment;
+            }
+          });
+          if (state.data && editedEstblishmentList !== undefined) {
+            state.data =
+              editedEstblishmentList && editedEstblishmentList.length !== 0
+                ? editedEstblishmentList
+                : null;
+          }
+        }
+
+        state.isLoading = false;
+        state.message = payload.message;
+        CounterLikeEstablishment;
       },
     );
     builder.addCase(GetNerbayEstablishment.pending, (state, {payload}) => {

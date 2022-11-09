@@ -35,7 +35,7 @@ export interface IGetProfileInfo {
     backgroundImage?: IGetImages;
   };
   allergies?: IAllergy;
-  establishment?: IEstablishment;
+  establishment?: IEstablishment[];
 }
 
 export interface IGetImages {
@@ -104,10 +104,10 @@ export interface IWokringHours {
   _id: string;
 }
 
-interface ILocation {
+export interface ILocation {
   type: 'Point';
   coordinates: string[];
-  _id: string;
+  _id?: string;
 }
 
 export interface ITable {
@@ -123,8 +123,8 @@ export interface IEstablishment {
   _id: string;
   type: string;
   name: string;
-  owner: string;
-  location: ILocation;
+  owner: IGetProfileInfo;
+  location?: ILocation;
   cuisine: ICuisine[];
   openHours?: IWokringHours[];
   address: IGetAddress;

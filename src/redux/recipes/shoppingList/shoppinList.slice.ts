@@ -69,7 +69,6 @@ const shoppingList = createSlice({
         const filteredShoppingLists = state.data?.filter(
           shoppingList => shoppingList._id !== payload.data?._id,
         );
-        console.log({filteredShoppingLists: filteredShoppingLists?.length});
         state.data = filteredShoppingLists;
       },
     );
@@ -87,14 +86,11 @@ const shoppingList = createSlice({
     builder.addCase(
       addShoppingListThunk.fulfilled,
       (state, {payload}: PayloadAction<IResponseGetSingleShoppingList>) => {
-        console.log(state.data?.length);
         state.error = null;
         state.succes = true;
         state.isLoading = false;
         state.message = payload?.message;
-        console.log({payload: payload.data});
         if (payload.data) state.data?.push(payload.data);
-        console.log(state.data?.length);
       },
     );
     builder.addCase(addShoppingListThunk.pending, (state, {payload}) => {

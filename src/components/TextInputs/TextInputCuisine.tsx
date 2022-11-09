@@ -14,6 +14,7 @@ import {
 import {IGetProfileInfo, IWokringHours} from '../../redux/Profile/types';
 import InsetShadow from 'react-native-inset-shadow';
 import DropShadow from 'react-native-drop-shadow';
+import {ILatLong} from '../Profile/Sections/infoScetion/PositionLatLong';
 
 export interface ITextInput {
   placeholder: string;
@@ -30,7 +31,8 @@ export interface ITextInput {
     | IGetProfileInfo
     | IWokringHours
     | undefined
-    | null;
+    | null
+    | ILatLong;
   value: string | undefined;
   onFocus?: (ev: FocusEvent) => void;
   type?: 'string' | 'array';
@@ -82,7 +84,7 @@ const TextInputProfile = ({
           paddingHorizontal: 5,
         }}>
         <TextInput
-          editable={disabled}
+          editable={!disabled ? true : false}
           placeholder={placeholder}
           onChangeText={text => {
             if (type === 'string') {

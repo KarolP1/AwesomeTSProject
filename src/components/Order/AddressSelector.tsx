@@ -13,11 +13,13 @@ const AddressSelector = ({
   setAddressState,
   coordinates,
   setCoordinates,
+  openMap,
 }: {
   addressState: string;
   setAddressState: React.Dispatch<React.SetStateAction<string>>;
   coordinates: GeolocationResponse;
   setCoordinates: React.Dispatch<React.SetStateAction<GeolocationResponse>>;
+  openMap: () => void;
 }) => {
   useEffect(() => {
     if (coordinates) {
@@ -46,6 +48,7 @@ const AddressSelector = ({
           <TouchableOpacity
             onPress={() => {
               Geolocation.getCurrentPosition(info => setCoordinates(info));
+              openMap();
             }}
             activeOpacity={0.8}
             style={{

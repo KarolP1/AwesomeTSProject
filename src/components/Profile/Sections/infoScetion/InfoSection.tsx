@@ -11,6 +11,7 @@ import {useAppDispatch, useAppSelector} from '../../../../redux/hooks';
 import {GetEstablishment} from '../../../../redux/Order/order.thunk';
 import {Counters} from '../../EstablishmentContent';
 import {ICounter} from '../../../../redux/recipes/types';
+import PositionLatLong from './PositionLatLong';
 
 const InfoSection = ({
   profileInfo,

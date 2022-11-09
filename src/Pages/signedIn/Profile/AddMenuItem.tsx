@@ -101,7 +101,6 @@ const ProfileNavigationAddMenuItemsPage = (
       navigation.navigate('ProfileHome');
       setIsDispatchFired(false);
     }
-    console.log({lastAddedId});
   }, [lastAddedId]);
 
   const [itemImage, setItemImage] = useState<ImageProps | null>(null);

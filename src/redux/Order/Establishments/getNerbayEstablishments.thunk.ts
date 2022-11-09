@@ -25,7 +25,6 @@ export const GetNerbayEstablishment = createAsyncThunk<
   try {
     const tokens = await getTokensKeychain();
     let params = constructParamsString(state);
-    console.log(params);
     const res = await instance
       .get(`/order/establishment/find?${params}`, {
         headers: {Authorization: 'Bearer ' + tokens?.access_token},

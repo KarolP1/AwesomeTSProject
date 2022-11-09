@@ -1,5 +1,9 @@
+import {
+  EditEstablishmentPosition,
+  IResponseEditMyEstablishment,
+} from './../Order/MyEstablishment/editEsablishment.thunk';
 import {getJobRequests} from './Jobs/getJobs.thunk';
-import {Action, AnyAction, createSlice} from '@reduxjs/toolkit';
+import {Action, AnyAction, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {useAppSelector} from '../hooks';
 import {addAllergy} from './allergies/addAllergy.thunk';
 import {IResponseGetMyProfile} from './types';
@@ -223,6 +227,34 @@ const MyProfileSlice = createSlice({
       },
     );
     builder.addCase(deleteJobRequests.pending, (state, {payload}) => {
+      state.isLoading = true;
+    });
+
+    //#endregion
+    //#region profile job delete
+    builder.addCase(EditEstablishmentPosition.rejected, (state, {payload}) => {
+      state.error = payload;
+      state.succes = false;
+
+      state.isLoading = false;
+    });
+    builder.addCase(
+      EditEstablishmentPosition.fulfilled,
+      (state, {payload}: PayloadAction<IResponseEditMyEstablishment>) => {
+        state.error = null;
+        state.succes = true;
+        if (state.data && state.data.establishment && payload.data) {
+          const data = state.data.establishment.map(establishment => {
+            if (establishment._id !== payload.data?._id) return establishment;
+            else return payload.data;
+          });
+          state.data.establishment = data;
+        }
+        state.isLoading = false;
+        state.message = payload.message;
+      },
+    );
+    builder.addCase(EditEstablishmentPosition.pending, (state, {payload}) => {
       state.isLoading = true;
     });
 

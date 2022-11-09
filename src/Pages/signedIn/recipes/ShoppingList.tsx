@@ -24,14 +24,12 @@ const RecipesShoppinglists = () => {
   const [listState, setListState] = useState<ShoppingListItemGet[]>([]);
   useEffect(() => {
     if (getShoppingListState && getShoppingListState.data) {
-      console.log({getShoppingListState});
       setListState(getShoppingListState.data);
     }
   }, [getShoppingListState.data]);
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log('landed on page');
       dispatch(getShoppinglists());
     }, []),
   );

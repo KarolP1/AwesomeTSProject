@@ -1,13 +1,9 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {getTokensKeychain} from '../../utils/localStorage';
 import {instance} from '../interceptors';
-import {
-  IEstablishment,
-  IGetProfileInfo,
-  IResponseGetMyProfile,
-  ITable,
-} from '../Profile/types';
+import {IEstablishment, ITable} from '../Profile/types';
 
+//TODO: add this to My establishment slice
 export const GetEstablishment = createAsyncThunk<IResponseGetMyEstablishment>(
   'Establishment/get}',
   async (_, {rejectWithValue}) => {

@@ -15,13 +15,17 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {useFocusEffect} from '@react-navigation/native';
 import {GetNerbayEstablishment} from '../../../redux/Order/Establishments/getNerbayEstablishments.thunk';
+import SingleEstablishmentComponent from './SingleEstablishmentComponent';
+import {GeolocationResponse} from '@react-native-community/geolocation';
 
 const EstablishmentsView = ({
   isOpen,
   setIsOpen,
+  coordinates,
 }: {
+  coordinates: GeolocationResponse;
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: () => void;
 }) => {
   const animationHeight = useSharedValue(10);
   const animationRotatey = useSharedValue(180);
@@ -34,6 +38,10 @@ const EstablishmentsView = ({
       height: withTiming(animationHeight.value, {duration: 300}),
     };
   });
+  useEffect(() => {
+    animationHeight.value = isOpen ? 20 : height / 2;
+    animationRotatey.value = isOpen ? 180 : 0;
+  }, [isOpen]);
   const animationRotateyStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -41,9 +49,9 @@ const EstablishmentsView = ({
       ],
     };
   });
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  // useEffect(() => {
+  //   console.log(data);
+  // }, [data]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -62,14 +70,28 @@ const EstablishmentsView = ({
         onPress={() => {
           animationHeight.value = isOpen ? 20 : height / 2;
           animationRotatey.value = isOpen ? 180 : 0;
-          setIsOpen(!isOpen);
+          setIsOpen();
         }}>
         <Animated.Image
-          style={[{height: 15, resizeMode: 'contain'}, animationRotateyStyle]}
+          style={[
+            {height: 15, resizeMode: 'contain', marginBottom: 10},
+            animationRotateyStyle,
+          ]}
           source={require('../../../assets/utilityIcons/arrowDown.png')}
         />
       </TouchableOpacity>
-      <ScrollView style={{flex: 1}}></ScrollView>
+      <ScrollView style={{flex: 1}}>
+        {data &&
+          data.map(establishment => {
+            return (
+              <SingleEstablishmentComponent
+                coordinates={coordinates}
+                establishment={establishment}
+                key={establishment._id}
+              />
+            );
+          })}
+      </ScrollView>
     </Animated.View>
   );
 };

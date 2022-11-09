@@ -24,7 +24,6 @@ const SubmitButton = ({
     </TouchableOpacity>
   );
 };
-//TODO: Add is done to shoppingList
 export default SubmitButton;
 
 const styles = StyleSheet.create({
