@@ -2,12 +2,7 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import DropShadow from 'react-native-drop-shadow';
 import {useNavigation} from '@react-navigation/native';
-import {
-  HomePageScreenProp,
-  HomeStackParamList,
-  RecipesPageScreenProp,
-  TabPageScreenProp,
-} from '../../navigation/types';
+import {RecipesPageScreenProp} from '../../navigation/types';
 
 const MenuSquareCartContainerReceipes = (props: {
   name: 'Find Recipes' | 'My Recipes' | 'Add Recipes' | 'Shopping Lists';

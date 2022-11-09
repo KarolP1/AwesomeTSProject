@@ -55,12 +55,15 @@ export const loginThunk = createAsyncThunk<IResponseLogin, ILoginForm, {}>(
     }
   },
 );
-export const tokenThunk = createAsyncThunk<IResponseLogin, {dispatch: any}>(
+export const tokenThunk = createAsyncThunk<IResponseLogin>(
   'user/token',
-  async ({dispatch}, {rejectWithValue}) => {
+  async (_, {rejectWithValue}) => {
     try {
       const tokens = await getTokensKeychain();
-      if (tokens) {
+      console.log(tokens);
+      if (!tokens) {
+        throw new Error('no tokens');
+      } else {
         const res = await instance
           .post(
             '/user/token',
@@ -72,27 +75,32 @@ export const tokenThunk = createAsyncThunk<IResponseLogin, {dispatch: any}>(
           .then(async response => {
             await Keychain.resetGenericPassword();
             await setTokensToStorage(response.data.data);
-            await dispatch(setAuthState(response.data.data));
             return response.data;
           })
           .catch(async error => {
-            await dispatch(setAuthStatus(false));
-            logout();
-            return rejectWithValue(error.response.data);
+            throw new Error(error.response.data.message);
           });
         return res.data;
       }
     } catch (error: any) {
+      console.log({e: error});
       if (
-        error.response.data.message ===
+        error?.response?.data?.message ===
         'Invalid request. Token is not same in store.'
-      )
-        logout();
-      return rejectWithValue({
-        message: error.message,
-        error: 'tokens failed: ' + JSON.stringify(error.response.data.message),
-        data: null,
-      });
+      ) {
+        return rejectWithValue({
+          message: error.message,
+          error:
+            'tokens failed: ' + JSON.stringify(error.response.data.message),
+          data: null,
+        });
+      } else {
+        return rejectWithValue({
+          message: error,
+          error,
+          data: null,
+        });
+      }
     }
   },
 );

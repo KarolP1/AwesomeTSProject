@@ -11,22 +11,47 @@
 import React, {useEffect} from 'react';
 
 import AuthNavigation from './src/navigation/auth/authNavigation';
-import {StatusBar, LogBox} from 'react-native';
+import {StatusBar, LogBox, Linking} from 'react-native';
 import {getStatus} from './src/redux/Auth/loginReducer';
 import test from './src/redux/interceptors';
-import {useAppDispatch} from './src/redux/hooks';
+import {useAppDispatch, useAppSelector} from './src/redux/hooks';
 
 const App = () => {
   const authSucces = getStatus();
+  const {isLoading} = useAppSelector(state => state.login);
+
   const dispatch = useAppDispatch();
   test(dispatch);
-
-  LogBox.ignoreLogs([
-    "ViewPropTypes will be removed from React Native. Migrate to ViewPropTypes exported from 'deprecated-react-native-prop-types'.",
-  ]);
   LogBox.ignoreLogs([
     'Sending `onAnimatedValueUpdate` with no listeners registered.',
   ]);
+
+  useEffect(() => {
+    function addLinkingEventListener() {
+      Linking.addEventListener('url', evt => {
+        console.log({url: evt});
+        // handleURL(evt?.url);
+      });
+    }
+
+    Linking.getInitialURL()
+      .then(initUrl => {
+        // handleURL;
+        if (initUrl) {
+          Linking.openURL(initUrl);
+          console.info(initUrl);
+        }
+      })
+      .catch(e => console.error(e))
+      .finally(() => {
+        addLinkingEventListener();
+      });
+
+    // return () => {
+    //   Linking.removeEventListener('url', handleUrlEvent);
+    // };
+  }, []);
+
   return (
     <>
       <AuthNavigation isAuth={authSucces} />

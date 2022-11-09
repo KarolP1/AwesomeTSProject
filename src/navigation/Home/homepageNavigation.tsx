@@ -17,7 +17,7 @@ const HomepageNavigationContainer = () => {
       <Stack.Screen name="HugeMenu2x2" component={HugeMenu} />
       {/*  */}
       <Stack.Screen
-        name="Home Page"
+        name="HomePage"
         component={HomepageHomeNavigationContainer}
       />
     </Stack.Navigator>

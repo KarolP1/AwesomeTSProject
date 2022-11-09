@@ -6,14 +6,14 @@ import Oreder from '../../Pages/signedIn/Order/Oreder';
 import Profile from '../../Pages/signedIn/Profile/Profile';
 import BuddyProgram from '../../Pages/signedIn/ComingSoon';
 import RecipesNavigation from '../recipes/recipesNavigation';
-import {HomeTabParamList} from '../types';
+import {HomePageProp, HomeTabParamList} from '../types';
 import Tabbar from '../../components/background/Tabbar';
 import {HomepageHomeMenuNavigationContainer} from '../order/initialOrderNavigation';
 import {ProfileNavigationContainer} from '../Profile/ProfileRootNavigator';
+import {useRoute} from '@react-navigation/native';
 
 const BottomTabNavigator = () => {
   const Tab = createBottomTabNavigator<HomeTabParamList>();
-
   return (
     <Tab.Navigator
       screenOptions={TabDefaultOptions}

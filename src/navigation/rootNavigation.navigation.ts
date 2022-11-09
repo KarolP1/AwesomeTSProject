@@ -12,7 +12,7 @@ import {
 } from './types';
 
 export type RootNavigationProp = CompositeNavigationProp<
-  NativeStackNavigationProp<HomeStackParamList, 'Home Page'>,
+  NativeStackNavigationProp<HomeStackParamList, 'HomePage'>,
   BottomTabNavigationProp<HomeTabParamList, 'Recipes'>
 >;
 

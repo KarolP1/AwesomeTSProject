@@ -2,11 +2,7 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import DropShadow from 'react-native-drop-shadow';
 import {useNavigation} from '@react-navigation/native';
-import {
-  HomePageScreenProp,
-  HomeStackParamList,
-  TabPageScreenProp,
-} from '../../navigation/types';
+import {HomePageScreenProp} from '../../navigation/types';
 import {useAppDispatch} from '../../redux/hooks';
 import {setLastNavigationDirection} from '../../redux/App/setup.sicle';
 
@@ -15,6 +11,7 @@ const MenuSquareCartContainer = (props: {
   image: any;
 }) => {
   const navigation = useNavigation<HomePageScreenProp>();
+
   const dispatch = useAppDispatch();
   return (
     <TouchableOpacity
@@ -23,7 +20,7 @@ const MenuSquareCartContainer = (props: {
         dispatch(setLastNavigationDirection(props.name));
 
         //@ts-ignore
-        navigation.navigate('Home Page', {screen: props.name});
+        navigation.navigate('HomePage', {screen: props.name});
       }}>
       <DropShadow style={styles.MenuSquareCartContainer}>
         <Image
