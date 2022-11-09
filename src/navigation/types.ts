@@ -31,9 +31,7 @@ export type AuthScreenProp = NativeStackNavigationProp<
 export type HomeStackParamList = {
   HugeMenu2x2: undefined;
   Linking: undefined;
-  HomePage: {
-    screen: NativeStackScreenProps<HomeTabParamList>;
-  };
+  HomePage: NavigatorScreenParams<HomeTabParamList>;
 };
 export type HomePageScreenProp = NativeStackNavigationProp<
   HomeStackParamList,

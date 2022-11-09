@@ -1,7 +1,11 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {useRoute} from '@react-navigation/native';
+import {HomePageProp} from '../../navigation/types';
 
 const LinkingPage = () => {
+  const route = useRoute<HomePageProp['route']>();
+  console.log({route: route.path});
   return (
     <View>
       <Text>LinkingPage</Text>

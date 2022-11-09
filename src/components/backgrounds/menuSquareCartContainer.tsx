@@ -20,7 +20,7 @@ const MenuSquareCartContainer = (props: {
         dispatch(setLastNavigationDirection(props.name));
 
         //@ts-ignore
-        navigation.navigate('HomePage', {screen: props.name});
+        navigation.navigate('HomePage', {screen: props.name, path: props.name});
       }}>
       <DropShadow style={styles.MenuSquareCartContainer}>
         <Image

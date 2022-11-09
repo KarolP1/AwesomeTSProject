@@ -1,43 +1,30 @@
-export const linking = {
-  prefixes: ['blinkfix://app', 'https://blink.fix.me'],
-  routes: [
-    {
-      name: 'HomePage',
-      state: {
-        routes: [
-          {
-            name: 'Order',
-            state: {
-              routes: [
-                {
-                  name: 'Restaurants',
-                },
-              ],
-            },
-          },
-        ],
+import {
+  HomePageProp,
+  HomeStackParamList,
+  RootStackParamList,
+} from './src/navigation/types';
+import {LinkingOptions} from '@react-navigation/native';
+
+export const linking: LinkingOptions<HomeStackParamList> = {
+  prefixes: ['mychat://', 'https://blink.fix.me'],
+  config: {
+    screens: {
+      HomePage: {
+        screens: {
+          Order: 'Order',
+        },
       },
+      Linking: 'Linking',
+      HugeMenu2x2: 'HugeMenu2x2',
     },
-    {
-      name: 'Linking',
-      state: {},
-    },
-    {
-      name: 'HugeMenu2x2',
-      state: {},
-    },
-  ],
+  },
 };
-export const linkingLoggedOut = {
-  prefixes: ['blinkfix://', 'https://blink.fix.me'],
-  routes: [
-    {
-      name: 'Login',
-      state: {},
+export const linkingLoggedOut: LinkingOptions<RootStackParamList> = {
+  prefixes: ['mychat://', 'https://blink.fix.me'],
+  config: {
+    screens: {
+      Login: {},
+      Register: {},
     },
-    {
-      name: 'Register',
-      state: {},
-    },
-  ],
+  },
 };

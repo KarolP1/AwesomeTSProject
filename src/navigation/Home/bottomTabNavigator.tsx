@@ -2,8 +2,6 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {TabDefaultOptions} from '../../options/stackDefaultOptions';
-import Oreder from '../../Pages/signedIn/Order/Oreder';
-import Profile from '../../Pages/signedIn/Profile/Profile';
 import BuddyProgram from '../../Pages/signedIn/ComingSoon';
 import RecipesNavigation from '../recipes/recipesNavigation';
 import {HomePageProp, HomeTabParamList} from '../types';

@@ -12,7 +12,7 @@ import React, {ReactNode} from 'react';
 
 const LoggedOutBackground = ({children}: {children?: ReactNode}) => {
   return (
-    <SafeAreaView style={styles.mainContainer}>
+    <View style={styles.mainContainer}>
       <ImageBackground
         style={styles.loggedOutBackground}
         source={require('../../../src/assets/background.png')}>
@@ -27,7 +27,7 @@ const LoggedOutBackground = ({children}: {children?: ReactNode}) => {
           </ScrollView>
         </KeyboardAvoidingView>
       </ImageBackground>
-    </SafeAreaView>
+    </View>
   );
 };
 

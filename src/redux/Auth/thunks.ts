@@ -60,7 +60,6 @@ export const tokenThunk = createAsyncThunk<IResponseLogin>(
   async (_, {rejectWithValue}) => {
     try {
       const tokens = await getTokensKeychain();
-      console.log(tokens);
       if (!tokens) {
         throw new Error('no tokens');
       } else {

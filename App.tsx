@@ -26,32 +26,6 @@ const App = () => {
     'Sending `onAnimatedValueUpdate` with no listeners registered.',
   ]);
 
-  useEffect(() => {
-    function addLinkingEventListener() {
-      Linking.addEventListener('url', evt => {
-        console.log({url: evt});
-        // handleURL(evt?.url);
-      });
-    }
-
-    Linking.getInitialURL()
-      .then(initUrl => {
-        // handleURL;
-        if (initUrl) {
-          Linking.openURL(initUrl);
-          console.info(initUrl);
-        }
-      })
-      .catch(e => console.error(e))
-      .finally(() => {
-        addLinkingEventListener();
-      });
-
-    // return () => {
-    //   Linking.removeEventListener('url', handleUrlEvent);
-    // };
-  }, []);
-
   return (
     <>
       <AuthNavigation isAuth={authSucces} />
