@@ -30,50 +30,9 @@ const AuthNavigation = ({isAuth}: {isAuth: boolean}) => {
 
   useEffect(() => {
     // declare the data fetching function
-    const fetchData = async () => {
-      const tokens = await getTokensKeychain();
-      if (!tokens) {
-        console.log('there is no token');
-        dispatch(setIsAuth(false));
-        dispatch(setAuthState(null));
-      } else {
-        console.log('there is token');
-        dispatch(tokenThunk());
-        console.log('running thunk action');
-      }
-    };
-    fetchData()
-      .then(() => {
-        console.log(data);
-        if (
-          data &&
-          data.access_token !== undefined &&
-          data.refresh_token !== undefined
-        ) {
-          console.log('there is data');
-          dispatch(setAuthState(data));
-          dispatch(setIsAuth(true));
-        }
-        if (error) {
-          console.log('there is error');
-          dispatch(setIsAuth(false));
-          dispatch(setAuthState(null));
-          logout();
-        } else {
-          dispatch(setIsAuth(false));
-          dispatch(setAuthState(null));
-          logout();
-        }
-        RNBootSplash.hide({fade: true});
-      })
-      .catch(console.error);
-    Linking.addEventListener('url', _handleOpenUrl);
-  }, [error]);
-  useEffect(() => {
-    Linking.addEventListener('url', _handleOpenUrl);
-    return () => {
-      Linking.removeAllListeners('url');
-    };
+    setTimeout(() => {
+      RNBootSplash.hide({fade: true});
+    }, 3000);
   }, []);
 
   if (isAuth) {

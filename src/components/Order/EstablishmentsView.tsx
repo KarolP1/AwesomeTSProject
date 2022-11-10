@@ -12,11 +12,12 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {ScrollView} from 'react-native-gesture-handler';
-import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {useFocusEffect} from '@react-navigation/native';
-import {GetNerbayEstablishment} from '../../../redux/Order/Establishments/getNerbayEstablishments.thunk';
+import {GetNerbayEstablishment} from '../../redux/Order/Establishments/getNerbayEstablishments.thunk';
 import SingleEstablishmentComponent from './SingleEstablishmentComponent';
 import {GeolocationResponse} from '@react-native-community/geolocation';
+import {IEstablishment} from '../../redux/Profile/types';
 
 const EstablishmentsView = ({
   isOpen,
@@ -25,7 +26,7 @@ const EstablishmentsView = ({
 }: {
   coordinates: GeolocationResponse;
   isOpen: boolean;
-  setIsOpen: () => void;
+  setIsOpen: (establishment?: IEstablishment) => void;
 }) => {
   const animationHeight = useSharedValue(10);
   const animationRotatey = useSharedValue(180);
@@ -49,9 +50,6 @@ const EstablishmentsView = ({
       ],
     };
   });
-  // useEffect(() => {
-  //   console.log(data);
-  // }, [data]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -77,7 +75,7 @@ const EstablishmentsView = ({
             {height: 15, resizeMode: 'contain', marginBottom: 10},
             animationRotateyStyle,
           ]}
-          source={require('../../../assets/utilityIcons/arrowDown.png')}
+          source={require('../../assets/utilityIcons/arrowDown.png')}
         />
       </TouchableOpacity>
       <ScrollView style={{flex: 1}}>
@@ -87,6 +85,7 @@ const EstablishmentsView = ({
               <SingleEstablishmentComponent
                 coordinates={coordinates}
                 establishment={establishment}
+                setIsOpen={setIsOpen}
                 key={establishment._id}
               />
             );

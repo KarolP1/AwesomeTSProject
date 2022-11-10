@@ -35,7 +35,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 {
   return [RCTLinkingManager application:application openURL:url options:options];
 }
-
+// Add this inside `@implementation AppDelegate` above `@end`:
 - (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
  restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
 {
@@ -43,7 +43,6 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
                   continueUserActivity:userActivity
                     restorationHandler:restorationHandler];
 }
-
 @end
 #endif
 

@@ -11,6 +11,7 @@ import {allCategoriesRecipe, category} from './allCategories';
 import SingleCategory from './SingleCategory';
 import DropShadow from 'react-native-drop-shadow';
 import InsetShadow from 'react-native-inset-shadow';
+import {ICategoryVisibility} from '../../redux/Profile/types';
 
 const CategoryRecipesSelector = ({
   selected,
@@ -109,5 +110,98 @@ const CategoryRecipesSelector = ({
 };
 
 export default CategoryRecipesSelector;
+export const CategoryEstablishmentSelector = ({
+  selected,
+  setSelected,
+  size,
+  categoriesProp,
+}: {
+  selected: string | null;
+  setSelected: React.Dispatch<SetStateAction<string | null>>;
+  size?: number;
+  categoriesProp: ICategoryVisibility[];
+}) => {
+  const categories = categoriesProp;
+  return (
+    <ScrollView horizontal style={{maxHeight: 110}}>
+      {categories?.map(category => (
+        <TouchableOpacity
+          activeOpacity={1}
+          key={category._id}
+          onPress={() => {
+            if (category._id === selected) setSelected(null);
+            else setSelected(category._id);
+          }}>
+          {selected !== category._id ? (
+            <DropShadow
+              style={{
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: -2,
+                  height: 4,
+                },
+                shadowOpacity: 0.2,
+                shadowRadius: 15,
+                elevation: 1,
+                borderRadius: 10,
+                padding: 10,
+                overflow: 'hidden',
+                aspectRatio: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'rgba(0,0,0,0.05)',
+                marginHorizontal: 5,
+                position: 'relative',
+                height: 100,
+                width: 100,
+              }}>
+              <Image
+                style={{width: 40, height: 40, alignSelf: 'center'}}
+                source={require('../../assets/BX.png')}
+              />
+              <Text style={{fontSize: 12, marginTop: 10}}>
+                {category.categoryName}
+              </Text>
+            </DropShadow>
+          ) : (
+            <>
+              <InsetShadow
+                key={category._id}
+                containerStyle={{
+                  width: 100,
+                  height: 100,
+                  shadowColor: 'rgba(0,0,0,.1)',
+                  shadowOffset: {
+                    width: -2,
+                    height: 4,
+                  },
+                  shadowOpacity: 1,
+                  shadowRadius: 15,
+                  elevation: 1,
+                  borderRadius: 10,
+                  padding: 10,
+                  overflow: 'hidden',
+                  aspectRatio: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: 'rgba(0,0,0,0.01)',
+                  marginHorizontal: 5,
+                  position: 'relative',
+                }}>
+                <Image
+                  style={{width: 40, height: 40, alignSelf: 'center'}}
+                  source={require('../../assets/BX.png')}
+                />
+                <Text style={{fontSize: 12, marginTop: 10}}>
+                  {category.categoryName}
+                </Text>
+              </InsetShadow>
+            </>
+          )}
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  );
+};
 
 const styles = StyleSheet.create({});

@@ -1,6 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StackDefaultOptions} from '../../options/stackDefaultOptions';
 import OrderMenu from '../../Pages/signedIn/Order';
+import SingleEstablishment from '../../Pages/signedIn/Order/SingleEstablishment';
 import {HomepageHomeNavigationContainer} from './orderNavigation';
 import {orderInitialParamList} from './types';
 
@@ -13,6 +14,10 @@ export const HomepageHomeMenuNavigationContainer = () => {
       <Stack.Screen
         name="OrderPage"
         component={HomepageHomeNavigationContainer}
+      />
+      <Stack.Screen
+        name="SingleRestaurantPage"
+        component={SingleEstablishment}
       />
       <Stack.Screen name="OrderPageMenu" component={OrderMenu} />
     </Stack.Navigator>

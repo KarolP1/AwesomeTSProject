@@ -1,6 +1,8 @@
 import {
+  Alert,
   Image,
   StyleSheet,
+  Text,
   TouchableOpacity,
   useWindowDimensions,
   View,
@@ -14,7 +16,7 @@ import Spinner from 'react-native-spinkit';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {ScrollView} from 'react-native-gesture-handler';
 import Geolocation from '@react-native-community/geolocation';
-import EstablishmentsView from './EstablishmentsView';
+import EstablishmentsView from '../../../components/Order/EstablishmentsView';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -27,6 +29,7 @@ import {getMyProfile} from '../../../redux/Profile/core/profileCore.thunk';
 import RenderMarker from '../../../components/Order/RenderMarker';
 import {GetNerbayEstablishment} from '../../../redux/Order/Establishments/getNerbayEstablishments.thunk';
 import {IEstablishment} from '../../../redux/Profile/types';
+import FastCheckoutEstablishment from '../../../components/Order/FastCheckoutEstablishment';
 
 Geolocation.setRNConfiguration({skipPermissionRequests: false});
 
@@ -94,17 +97,30 @@ const Restaurants = () => {
     },
     timestamp: new Date().valueOf(),
   });
+  const ref = useRef(null);
 
   useEffect(() => {
     if (!restaurantToDisplayInMenu) {
       animationRestaurantPanelSide.value = -width;
-    } else animationRestaurantPanelSide.value = 0;
+    } else {
+      if (ref.current)
+        //@ts-ignore
+        ref.current.animateToRegion(
+          {
+            longitude: restaurantToDisplayInMenu.location?.coordinates[0],
+            latitude: restaurantToDisplayInMenu.location?.coordinates[1],
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+          },
+          1000,
+        );
+      animationRestaurantPanelSide.value = 0;
+    }
   }, [restaurantToDisplayInMenu]);
   const {height} = useWindowDimensions();
 
   const [isMapRedy, setIsMapRedy] = useState<boolean>(false);
 
-  const ref = useRef(null);
   useEffect(() => {
     if (ref)
       //@ts-ignore
@@ -137,6 +153,7 @@ const Restaurants = () => {
             animationRotation.value = !isExtraButtonRotated ? 1440 : 0;
             animationSide.value = isExtraButtonRotated ? -200 : 0;
             setIsExtraButtonRotated(!isExtraButtonRotated);
+            setRestaurantToDisplayInMenu(null);
           }}
           style={{
             height: '100%',
@@ -172,27 +189,56 @@ const Restaurants = () => {
         style={[
           {
             marginTop: 5,
-            padding: 20,
-            paddingTop: 5,
             width: '100%',
             position: 'absolute',
             flex: 1,
-            zIndex: 101,
+            zIndex: 102,
             bottom: 0,
-            height: 400,
+            height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.4)',
+            justifyContent: 'flex-end',
           },
           RestaurantPanelStyle,
         ]}>
         <TouchableOpacity
-          activeOpacity={1}
-          onPress={() => {
-            setRestaurantToDisplayInMenu(null);
-          }}>
+          style={{flex: 1}}
+          onPress={() => setRestaurantToDisplayInMenu(null)}></TouchableOpacity>
+        <View style={{height: '70%'}}>
           <Image
-            style={{width: 30, height: 30, alignSelf: 'flex-end'}}
-            source={require('../../../assets/utilityIcons/close.png')}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              width: '100%',
+              height: '100%',
+              resizeMode: 'cover',
+            }}
+            source={require('../../../assets/background.png')}
           />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              right: 10,
+              top: 10,
+              zIndex: 10,
+            }}
+            activeOpacity={1}
+            onPress={() => {
+              setRestaurantToDisplayInMenu(null);
+            }}>
+            <Image
+              style={{width: 30, height: 30, alignSelf: 'flex-end'}}
+              source={require('../../../assets/utilityIcons/close.png')}
+            />
+          </TouchableOpacity>
+          {restaurantToDisplayInMenu && (
+            <FastCheckoutEstablishment
+              establishment={restaurantToDisplayInMenu}
+            />
+          )}
+        </View>
       </Animated.View>
       <ScrollView
         style={{
@@ -240,6 +286,13 @@ const Restaurants = () => {
             ref={ref}
             provider={PROVIDER_GOOGLE}
             onMarkerPress={e => {
+              Alert.alert(
+                'test',
+                JSON.stringify({
+                  longitude: e.nativeEvent.coordinate.longitude,
+                  latitude: e.nativeEvent.coordinate.latitude,
+                }),
+              );
               setIsOpen(false);
               //@ts-ignore
               ref.current.animateToRegion(
@@ -277,10 +330,8 @@ const Restaurants = () => {
                 }
               }
             }}
-            onMapReady={() => {
-              setIsMapRedy(true);
-            }}
             onMapLoaded={() => {
+              console.log('loaded');
               setIsMapRedy(true);
             }}
             style={{
@@ -322,9 +373,12 @@ const Restaurants = () => {
           <EstablishmentsView
             coordinates={coordinates}
             isOpen={isOpen}
-            setIsOpen={() => {
-              setIsOpen(!isOpen);
-              setRestaurantToDisplayInMenu(null);
+            setIsOpen={(establishment?: IEstablishment) => {
+              if (restaurantToDisplayInMenu !== null) {
+                setRestaurantToDisplayInMenu(null);
+              } else {
+                if (establishment) setRestaurantToDisplayInMenu(establishment);
+              }
             }}
           />
         </View>

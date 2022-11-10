@@ -1,26 +1,29 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {IEstablishment, ILocation} from '../../../redux/Profile/types';
-import {WEBCONST} from '../../../constants/webConstants';
-import DropShadow from 'react-native-drop-shadow';
+import {IEstablishment} from '../../redux/Profile/types';
 import {GeolocationResponse} from '@react-native-community/geolocation';
-import {ICuisine} from '../../../redux/recipes/types';
-import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
-import {CounterLikeEstablishment} from '../../../redux/counters/likeEstablishment.thunk';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
+import DropShadow from 'react-native-drop-shadow';
+import {WEBCONST} from '../../constants/webConstants';
+import {CounterLikeEstablishment} from '../../redux/counters/likeEstablishment.thunk';
 
 const SingleEstablishmentComponent = ({
   establishment,
   coordinates,
+  setIsOpen,
+  noCheckout,
 }: {
   establishment: IEstablishment;
-  coordinates: GeolocationResponse;
+  setIsOpen?: (establishment?: IEstablishment) => void;
+  coordinates?: GeolocationResponse;
+  noCheckout?: boolean;
 }) => {
   const [dist, setDist] = useState(0);
   const dispatch = useAppDispatch();
   useEffect(() => {
     const distanceNumber = distance(
-      coordinates.coords.latitude,
-      coordinates.coords.longitude,
+      coordinates?.coords.latitude,
+      coordinates?.coords.longitude,
       establishment.location?.coordinates[1],
       establishment.location?.coordinates[0],
       'K',
@@ -68,6 +71,11 @@ const SingleEstablishmentComponent = ({
     );
   }, [openHours]);
   //#endregion
+  console.log(
+    `${WEBCONST().APIURL}${
+      establishment.owner.images?.backgroundImage?.path
+    }${new Date().getTime()}`,
+  );
   return (
     <View
       style={{
@@ -97,12 +105,30 @@ const SingleEstablishmentComponent = ({
           source={{
             uri: `${WEBCONST().APIURL}${
               establishment.owner.images?.backgroundImage?.path
-            }`,
+            }?${new Date().getTime()}`,
           }}
         />
       </DropShadow>
       {/* Establishment icons */}
-
+      {noCheckout && (
+        <View
+          style={{
+            alignSelf: 'flex-end',
+            width: '60%',
+            position: 'absolute',
+            bottom: 20,
+          }}>
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: 'Handlee-Regular',
+              textTransform: 'capitalize',
+              color: '#fff',
+            }}>
+            {establishment.name}
+          </Text>
+        </View>
+      )}
       <View
         style={{
           position: 'absolute',
@@ -128,23 +154,22 @@ const SingleEstablishmentComponent = ({
             {!isLiked ? (
               <Image
                 style={{width: 16, height: 16}}
-                source={require('../../../assets/utilityIcons/notliked.png')}
+                source={require('../../assets/utilityIcons/notliked.png')}
               />
             ) : (
               <Image
                 style={{width: 16, height: 16}}
-                source={require('../../../assets/utilityIcons/liked.png')}
+                source={require('../../assets/utilityIcons/liked.png')}
               />
             )}
           </TouchableOpacity>
-          {establishment.isHalal && (
-            <View style={styles.iconImage}>
-              <Image
-                style={{width: 16, height: 16}}
-                source={require('../../../assets/utilityIcons/isHalal.png')}
-              />
-            </View>
-          )}
+
+          <View style={[styles.iconImage, {borderRadius: 50}]}>
+            <Image
+              style={{width: 16, height: 16}}
+              source={require('../../assets/utilityIcons/share.png')}
+            />
+          </View>
         </View>
         <View style={{flex: 1, alignItems: 'flex-end', padding: 10}}>
           <View style={{flexDirection: 'row'}}>
@@ -152,7 +177,7 @@ const SingleEstablishmentComponent = ({
               <View style={styles.iconImage}>
                 <Image
                   style={{width: 16, height: 16}}
-                  source={require('../../../assets/utilityIcons/isHalal.png')}
+                  source={require('../../assets/utilityIcons/isHalal.png')}
                 />
               </View>
             )}
@@ -160,7 +185,7 @@ const SingleEstablishmentComponent = ({
               <View style={styles.iconImage}>
                 <Image
                   style={{width: 16, height: 16}}
-                  source={require('../../../assets/utilityIcons/isVegan.png')}
+                  source={require('../../assets/utilityIcons/isVegan.png')}
                 />
               </View>
             )}
@@ -168,7 +193,7 @@ const SingleEstablishmentComponent = ({
               <View style={styles.iconImage}>
                 <Image
                   style={{width: 16, height: 16}}
-                  source={require('../../../assets/utilityIcons/isKosher.png')}
+                  source={require('../../assets/utilityIcons/isKosher.png')}
                 />
               </View>
             )}
@@ -176,7 +201,7 @@ const SingleEstablishmentComponent = ({
               <View style={styles.iconImage}>
                 <Image
                   style={{width: 16, height: 16}}
-                  source={require('../../../assets/utilityIcons/isDelivery.png')}
+                  source={require('../../assets/utilityIcons/isDelivery.png')}
                 />
               </View>
             )}
@@ -185,7 +210,7 @@ const SingleEstablishmentComponent = ({
               <View style={styles.iconImage}>
                 <Image
                   style={{width: 16, height: 16}}
-                  source={require('../../../assets/utilityIcons/isTakeAway.png')}
+                  source={require('../../assets/utilityIcons/isTakeAway.png')}
                 />
               </View>
             )}
@@ -250,7 +275,7 @@ const SingleEstablishmentComponent = ({
         }}>
         <View
           style={{
-            width: '100%',
+            width: !noCheckout ? '100%' : '45%',
             flex: 1,
             backgroundColor: '#838383ad',
             zIndex: 1,
@@ -273,49 +298,52 @@ const SingleEstablishmentComponent = ({
               }`,
             }}
           />
-          <View
-            style={{flex: 1, marginLeft: 4, justifyContent: 'space-around'}}>
-            <View>
-              <Text
+          {!noCheckout && (
+            <View
+              style={{flex: 1, marginLeft: 4, justifyContent: 'space-around'}}>
+              <View>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 13,
+                    textTransform: 'capitalize',
+                    fontWeight: '900',
+                    fontFamily: 'Damion',
+                    color: '#FFF',
+                  }}>
+                  {establishment.name}
+                </Text>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 10,
+                    textTransform: 'capitalize',
+                    fontWeight: '900',
+                    fontFamily: 'Damion',
+                    color: '#FFF',
+                  }}>
+                  Around {dist.toFixed(2)}km from you.
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => setIsOpen && setIsOpen(establishment)}
                 style={{
-                  textAlign: 'center',
-                  fontSize: 13,
-                  textTransform: 'capitalize',
-                  fontWeight: '900',
-                  fontFamily: 'Damion',
-                  color: '#FFF',
+                  paddingVertical: 5,
+                  backgroundColor: '#EA3651',
+                  borderRadius: 5,
+                  marginHorizontal: 5,
                 }}>
-                {establishment.name}
-              </Text>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontSize: 10,
-                  textTransform: 'capitalize',
-                  fontWeight: '900',
-                  fontFamily: 'Damion',
-                  color: '#FFF',
-                }}>
-                Around {dist.toFixed(2)}km from you.
-              </Text>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#fff',
+                    fontFamily: 'Handlee-Regular',
+                  }}>
+                  Checkout
+                </Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              style={{
-                paddingVertical: 5,
-                backgroundColor: '#EA3651',
-                borderRadius: 5,
-                marginHorizontal: 5,
-              }}>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  color: '#fff',
-                  fontFamily: 'Handlee-Regular',
-                }}>
-                Checkout
-              </Text>
-            </TouchableOpacity>
-          </View>
+          )}
         </View>
       </DropShadow>
     </View>

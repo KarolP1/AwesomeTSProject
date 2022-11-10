@@ -84,7 +84,7 @@ const MenuCatoegryListSection = ({selected}: {selected: string}) => {
           EditEstablishmentMenuCategories({
             categoryVisibility: selectedMenuCategories,
             menuId,
-            isOurMenuSubmenuVisible: categoryVisibleSection,
+            isOurMenuSubmenuVisible: !categoryVisibleSection,
           }),
         );
       }, 3000);
