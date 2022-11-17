@@ -22,7 +22,12 @@ const MenuListUpdateAndGet = ({
         establishment={establishment}
       />
 
-      {selected && <MenuCatoegryListSection selected={selected} />}
+      {selected && (
+        <MenuCatoegryListSection
+          selected={selected}
+          setSelected={setSelected}
+        />
+      )}
       {selected && <MenuItemsListSection selectedMenuId={selected} />}
     </>
   );

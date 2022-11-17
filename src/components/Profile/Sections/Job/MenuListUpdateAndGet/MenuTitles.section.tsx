@@ -80,7 +80,7 @@ const MenuTitles = ({
       Button={() => (
         <TouchableOpacity
           onPress={() => {
-            setSelected('');
+            setSelected(null);
             setIsEditModeEnabled(!isEditModeEnabled);
           }}>
           <Image

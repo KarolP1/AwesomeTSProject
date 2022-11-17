@@ -61,7 +61,7 @@ export interface IGetDocumentImages {
 }
 
 export interface IGetAddress {
-  _id: string;
+  _id?: string;
   country: string;
   city: string;
   street: string;
@@ -127,7 +127,7 @@ export interface ICategoryVisibility {
   _id: string;
 }
 
-interface IIngredient {
+export interface IIngredient {
   _id: string;
   qtt: number;
   unit: string;

@@ -21,10 +21,6 @@ const AddImage = ({
       >;
   imageFromRecipe?: IIMageRecipe;
 }) => {
-  useEffect(() => {
-    if (image && image.assets) console.log(image?.assets[0].uri);
-  }, [image]);
-
   return (
     <TouchableOpacity
       onPress={async () => {

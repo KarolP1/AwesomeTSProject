@@ -13,6 +13,7 @@ import SingleMenuList from '../../../components/Order/SingleMenuList';
 import CategoryRecipesSelector, {
   CategoryEstablishmentSelector,
 } from '../../../components/categorySelector';
+import Animated from 'react-native-reanimated';
 
 const SingleEstablishment = () => {
   const {params} = useRoute<ISingleEstablishmentProps['route']>();
@@ -59,7 +60,11 @@ const SingleEstablishment = () => {
       if (afterFilter) setFilteredMenuItems(afterFilter);
     }
   }, [categorySelected]);
-
+  const onlyVisibleCategories = selectedMenuState
+    ? selectedMenuState.categoryVisibility.filter(
+        category => category.isVisible === true,
+      )
+    : [];
   return (
     <LoggedInBackground>
       <SingleEstablishmentComponent
@@ -129,14 +134,18 @@ const SingleEstablishment = () => {
           <CategoryEstablishmentSelector
             selected={categorySelected}
             setSelected={setCategorySelected}
-            categoriesProp={selectedMenuState.categoryVisibility}
+            categoriesProp={onlyVisibleCategories}
           />
         )}
         {!categorySelected && (
           <ScrollView horizontal style={{flex: 1}}>
             {selectedMenuItemsState &&
               selectedMenuItemsState.map(menuItem => (
-                <SingleMenuList menuItem={menuItem} key={menuItem._id} />
+                <SingleMenuList
+                  menuItem={menuItem}
+                  key={menuItem._id}
+                  establishmentId={establishment._id}
+                />
               ))}
           </ScrollView>
         )}
@@ -144,16 +153,34 @@ const SingleEstablishment = () => {
           <ScrollView horizontal style={{flex: 1}}>
             {filteredMenuItems &&
               filteredMenuItems.map(menuItem => (
-                <SingleMenuList menuItem={menuItem} key={menuItem._id} />
+                <SingleMenuList
+                  menuItem={menuItem}
+                  key={menuItem._id}
+                  establishmentId={establishment._id}
+                />
               ))}
           </ScrollView>
         )}
-        <Text>{establishment.name} bestsellers</Text>
+        <Text
+          style={{
+            fontSize: 20,
+            color: '#fff',
+            textTransform: 'capitalize',
+            marginVertical: 10,
+            fontFamily: 'Handlee-Regular',
+          }}>
+          {establishment.name} bestsellers
+        </Text>
 
+        {/* menu item renderer */}
         <ScrollView horizontal style={{flex: 1}}>
           {selectedMenuItemsState &&
             selectedMenuItemsState.map(menuItem => (
-              <SingleMenuList menuItem={menuItem} key={menuItem._id} />
+              <SingleMenuList
+                menuItem={menuItem}
+                key={menuItem._id}
+                establishmentId={establishment._id}
+              />
             ))}
         </ScrollView>
       </ScrollView>

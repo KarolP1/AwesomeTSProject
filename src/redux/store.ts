@@ -1,4 +1,17 @@
-import {configureStore} from '@reduxjs/toolkit';
+import {combineReducers, configureStore} from '@reduxjs/toolkit';
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import authSlice from './rootReducer';
 import loginSlice from './Auth/loginReducer';
 import registerSlice from './Auth/registerReducer';
@@ -17,30 +30,60 @@ import FindNerbayEstablishmentSlice from './Order/Establishments/getNerbayEstabl
 import MyEstablishmentSlice from './Order/MyEstablishment/editEsablishment.slice';
 
 import getProfileSlice from './Profile/profileCore.slice';
+import {ShoppingCartSlice} from './Order/shoppingCart.slice';
 
+const persistConfig = {
+  key: 'root',
+  version: 1,
+  storage: AsyncStorage,
+  blacklist: [
+    'auth',
+    'login',
+    'register',
+    'recipes',
+    'recipesByTag',
+    'addRecipe',
+    'editRecipe',
+    'myRecipes',
+    'profile',
+    'establishment',
+    'employees',
+    'employeesAccept',
+    'MyEstabishmentMenus',
+    'shoppingList',
+    'findNerbayEstablishment',
+    'MyEstablishment',
+    // 'ShoppingCart',
+  ], //blacklisting a store attribute name, will not persist that store attribute.
+};
+
+const rootReducer = combineReducers({
+  App: AppSetupSlice,
+  auth: authSlice,
+  login: loginSlice,
+  register: registerSlice,
+  recipes: recipesSlice,
+  recipesByTag: recipesByTagSlice,
+  addRecipe: addRecipeSlice,
+  editRecipe: editRecipeSlice,
+  myRecipes: myRecipesSlice,
+  profile: getProfileSlice,
+  establishment: EstablishmentSlice,
+  employees: EmployeesListSlice,
+  employeesAccept: EmployeesAcceptSlice,
+  MyEstabishmentMenus: MyEstabishmentMenus,
+  shoppingList: ShoppingListSlice,
+  findNerbayEstablishment: FindNerbayEstablishmentSlice,
+  MyEstablishment: MyEstablishmentSlice,
+  ShoppingCart: ShoppingCartSlice.reducer,
+});
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
-  reducer: {
-    App: AppSetupSlice,
-    auth: authSlice,
-    login: loginSlice,
-    register: registerSlice,
-    recipes: recipesSlice,
-    recipesByTag: recipesByTagSlice,
-    addRecipe: addRecipeSlice,
-    editRecipe: editRecipeSlice,
-    myRecipes: myRecipesSlice,
-    profile: getProfileSlice,
-    establishment: EstablishmentSlice,
-    employees: EmployeesListSlice,
-    employeesAccept: EmployeesAcceptSlice,
-    MyEstabishmentMenus: MyEstabishmentMenus,
-    shoppingList: ShoppingListSlice,
-    findNerbayEstablishment: FindNerbayEstablishmentSlice,
-    MyEstablishment: MyEstablishmentSlice,
-  },
+  reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: false,
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     }),
 });
 
@@ -48,4 +91,6 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
+
+export const persistor = persistStore(store);
 export default store;

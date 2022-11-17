@@ -17,7 +17,6 @@ export const CounterLikeEstablishment = createAsyncThunk<
         },
       )
       .then(response => {
-        console.log(response.data);
         return response.data;
       })
       .catch(error => {

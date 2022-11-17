@@ -29,17 +29,17 @@ const SwitchButton = ({
         }}></View>
       <View
         style={{
-          alignSelf: !categoryVisibleSection ? 'flex-end' : 'flex-start',
+          alignSelf: categoryVisibleSection ? 'flex-end' : 'flex-start',
         }}>
         <Image
           style={{
             width: 20,
             height: 20,
-            backgroundColor: !categoryVisibleSection ? 'green' : '#464646',
+            backgroundColor: categoryVisibleSection ? 'green' : '#464646',
             borderRadius: 100,
           }}
           source={
-            !categoryVisibleSection
+            categoryVisibleSection
               ? require('../../assets/utilityIcons/visibleContur.png')
               : require('../../assets/utilityIcons/notVisibleContur.png')
           }></Image>

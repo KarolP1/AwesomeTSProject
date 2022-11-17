@@ -19,10 +19,11 @@ const IngredientForEstablishmentController = ({
   ingredients?: IIngredientEstablishment[];
   setIngredients: (ingredients: IIngredientEstablishment[]) => void;
 }) => {
-  const [booleans, setBooleans] = useState([
+  const initialBooleans = [
     {name: 'is Ingredient Visible', value: false},
     {name: 'is Ingredient Editable', value: false},
-  ]);
+  ];
+  const [booleans, setBooleans] = useState(initialBooleans);
   const initialNewIngredient = {
     qtt: '',
     unit: '',
@@ -31,6 +32,7 @@ const IngredientForEstablishmentController = ({
     isIngredientEditable: false,
   };
   const [newIngredient, setNewIngredient] = useState(initialNewIngredient);
+
   useEffect(() => {
     setNewIngredient({
       ...newIngredient,
@@ -145,6 +147,8 @@ const IngredientForEstablishmentController = ({
             } else {
               Alert.alert('Warning', 'you have to specify ingredients');
             }
+            setNewIngredient(initialNewIngredient);
+            setBooleans(initialBooleans);
           }}
           title={'add ingredient'}
         />

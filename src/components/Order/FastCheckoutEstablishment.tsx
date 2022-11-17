@@ -171,12 +171,6 @@ const FastCheckoutEstablishment = ({
                 {menuItem.currency}
                 {menuItem.price}
               </Text>
-
-              {menuItem.dishIngredients.map(ingredient => (
-                <View key={ingredient._id}>
-                  <Text>{ingredient.name}</Text>
-                </View>
-              ))}
             </DropShadow>
           ))}
       </ScrollView>

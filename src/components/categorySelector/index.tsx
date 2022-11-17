@@ -157,9 +157,17 @@ export const CategoryEstablishmentSelector = ({
               }}>
               <Image
                 style={{width: 40, height: 40, alignSelf: 'center'}}
-                source={require('../../assets/BX.png')}
+                source={renderPhotoToRecipe(category)}
               />
-              <Text style={{fontSize: 12, marginTop: 10}}>
+              <Text
+                style={{
+                  textTransform: 'capitalize',
+                  fontSize: 12,
+                  marginTop: 10,
+                  color: '#fff',
+
+                  fontFamily: 'Handlee-Regular',
+                }}>
                 {category.categoryName}
               </Text>
             </DropShadow>
@@ -190,9 +198,16 @@ export const CategoryEstablishmentSelector = ({
                 }}>
                 <Image
                   style={{width: 40, height: 40, alignSelf: 'center'}}
-                  source={require('../../assets/BX.png')}
+                  source={renderPhotoToRecipe(category)}
                 />
-                <Text style={{fontSize: 12, marginTop: 10}}>
+                <Text
+                  style={{
+                    textTransform: 'capitalize',
+                    fontSize: 12,
+                    marginTop: 10,
+                    color: '#fff',
+                    fontFamily: 'Handlee-Regular',
+                  }}>
                   {category.categoryName}
                 </Text>
               </InsetShadow>
@@ -205,3 +220,37 @@ export const CategoryEstablishmentSelector = ({
 };
 
 const styles = StyleSheet.create({});
+
+export const renderPhotoToRecipe = (category: ICategoryVisibility) => {
+  switch (category.categoryName) {
+    case (category.categoryName = 'bakeries'):
+      return require('../../assets/utilityIcons/establishment/bakries.png');
+
+    case (category.categoryName = 'starters'):
+      return require('../../assets/utilityIcons/establishment/starters.png');
+
+    case (category.categoryName = 'sides'):
+      return require('../../assets/utilityIcons/establishment/sides.png');
+
+    case (category.categoryName = 'soups'):
+      return require('../../assets/utilityIcons/establishment/soups.png');
+
+    case (category.categoryName = 'mains'):
+      return require('../../assets/utilityIcons/establishment/mains.png');
+
+    case (category.categoryName = 'desserts'):
+      return require('../../assets/utilityIcons/establishment/desserts.png');
+
+    case (category.categoryName = 'beverages'):
+      return require('../../assets/utilityIcons/establishment/beverages.png');
+
+    case (category.categoryName = 'alc beverages'):
+      return require('../../assets/utilityIcons/establishment/alcbeverages.png');
+
+    case (category.categoryName = 'products'):
+      return require('../../assets/utilityIcons/establishment/products.png');
+
+    default:
+      return require('../../assets/BX.png');
+  }
+};

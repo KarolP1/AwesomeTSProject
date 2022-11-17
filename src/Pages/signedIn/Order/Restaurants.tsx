@@ -331,7 +331,6 @@ const Restaurants = () => {
               }
             }}
             onMapLoaded={() => {
-              console.log('loaded');
               setIsMapRedy(true);
             }}
             style={{

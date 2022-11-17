@@ -71,11 +71,7 @@ const SingleEstablishmentComponent = ({
     );
   }, [openHours]);
   //#endregion
-  console.log(
-    `${WEBCONST().APIURL}${
-      establishment.owner.images?.backgroundImage?.path
-    }${new Date().getTime()}`,
-  );
+
   return (
     <View
       style={{

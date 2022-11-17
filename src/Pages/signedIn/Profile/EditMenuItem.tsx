@@ -216,7 +216,6 @@ const ProfileNavigationEditMenuItemsPage = (
           });
         }}
       />
-      <Text>{succes ? 'true' : 'false'}</Text>
 
       <SubmitButton
         title="Submit new Item"
