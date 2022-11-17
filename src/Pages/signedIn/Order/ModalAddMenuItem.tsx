@@ -24,10 +24,6 @@ import {
 } from '../../../redux/Order/shoppingCart.slice';
 
 const ModalAddMenuItem = () => {
-  const state = useAppSelector(state => state.ShoppingCart);
-  useEffect(() => {
-    console.log({state});
-  }, [state]);
   const route = useRoute<IMenuItemAddModalRoute>();
   const dispatch = useAppDispatch();
   // TODO: add bestsellers to menu items

@@ -5,9 +5,8 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
-import MenuSquareCartContainerReceipes from '../../../components/backgrounds/menuSquareCartContainerRecipes';
 import MenuSquareCartContainerOrder from '../../../components/Order/menuContainer';
 import {useAppSelector} from '../../../redux/hooks';
 import Animated, {
@@ -15,11 +14,13 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {MenuItemButton} from '../../../components/Order/MenuItemButton';
 import {MenuOrderNavigation} from '../../../navigation/order/types';
 
 const OrderMenu = () => {
+  const {cartItems} = useAppSelector(state => state.ShoppingCart);
+
   const navigation = useNavigation<MenuOrderNavigation>();
   const animationRotation = useSharedValue(0);
   const {width} = useWindowDimensions();
@@ -61,6 +62,18 @@ const OrderMenu = () => {
             padding: 2,
             justifyContent: 'center',
           }}>
+          {cartItems && cartItems.length > 0 && (
+            <View
+              style={{
+                backgroundColor: '#EA3651',
+                width: 10,
+                height: 10,
+                borderRadius: 10,
+                top: 10,
+                right: 5,
+                position: 'absolute',
+              }}></View>
+          )}
           <Animated.Image
             style={[{alignSelf: 'center', margin: 2}, animationStyle]}
             source={require('../../../assets/utilityIcons/3dots.png')}
@@ -96,6 +109,7 @@ const OrderMenu = () => {
             paddingBottom: 60,
           }}>
           <MenuItemButton
+            haveRedDot={cartItems && cartItems.length > 0 ? true : false}
             title="Shopping cart"
             onPress={() => {
               navigation.navigate('OrderPage', {screen: 'shoppingCart'});

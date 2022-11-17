@@ -1,13 +1,15 @@
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import Animated from 'react-native-reanimated';
 
 export const MenuItemButton = ({
   title,
   onPress,
+  haveRedDot,
 }: {
   title: string;
   onPress?: () => void;
+  haveRedDot?: boolean;
 }) => {
   return (
     <Animated.View
@@ -25,6 +27,18 @@ export const MenuItemButton = ({
           alignItems: 'center',
           justifyContent: 'center',
         }}>
+        {haveRedDot && (
+          <View
+            style={{
+              backgroundColor: '#EA3651',
+              width: 10,
+              height: 10,
+              borderRadius: 10,
+              top: 10,
+              right: 15,
+              position: 'absolute',
+            }}></View>
+        )}
         <Text style={{color: '#fff', fontWeight: '900'}}>{title}</Text>
       </TouchableOpacity>
     </Animated.View>
