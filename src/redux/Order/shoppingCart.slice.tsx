@@ -71,6 +71,18 @@ export const ShoppingCartSlice = createSlice({
     clearShoppingList: state => {
       state.cartItems = null;
     },
+    deleteShoppingListsByIndex: (state, {payload}: PayloadAction<string[]>) => {
+      const toDelete = state.cartItems?.filter(item => {
+        const items = item.orderItems.filter(
+          orderItem => !payload.includes(orderItem.index),
+        );
+        item.orderItems = items;
+        if (item.orderItems.length !== 0) return item;
+      });
+      if (toDelete && state.cartItems) {
+        state.cartItems = toDelete;
+      }
+    },
   },
   extraReducers: builder => {
     // builder.addCase(GetEstablishment.rejected, (state, {payload}) => {
@@ -97,4 +109,5 @@ export const ShoppingCartSlice = createSlice({
 
 export const getMyRecipesError = () =>
   useAppSelector(state => state.establishment.error);
-export const {addNewItemToCart, clearShoppingList} = ShoppingCartSlice.actions;
+export const {addNewItemToCart, clearShoppingList, deleteShoppingListsByIndex} =
+  ShoppingCartSlice.actions;

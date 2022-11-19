@@ -14,6 +14,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import ShoppingListSingleItem from './ShoppingCart/ShoppingListSingleItem';
 import {
   clearShoppingList,
+  deleteShoppingListsByIndex,
   IShoppingCart,
 } from '../../redux/Order/shoppingCart.slice';
 import {WEBCONST} from '../../constants/webConstants';
@@ -47,15 +48,7 @@ const ShoppingCart = () => {
       : [];
 
   function deleteShopingLists(selectedItems: string[]) {
-    const toDelete = cartItems
-      ?.map(item => {
-        const allOrderedItems = item.orderItems;
-        return allOrderedItems.filter(orderItem =>
-          selectedItems.includes(orderItem.index),
-        );
-      })
-      .flat();
-    console.log(toDelete);
+    dispatch(deleteShoppingListsByIndex(selectedItems));
   }
 
   //#endregion
