@@ -5,21 +5,22 @@ import {
   useWindowDimensions,
   View,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import React from 'react';
 import DropShadow from 'react-native-drop-shadow';
-import {IMenuItem} from '../../redux/Profile/types';
+import {IEstablishment, IMenuItem} from '../../redux/Profile/types';
 import {WEBCONST} from '../../constants/webConstants';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {IMenuItemAddModalNavigation} from '../../navigation/order/types';
 
 const SingleMenuList = ({
   menuItem,
   establishmentId,
+  establishment,
 }: {
   menuItem: IMenuItem;
   establishmentId: string;
+  establishment: IEstablishment;
 }) => {
   const navigation = useNavigation<IMenuItemAddModalNavigation>();
   const {width} = useWindowDimensions();
@@ -58,6 +59,7 @@ const SingleMenuList = ({
             navigation.navigate('MenuItemAddModal', {
               menuItem: menuItem,
               establishmentId,
+              establishment: establishment,
             });
           }}>
           <Image

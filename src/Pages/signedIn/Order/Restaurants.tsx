@@ -24,12 +24,13 @@ import Animated, {
 } from 'react-native-reanimated';
 import {MenuItemButton} from '../../../components/Order/MenuItemButton';
 import {WEBCONST} from '../../../constants/webConstants';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {getMyProfile} from '../../../redux/Profile/core/profileCore.thunk';
 import RenderMarker from '../../../components/Order/RenderMarker';
 import {GetNerbayEstablishment} from '../../../redux/Order/Establishments/getNerbayEstablishments.thunk';
 import {IEstablishment} from '../../../redux/Profile/types';
 import FastCheckoutEstablishment from '../../../components/Order/FastCheckoutEstablishment';
+import {MenuOrderNavigation} from '../../../navigation/order/types';
 
 Geolocation.setRNConfiguration({skipPermissionRequests: false});
 
@@ -48,6 +49,9 @@ export interface coordinatesType {
 }
 
 const Restaurants = () => {
+  const {cartItems} = useAppSelector(state => state.ShoppingCart);
+  const navigation = useNavigation<MenuOrderNavigation>();
+
   const dispatch = useAppDispatch();
   const animationRotation = useSharedValue(0);
   const {width} = useWindowDimensions();
@@ -162,6 +166,18 @@ const Restaurants = () => {
             padding: 2,
             justifyContent: 'center',
           }}>
+          {cartItems && cartItems.length > 0 && (
+            <View
+              style={{
+                backgroundColor: '#EA3651',
+                width: 10,
+                height: 10,
+                borderRadius: 10,
+                top: 10,
+                right: 5,
+                position: 'absolute',
+              }}></View>
+          )}
           <Animated.Image
             style={[{alignSelf: 'center', margin: 2}, animationStyle]}
             source={require('../../../assets/utilityIcons/3dots.png')}
@@ -181,6 +197,16 @@ const Restaurants = () => {
           animationSideStyle,
         ]}>
         <MenuItemButton title="Extra filters" />
+        <MenuItemButton
+          haveRedDot={cartItems && cartItems.length > 0 ? true : false}
+          title="Shopping cart"
+          onPress={() => {
+            navigation.navigate('OrderPage', {screen: 'shoppingCart'});
+            animationRotation.value = !isExtraButtonRotated ? 1440 : 0;
+            animationSide.value = isExtraButtonRotated ? -width : 0;
+            setIsExtraButtonRotated(!isExtraButtonRotated);
+          }}
+        />
       </Animated.View>
 
       {/* M */}
@@ -286,13 +312,6 @@ const Restaurants = () => {
             ref={ref}
             provider={PROVIDER_GOOGLE}
             onMarkerPress={e => {
-              Alert.alert(
-                'test',
-                JSON.stringify({
-                  longitude: e.nativeEvent.coordinate.longitude,
-                  latitude: e.nativeEvent.coordinate.latitude,
-                }),
-              );
               setIsOpen(false);
               //@ts-ignore
               ref.current.animateToRegion(
@@ -356,7 +375,7 @@ const Restaurants = () => {
                   key={establishment._id}
                   location={establishment.location}
                   image={`${WEBCONST().APIURL}${
-                    establishment.owner.images?.profileImage?.path
+                    establishment.owner?.images?.profileImage?.path
                   }`}
                 />
               );
@@ -373,11 +392,13 @@ const Restaurants = () => {
             coordinates={coordinates}
             isOpen={isOpen}
             setIsOpen={(establishment?: IEstablishment) => {
+              console.log(isOpen);
               if (restaurantToDisplayInMenu !== null) {
                 setRestaurantToDisplayInMenu(null);
               } else {
                 if (establishment) setRestaurantToDisplayInMenu(establishment);
               }
+              setIsOpen(!isOpen);
             }}
           />
         </View>

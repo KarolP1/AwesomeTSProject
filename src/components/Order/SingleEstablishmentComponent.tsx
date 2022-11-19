@@ -41,7 +41,7 @@ const SingleEstablishmentComponent = ({
   useEffect(() => {
     const singleCounter = counter[0];
     if (userId) {
-      const isLikedFetch = singleCounter.whoLike.includes(userId);
+      const isLikedFetch = singleCounter?.whoLike.includes(userId);
       setIsLiked(isLikedFetch);
     } else setIsLiked(false);
   }, [counter]);
@@ -100,7 +100,7 @@ const SingleEstablishmentComponent = ({
           style={{height: '70%', resizeMode: 'cover', borderRadius: 15}}
           source={{
             uri: `${WEBCONST().APIURL}${
-              establishment.owner.images?.backgroundImage?.path
+              establishment.owner?.images?.backgroundImage?.path
             }?${new Date().getTime()}`,
           }}
         />
@@ -290,7 +290,7 @@ const SingleEstablishmentComponent = ({
             }}
             source={{
               uri: `${WEBCONST().APIURL}${
-                establishment.owner.images?.profileImage?.path
+                establishment.owner?.images?.profileImage?.path
               }`,
             }}
           />

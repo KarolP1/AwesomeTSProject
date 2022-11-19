@@ -23,7 +23,6 @@ const CuisineSearchbar = ({
         data={cuisines ? cuisines : []}
         onSelect={(selectedItem, index) => {
           setCuisineCode(selectedItem.CodeURL);
-          console.log(selectedItem, index);
         }}
         buttonTextAfterSelection={(selectedItem, index) => {
           return `${selectedItem.NameEnglish} / ${selectedItem.NameNative}`;

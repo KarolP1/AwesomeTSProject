@@ -145,6 +145,7 @@ const SingleEstablishment = () => {
                   menuItem={menuItem}
                   key={menuItem._id}
                   establishmentId={establishment._id}
+                  establishment={establishment}
                 />
               ))}
           </ScrollView>
@@ -157,6 +158,7 @@ const SingleEstablishment = () => {
                   menuItem={menuItem}
                   key={menuItem._id}
                   establishmentId={establishment._id}
+                  establishment={establishment}
                 />
               ))}
           </ScrollView>
@@ -180,6 +182,7 @@ const SingleEstablishment = () => {
                 menuItem={menuItem}
                 key={menuItem._id}
                 establishmentId={establishment._id}
+                establishment={establishment}
               />
             ))}
         </ScrollView>

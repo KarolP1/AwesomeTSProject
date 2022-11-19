@@ -9,25 +9,33 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
-import {useRoute} from '@react-navigation/native';
-import {IMenuItemAddModalRoute} from '../../../navigation/order/types';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {
+  IMenuItemAddModalRoute,
+  MenuOrderNavigation,
+} from '../../../navigation/order/types';
 import {WEBCONST} from '../../../constants/webConstants';
 import DropShadow from 'react-native-drop-shadow';
 import {DropShadowStyle} from '../../../components/styles/shadowStyles';
 import SubmitButton from '../../../components/touchables/SubmitButton';
 import TickButton from '../../../components/buttons/tickButton';
-import {IIngredient} from '../../../redux/Profile/types';
+import {IEstablishment, IIngredient} from '../../../redux/Profile/types';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {
   addNewItemToCart,
+  clearShoppingList,
   ICartItemItem,
 } from '../../../redux/Order/shoppingCart.slice';
+import uuid from 'react-native-uuid';
 
 const ModalAddMenuItem = () => {
+  const navigation = useNavigation<MenuOrderNavigation>();
+
   const route = useRoute<IMenuItemAddModalRoute>();
   const dispatch = useAppDispatch();
   // TODO: add bestsellers to menu items
-  const {menuItem, bestSellers, establishmentId} = route.params;
+  const {menuItem, bestSellers, establishmentId, establishment} = route.params;
+
   const [isEditModeForIngredientsVisible, setIsEditModeForIngredientsVisible] =
     useState<boolean>(false);
 
@@ -302,20 +310,21 @@ const ModalAddMenuItem = () => {
                   const response: {
                     orderWhere: string;
                     orderItems: ICartItemItem;
+                    establishment: IEstablishment;
                   } = {
                     orderItems: {
                       itemId: menuItem._id,
                       changes: changes && changes,
+                      item: menuItem,
+                      index: uuid.v4().toString(),
                     },
                     orderWhere: establishmentId,
+                    establishment: establishment,
                   };
-                  // console.log(response);
-                  dispatch(
-                    addNewItemToCart({
-                      orderItems: response.orderItems,
-                      orderWhere: response.orderWhere,
-                    }),
-                  );
+
+                  dispatch(addNewItemToCart(response));
+                  // dispatch(clearShoppingList());
+                  navigation.goBack();
                 }}
               />
             </View>

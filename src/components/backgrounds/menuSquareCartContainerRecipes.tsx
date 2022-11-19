@@ -63,12 +63,12 @@ export const ShadowStyle = StyleSheet.create({
   underImage: {
     shadowColor: '#000',
     shadowOffset: {
-      width: 10,
-      height: 4,
+      width: 0,
+      height: 5,
     },
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    elevation: 2,
-    borderRadius: 15,
+    shadowOpacity: 0.56,
+    shadowRadius: 6.68,
+
+    elevation: 11,
   },
 });

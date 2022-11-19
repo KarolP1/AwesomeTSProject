@@ -19,6 +19,7 @@ export type orderInitialParamList = {
     menuItem: IMenuItem;
     bestSellers?: IMenuItem[];
     establishmentId: string;
+    establishment: IEstablishment;
   };
 };
 

@@ -1,6 +1,7 @@
 import {useAppSelector} from './../hooks';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {IGetAddress} from '../Profile/types';
+import {IEstablishment, IGetAddress, IMenuItem} from '../Profile/types';
+import {uniqueId} from 'lodash';
 
 export interface ICartItemChange {
   ingredientId: string;
@@ -10,11 +11,14 @@ export interface ICartItemChange {
 export interface ICartItemItem {
   itemId: string;
   changes?: ICartItemChange[];
+  item: IMenuItem;
+  index: string;
 }
 
 export interface IShoppingCart {
   orderWhere: string;
   orderItems: ICartItemItem[];
+  establishment: IEstablishment;
 }
 
 const initialShoppingCart: {cartItems: IShoppingCart[] | null} = {
@@ -32,25 +36,28 @@ export const ShoppingCartSlice = createSlice({
       }: PayloadAction<{
         orderWhere: string;
         orderItems: ICartItemItem;
+        establishment: IEstablishment;
       }>,
     ) => {
+      if (!state.cartItems) {
+        state.cartItems = [];
+      }
+
       const isEmpty =
         state.cartItems &&
         state.cartItems.filter(item => item.orderWhere === payload.orderWhere)
           .length !== 0
           ? false
           : true;
-      console.log({isEmpty});
 
-      if (!state.cartItems && isEmpty) {
-        console.log('first');
-        state.cartItems = [];
+      if (isEmpty) {
         state.cartItems.push({
           orderItems: [payload.orderItems],
           orderWhere: payload.orderWhere,
+          establishment: payload.establishment,
         });
       } else {
-        state.cartItems?.map(cartItem => {
+        const newItems = state.cartItems?.map(cartItem => {
           if (cartItem.orderWhere === payload.orderWhere) {
             cartItem.orderItems.push(payload.orderItems);
             return cartItem;
@@ -58,7 +65,11 @@ export const ShoppingCartSlice = createSlice({
             return cartItem;
           }
         });
+        if (newItems) state.cartItems = newItems;
       }
+    },
+    clearShoppingList: state => {
+      state.cartItems = null;
     },
   },
   extraReducers: builder => {
@@ -86,4 +97,4 @@ export const ShoppingCartSlice = createSlice({
 
 export const getMyRecipesError = () =>
   useAppSelector(state => state.establishment.error);
-export const {addNewItemToCart} = ShoppingCartSlice.actions;
+export const {addNewItemToCart, clearShoppingList} = ShoppingCartSlice.actions;

@@ -165,7 +165,7 @@ export interface IEstablishment {
   _id: string;
   type: string;
   name: string;
-  owner: IGetProfileInfo;
+  owner?: IGetProfileInfo;
   location?: ILocation;
   cuisine: ICuisine[];
   openHours?: IWokringHours[];
