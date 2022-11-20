@@ -1,18 +1,7 @@
-import {
-  Alert,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
-import {
-  useFocusEffect,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {
   IOrderNavigation,
   IPaymentPageStackProps,
@@ -20,13 +9,7 @@ import {
 import {ScrollView} from 'react-native-gesture-handler';
 import SingleOrderItem from '../../../components/Order/ShoppingCart/SingleOrderItem';
 import SubmitButton from '../../../components/touchables/SubmitButton';
-import InsetShadow from 'react-native-inset-shadow';
-import DropShadow from 'react-native-drop-shadow';
-import {ShadowStyle} from '../../../components/backgrounds/menuSquareCartContainerRecipes';
 import OnOfButton from '../../../components/Order/ShoppingCart/OnOfButton';
-import {instance} from '../../../redux/interceptors';
-import {WEBCONST} from '../../../constants/webConstants';
-import {useAppSelector} from '../../../redux/hooks';
 
 const PaymentPage = () => {
   const {params} = useRoute<IPaymentPageStackProps>();
