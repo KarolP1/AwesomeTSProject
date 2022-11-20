@@ -1,5 +1,6 @@
 import {NavigatorScreenParams, RouteProp} from '@react-navigation/native';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
+import {ICartItemItem} from '../../redux/Order/shoppingCart.slice';
 import {IEstablishment, IMenuItem} from '../../redux/Profile/types';
 export type orderHomeParamList = {
   restaurants: undefined;
@@ -7,6 +8,9 @@ export type orderHomeParamList = {
   foodTrucks: undefined;
   localCooks: undefined;
   shoppingCart: undefined;
+  paymentOrderPage: {
+    items: ICartItemItem[];
+  };
 };
 
 export type orderInitialParamList = {
@@ -41,7 +45,18 @@ export type IMenuItemAddModalRoute = RouteProp<
   orderInitialParamList,
   'MenuItemAddModal'
 >;
+
 export type IMenuItemAddModalNavigation = StackNavigationProp<
   orderInitialParamList,
   'MenuItemAddModal'
+>;
+
+export type IPaymentPageStackProps = RouteProp<
+  orderHomeParamList,
+  'paymentOrderPage'
+>;
+
+export type IOrderNavigation = StackNavigationProp<
+  orderHomeParamList,
+  'paymentOrderPage'
 >;

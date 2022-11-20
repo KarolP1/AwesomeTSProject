@@ -15,6 +15,7 @@ import ShoppingListSingleItem from './ShoppingCart/ShoppingListSingleItem';
 import {
   clearShoppingList,
   deleteShoppingListsByIndex,
+  ICartItemItem,
   IShoppingCart,
 } from '../../redux/Order/shoppingCart.slice';
 import {WEBCONST} from '../../constants/webConstants';
@@ -27,12 +28,19 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {MenuItemButton} from './MenuItemButton';
+import SubmitButton from '../touchables/SubmitButton';
+import {useNavigation} from '@react-navigation/native';
+import {
+  IMenuItemAddModalNavigation,
+  IOrderNavigation,
+} from '../../navigation/order/types';
+
+type reduceResponse = {[key: string]: IShoppingCart[]}[];
 
 const ShoppingCart = () => {
   //#region
   const {cartItems} = useAppSelector(state => state.ShoppingCart);
-
-  type reduceResponse = {[key: string]: IShoppingCart[]}[];
+  const navigation = useNavigation<IOrderNavigation>();
 
   const groupedCartItems: reduceResponse = cartItems?.reduce(
     (result: any, current) => ({
@@ -172,58 +180,86 @@ const ShoppingCart = () => {
             alignItems: 'center',
             paddingBottom: 100,
           }}>
-          {test.map(string => {
+          {test.map((string, id) => {
             // @ts-ignore
-            return groupedCartItems[string].map((item, id) => {
-              return (
-                <View
-                  key={id}
-                  style={{
-                    width: '100%',
-                    paddingHorizontal: 10,
-                    paddingVertical: 5,
-                    alignItems: 'center',
-                  }}>
-                  {/* Signle establishment */}
-                  <DropShadow style={[ShadowStyle.underImage]}>
-                    <Image
-                      style={{
-                        width: 50,
-                        height: 50,
-                        borderRadius: 50,
-                        marginBottom: 10,
-                      }}
-                      source={
-                        item.establishment.owner?.images?.profileImage
-                          ? {
-                              uri: `${WEBCONST().APIURL}${
-                                item.establishment.owner?.images?.profileImage
-                                  ?.path
-                              }`,
+            return (
+              <View style={{width: '100%'}} key={string + id}>
+                {
+                  // @ts-ignore
+                  groupedCartItems[string].map((item, id) => (
+                    <View key={id}>
+                      <View
+                        style={{
+                          width: '100%',
+                          paddingHorizontal: 10,
+                          paddingVertical: 5,
+                          alignItems: 'center',
+                        }}>
+                        {/* Signle establishment */}
+                        <DropShadow style={[ShadowStyle.underImage]}>
+                          <Image
+                            style={{
+                              width: 50,
+                              height: 50,
+                              borderRadius: 50,
+                              marginBottom: 10,
+                            }}
+                            source={
+                              item.establishment.owner?.images?.profileImage
+                                ? {
+                                    uri: `${WEBCONST().APIURL}${
+                                      item.establishment.owner?.images
+                                        ?.profileImage?.path
+                                    }`,
+                                  }
+                                : require('../../assets/BX.png')
                             }
-                          : require('../../assets/BX.png')
-                      }
-                    />
-                  </DropShadow>
-                  <Text
-                    style={{
-                      color: '#fff',
-                      fontSize: 20,
-                      textTransform: 'capitalize',
-                      fontFamily: 'Handlee-Regular',
-                    }}>
-                    {item.establishment.name}
-                  </Text>
+                          />
+                        </DropShadow>
+                        <Text
+                          style={{
+                            color: '#fff',
+                            fontSize: 20,
+                            textTransform: 'capitalize',
+                            fontFamily: 'Handlee-Regular',
+                          }}>
+                          {item.establishment.name}
+                        </Text>
 
-                  <ShoppingListSingleItem
-                    item={item}
-                    key={uniqueId(string)}
-                    selectedItems={selectedItems}
-                    setSelectedItems={setSelectedItems}
-                  />
-                </View>
-              );
-            });
+                        <ShoppingListSingleItem
+                          item={item}
+                          key={uniqueId(string)}
+                          selectedItems={selectedItems}
+                          setSelectedItems={setSelectedItems}
+                        />
+                      </View>
+                      <SubmitButton
+                        style={{marginVertical: 10}}
+                        onPress={() => {
+                          console.log();
+                          const itemsByEstablishment =
+                            // @ts-ignore
+                            groupedCartItems[string][0];
+                          const selected: ICartItemItem[] =
+                            itemsByEstablishment.orderItems.filter(
+                              (item: ICartItemItem) =>
+                                selectedItems.includes(item.index),
+                            );
+                          if (selected.length === 0) {
+                            Alert.alert('You must select at least one item');
+                          } else {
+                            navigation.navigate('paymentOrderPage', {
+                              items: selected,
+                            });
+                          }
+                        }}
+                        title={`Finish shopping in ${item.establishment.name}`}
+                      />
+                    </View>
+                  ))
+                }
+              </View>
+            );
           })}
         </ScrollView>
       </ScrollView>

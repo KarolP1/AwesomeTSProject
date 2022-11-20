@@ -1,4 +1,4 @@
-import {useAppSelector} from './../hooks';
+import {useAppSelector} from '../hooks';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {IEstablishment, IGetAddress, IMenuItem} from '../Profile/types';
 import {uniqueId} from 'lodash';
