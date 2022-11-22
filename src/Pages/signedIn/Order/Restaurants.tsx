@@ -89,7 +89,7 @@ const Restaurants = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const userInfo = useAppSelector(state => state.profile.data);
   const [addressState, setAddressState] = useState<string>('');
-  const [coordinates, setCoordinates] = useState<GeolocationResponse>({
+  const [coordinates, setCoordinates] = useState<GeolocationResponse | null>({
     coords: {
       latitude: 50.0433682,
       longitude: 19.8822381,
@@ -101,6 +101,7 @@ const Restaurants = () => {
     },
     timestamp: new Date().valueOf(),
   });
+
   const ref = useRef(null);
 
   useEffect(() => {
@@ -130,8 +131,8 @@ const Restaurants = () => {
       //@ts-ignore
       ref.current.animateToRegion(
         {
-          longitude: coordinates.coords.longitude,
-          latitude: coordinates.coords.latitude,
+          longitude: coordinates?.coords.longitude,
+          latitude: coordinates?.coords.latitude,
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         },
@@ -141,10 +142,12 @@ const Restaurants = () => {
 
   const extraMenuRef = useRef(null);
   const {data} = useAppSelector(state => state.findNerbayEstablishment);
+  const filters = useAppSelector(state => state.App.orderFilters);
 
   useFocusEffect(
     React.useCallback(() => {
-      dispatch(GetNerbayEstablishment());
+      if (!filters)
+        dispatch(GetNerbayEstablishment({type: 'restaurant', isHalal: false}));
     }, []),
   );
 
@@ -161,7 +164,6 @@ const Restaurants = () => {
           }}
           style={{
             height: '100%',
-            // width: '100%',
             backgroundColor: '#4d4d4d',
             padding: 2,
             justifyContent: 'center',
@@ -196,7 +198,15 @@ const Restaurants = () => {
           },
           animationSideStyle,
         ]}>
-        <MenuItemButton title="Extra filters" />
+        <MenuItemButton
+          title="Extra filters"
+          onPress={() => {
+            animationRotation.value = !isExtraButtonRotated ? 1440 : 0;
+            animationSide.value = isExtraButtonRotated ? -200 : 0;
+            setIsExtraButtonRotated(!isExtraButtonRotated);
+            navigation.navigate('OrderPage', {screen: 'filterEstablishment'});
+          }}
+        />
         <MenuItemButton
           haveRedDot={cartItems && cartItems.length > 0 ? true : false}
           title="Shopping cart"
@@ -361,9 +371,9 @@ const Restaurants = () => {
               flex: 1,
             }}
             initialRegion={{
-              latitude: coordinates.coords.latitude,
+              latitude: coordinates ? coordinates.coords.latitude : 0,
 
-              longitude: coordinates.coords.longitude,
+              longitude: coordinates ? coordinates.coords.longitude : 0,
               latitudeDelta: 0.1,
               longitudeDelta: 0.0421,
             }}>
@@ -389,10 +399,10 @@ const Restaurants = () => {
           </MapView>
 
           <EstablishmentsView
+            setCoordinates={setCoordinates}
             coordinates={coordinates}
             isOpen={isOpen}
             setIsOpen={(establishment?: IEstablishment) => {
-              console.log(isOpen);
               if (restaurantToDisplayInMenu !== null) {
                 setRestaurantToDisplayInMenu(null);
               } else {

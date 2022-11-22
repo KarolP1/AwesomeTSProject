@@ -15,7 +15,7 @@ const SingleEstablishmentComponent = ({
 }: {
   establishment: IEstablishment;
   setIsOpen?: (establishment?: IEstablishment) => void;
-  coordinates?: GeolocationResponse;
+  coordinates?: GeolocationResponse | null;
   noCheckout?: boolean;
 }) => {
   const [dist, setDist] = useState(0);
@@ -41,7 +41,7 @@ const SingleEstablishmentComponent = ({
   useEffect(() => {
     const singleCounter = counter[0];
     if (userId) {
-      const isLikedFetch = singleCounter?.whoLike.includes(userId);
+      const isLikedFetch = singleCounter?.whoLike?.includes(userId);
       setIsLiked(isLikedFetch);
     } else setIsLiked(false);
   }, [counter]);

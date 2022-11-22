@@ -32,6 +32,7 @@ const LoggedInBackground = ({
   useEffect(() => {
     dispatch(setScrollPosition(pos));
   }, [pos]);
+  const APPBARHEIGHT = useAppSelector(state => state.App.APPBARHEIGHT);
 
   return (
     <ImageBackground
@@ -72,8 +73,8 @@ const LoggedInBackground = ({
             contentContainerStyle={{
               flexGrow: 1,
               alignItems: 'center',
-            }}
-            onScroll={e => setPos(e.nativeEvent.contentOffset.y)}>
+              paddingBottom: -150,
+            }}>
             {children ? children : <Text>hello</Text>}
           </ScrollView>
           {stickyButton && (

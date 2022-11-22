@@ -32,7 +32,7 @@ const CartItem = (props: {
       <View style={{flexDirection: 'row', height: 100, alignItems: 'center'}}>
         <TouchableOpacity
           onPress={() => {
-            if (props.selectedItems.includes(props.id)) {
+            if (props.selectedItems?.includes(props.id)) {
               props.setSelectedItems(
                 props.selectedItems.filter(item => item !== props.id),
               );

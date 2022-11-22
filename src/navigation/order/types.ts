@@ -1,3 +1,4 @@
+import {IGetAddress} from './../../redux/Profile/types';
 import {NavigatorScreenParams, RouteProp} from '@react-navigation/native';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {ICartItemItem} from '../../redux/Order/shoppingCart.slice';
@@ -10,7 +11,10 @@ export type orderHomeParamList = {
   shoppingCart: undefined;
   paymentOrderPage: {
     items: ICartItemItem[];
+    orderWhere: string;
+    address: IGetAddress | null;
   };
+  filterEstablishment: undefined;
 };
 
 export type orderInitialParamList = {

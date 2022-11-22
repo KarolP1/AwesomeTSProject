@@ -11,12 +11,13 @@ export interface FilterInterface {
   buildingnumber?: string;
   postcode?: string;
   street?: string;
-  isHalal?: string;
-  isVegan?: string;
-  isKosher?: string;
+  isHalal?: boolean;
+  isVegan?: boolean;
+  isKosher?: boolean;
   type?: string;
   lat?: string;
   lang?: string;
+  distance?: string;
 }
 export const GetNerbayEstablishment = createAsyncThunk<
   IResponseGetNerbayEstablishment,
@@ -55,22 +56,43 @@ export interface IResponseGetNerbayEstablishment {
 }
 
 const constructParamsString = (params: FilterInterface | undefined): string => {
+  console.log(params?.type);
   let paramsString = '';
   if (params) {
-    if (checkStringNull(params.buildingnumber))
-      paramsString += params.buildingnumber;
-    if (checkStringNull(params.city)) paramsString += params.city;
-    if (checkStringNull(params.country)) paramsString += params.country;
-    if (checkStringNull(params.cuisine)) paramsString += params.cuisine;
-    if (checkStringNull(params.isHalal)) paramsString += params.isHalal;
-    if (checkStringNull(params.isKosher)) paramsString += params.isKosher;
-    if (checkStringNull(params.isVegan)) paramsString += params.isVegan;
-    if (checkStringNull(params.lang)) paramsString += params.lang;
-    if (checkStringNull(params.lang)) paramsString += params.lang;
-    if (checkStringNull(params.postcode)) paramsString += params.postcode;
-    if (checkStringNull(params.street)) paramsString += params.street;
-    if (checkStringNull(params.type)) paramsString += params.type;
+    if (checkStringNullOrUndefined(params.distance))
+      paramsString += 'distance=' + params.distance + '&';
+    if (checkStringNullOrUndefined(params.buildingnumber))
+      paramsString += 'buildingnumber=' + params.buildingnumber + '&';
+    if (checkStringNullOrUndefined(params.city))
+      paramsString += 'city=' + params.city + '&';
+    if (checkStringNullOrUndefined(params.country))
+      paramsString += 'country=' + params.country + '&';
+    if (checkStringNullOrUndefined(params.cuisine))
+      paramsString += 'cuisine=' + params.cuisine + '&';
+    if (checkStringNullOrUndefined(params.lang))
+      paramsString += 'long=' + params.lang + '&';
+    if (checkStringNullOrUndefined(params.lat))
+      paramsString += 'lat=' + params.lat + '&';
+    if (checkStringNullOrUndefined(params.postcode))
+      paramsString += 'postcode=' + params.postcode + '&';
+    if (checkStringNullOrUndefined(params.street))
+      paramsString += 'street=' + params.street + '&';
+    if (checkStringNullOrUndefined(params.type))
+      paramsString += 'type=' + params.type + '&';
+    if (typeof params.isHalal === 'boolean' && params.isHalal === true)
+      paramsString += 'isHalal=' + params.isHalal + '&';
+    if (typeof params.isKosher === 'boolean' && params.isKosher === true)
+      paramsString += 'isKosher=' + params.isKosher + '&';
+    if (typeof params.isVegan === 'boolean' && params.isVegan === true)
+      paramsString += 'isVegan=' + params.isVegan + '&';
+
+    console.log({paramsString});
   }
 
   return paramsString;
+};
+
+const checkStringNullOrUndefined = (string: string | null | undefined) => {
+  if (typeof string === 'string') return true;
+  else return false;
 };

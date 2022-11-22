@@ -1,13 +1,13 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import ShoppingCart from '../../components/Order/shoppingCart';
+import ShoppingCart from '../../Pages/signedIn/Order/shoppingCart';
 import {StackDefaultOptions} from '../../options/stackDefaultOptions';
 import FoodTrucks from '../../Pages/signedIn/Order/FoodTrucks';
 import LocalCooks from '../../Pages/signedIn/Order/LocalCooks';
 import PaymentPage from '../../Pages/signedIn/Order/PaymentPage';
 import Restaurants from '../../Pages/signedIn/Order/Restaurants';
 import Shops from '../../Pages/signedIn/Order/Shops';
-import {HomeTabParamList} from '../types';
 import {orderHomeParamList} from './types';
+import FilterEstablishment from '../../Pages/signedIn/Order/FilterEstablishmentSelector';
 
 export const HomepageHomeNavigationContainer = () => {
   const Stack = createNativeStackNavigator<orderHomeParamList>();
@@ -21,6 +21,10 @@ export const HomepageHomeNavigationContainer = () => {
       <Stack.Screen name="foodTrucks" component={FoodTrucks} />
       <Stack.Screen name="shoppingCart" component={ShoppingCart} />
       <Stack.Screen name="paymentOrderPage" component={PaymentPage} />
+      <Stack.Screen
+        name="filterEstablishment"
+        component={FilterEstablishment}
+      />
     </Stack.Navigator>
   );
 };

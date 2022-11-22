@@ -13,7 +13,7 @@ const RenderMarker = ({
   establishment,
   setEstablishmentToDisplayInMenu,
 }: {
-  YourCoordinates?: GeolocationResponse;
+  YourCoordinates?: GeolocationResponse | null;
   location?: ILocation;
   image?: string;
   establishment?: IEstablishment;

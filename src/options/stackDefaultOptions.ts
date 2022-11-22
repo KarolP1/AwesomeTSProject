@@ -9,6 +9,7 @@ export const StackDefaultOptions: NativeStackNavigationOptions = {
 };
 
 export const TabDefaultOptions: BottomTabNavigationOptions = {
+  tabBarHideOnKeyboard: true,
   headerShown: false,
   tabBarShowLabel: false,
   lazy: false,

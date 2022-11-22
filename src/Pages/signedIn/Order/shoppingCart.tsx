@@ -8,32 +8,32 @@ import {
   View,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
-import LoggedInBackground from '../background/loggedInBackground';
-import {useAppDispatch, useAppSelector} from '../../redux/hooks';
+import LoggedInBackground from '../../../components/background/loggedInBackground';
+import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {ScrollView} from 'react-native-gesture-handler';
-import ShoppingListSingleItem from './ShoppingCart/ShoppingListSingleItem';
+import ShoppingListSingleItem from '../../../components/Order/ShoppingCart/ShoppingListSingleItem';
 import {
   clearShoppingList,
   deleteShoppingListsByIndex,
   ICartItemItem,
   IShoppingCart,
-} from '../../redux/Order/shoppingCart.slice';
-import {WEBCONST} from '../../constants/webConstants';
+} from '../../../redux/Order/shoppingCart.slice';
+import {WEBCONST} from '../../../constants/webConstants';
 import DropShadow from 'react-native-drop-shadow';
-import {ShadowStyle} from '../backgrounds/menuSquareCartContainerRecipes';
+import {ShadowStyle} from '../../../components/backgrounds/menuSquareCartContainerRecipes';
 import {uniqueId} from 'lodash';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import {MenuItemButton} from './MenuItemButton';
-import SubmitButton from '../touchables/SubmitButton';
+import {MenuItemButton} from '../../../components/Order/MenuItemButton';
+import SubmitButton from '../../../components/touchables/SubmitButton';
 import {useNavigation} from '@react-navigation/native';
 import {
   IMenuItemAddModalNavigation,
   IOrderNavigation,
-} from '../../navigation/order/types';
+} from '../../../navigation/order/types';
 
 type reduceResponse = {[key: string]: IShoppingCart[]}[];
 
@@ -110,7 +110,7 @@ const ShoppingCart = () => {
           }}>
           <Animated.Image
             style={[{alignSelf: 'center', margin: 2}, animationStyle]}
-            source={require('../../assets/utilityIcons/3dots.png')}
+            source={require('../../../assets/utilityIcons/3dots.png')}
           />
         </TouchableOpacity>
       )}>
@@ -212,7 +212,7 @@ const ShoppingCart = () => {
                                         ?.profileImage?.path
                                     }`,
                                   }
-                                : require('../../assets/BX.png')
+                                : require('../../../assets/BX.png')
                             }
                           />
                         </DropShadow>
@@ -236,7 +236,6 @@ const ShoppingCart = () => {
                       <SubmitButton
                         style={{marginVertical: 10}}
                         onPress={() => {
-                          console.log();
                           const itemsByEstablishment =
                             // @ts-ignore
                             groupedCartItems[string][0];
@@ -250,6 +249,9 @@ const ShoppingCart = () => {
                           } else {
                             navigation.navigate('paymentOrderPage', {
                               items: selected,
+                              orderWhere: item.establishment._id,
+                              // TODO: add address
+                              address: null,
                             });
                           }
                         }}

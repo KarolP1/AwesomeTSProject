@@ -7,15 +7,29 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import {useAppDispatch} from '../../redux/hooks';
-import {setLastNavigationDirection} from '../../redux/App/setup.sicle';
+import {
+  setAppbarHeightState,
+  setLastNavigationDirection,
+} from '../../redux/App/setup.sicle';
 
 const Tabbar = ({state, descriptors, navigation}: BottomTabBarProps) => {
   const dipsatch = useAppDispatch();
+  const [appbarHeight, setAppbarHeight] = useState(0);
+  useEffect(() => {
+    if (appbarHeight !== 0) {
+      dipsatch(setAppbarHeightState(appbarHeight));
+    }
+  }, [appbarHeight, setAppbarHeight]);
+
   return (
-    <View style={styles.TabContainer}>
+    <View
+      style={styles.TabContainer}
+      onLayout={({nativeEvent}) => {
+        setAppbarHeight(nativeEvent.layout.height + 20);
+      }}>
       {state.routes.map((route, index, arr) => {
         const {options} = descriptors[route.key];
         const key = route.key;

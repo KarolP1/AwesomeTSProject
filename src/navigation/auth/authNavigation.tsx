@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import LoginPage from '../../Pages/signedOut/loginPage';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StackDefaultOptions} from '../../options/stackDefaultOptions';
@@ -7,16 +7,16 @@ import {HomePageProp, HomeStackParamList, RootStackParamList} from '../types';
 import HugeMenu from '../../Pages/signedIn/menu/HugeMenu';
 
 import BottomTabNavigator from '../Home/bottomTabNavigator';
-import {NavigationContainer, useRoute} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useFocusEffect,
+  useRoute,
+} from '@react-navigation/native';
 import {linking, linkingLoggedOut} from '../../../linking';
-import {getTokensKeychain, logout} from '../../utils/localStorage';
 import RNBootSplash from 'react-native-bootsplash';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
-import {setIsAuth} from '../../redux/rootReducer';
-import {setAuthState} from '../../redux/Auth/loginReducer';
-import {tokenThunk} from '../../redux/Auth/thunks';
 import LinkingPage from '../../Pages/signedIn/LinkingPage';
-import {Linking, Text} from 'react-native';
+import {getMyProfile} from '../../redux/Profile/core/profileCore.thunk';
 
 const AuthNavigation = ({isAuth}: {isAuth: boolean}) => {
   const Stack = createNativeStackNavigator<HomeStackParamList>();

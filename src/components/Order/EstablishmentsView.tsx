@@ -23,16 +23,25 @@ const EstablishmentsView = ({
   isOpen,
   setIsOpen,
   coordinates,
+  setCoordinates,
 }: {
-  coordinates: GeolocationResponse;
+  coordinates: GeolocationResponse | null;
   isOpen: boolean;
   setIsOpen: (establishment?: IEstablishment) => void;
+  setCoordinates: React.Dispatch<
+    React.SetStateAction<GeolocationResponse | null>
+  >;
 }) => {
   const animationHeight = useSharedValue(10);
   const animationRotatey = useSharedValue(180);
   const {height} = useWindowDimensions();
   const dispatch = useAppDispatch();
   const {data} = useAppSelector(state => state.findNerbayEstablishment);
+
+  const filters = useAppSelector(state => state.App.orderFilters);
+  useEffect(() => {
+    console.log({filters});
+  }, [filters]);
 
   const animationStyle = useAnimatedStyle(() => {
     return {
@@ -51,11 +60,24 @@ const EstablishmentsView = ({
     };
   });
 
-  useFocusEffect(
-    React.useCallback(() => {
-      dispatch(GetNerbayEstablishment());
-    }, []),
-  );
+  useEffect(() => {
+    if (filters) {
+      if (filters.lang && filters.lat && coordinates) {
+        setCoordinates({
+          ...coordinates,
+          timestamp: new Date().getTime(),
+          coords: {
+            ...coordinates.coords,
+            latitude: parseFloat(filters.lat),
+            longitude: parseFloat(filters.lang),
+          },
+        });
+      }
+      dispatch(GetNerbayEstablishment({...filters, type: 'restaurant'}));
+    } else {
+      dispatch(GetNerbayEstablishment({type: 'restaurant'}));
+    }
+  }, [filters]);
 
   return (
     <Animated.View style={[{}, animationStyle]}>

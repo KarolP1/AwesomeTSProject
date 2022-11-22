@@ -20,6 +20,7 @@
     "@react-navigation/native-stack": "^6.8.0",
     "@react-navigation/stack": "^6.2.3",
     "@reduxjs/toolkit": "^1.8.5",
+    "@stripe/stripe-react-native": "^0.21.0",
     "axios": "^0.27.2",
     "axios-auth-refresh": "^3.3.3",
     "deprecated-react-native-prop-types": "^2.3.0",

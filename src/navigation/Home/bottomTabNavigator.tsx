@@ -1,5 +1,5 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {TabDefaultOptions} from '../../options/stackDefaultOptions';
 import BuddyProgram from '../../Pages/signedIn/ComingSoon';
@@ -8,9 +8,15 @@ import {HomePageProp, HomeTabParamList} from '../types';
 import Tabbar from '../../components/background/Tabbar';
 import {HomepageHomeMenuNavigationContainer} from '../order/initialOrderNavigation';
 import {ProfileNavigationContainer} from '../Profile/ProfileRootNavigator';
-import {useRoute} from '@react-navigation/native';
+import {useFocusEffect, useRoute} from '@react-navigation/native';
+import {useAppDispatch} from '../../redux/hooks';
+import {getMyProfile} from '../../redux/Profile/core/profileCore.thunk';
 
 const BottomTabNavigator = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getMyProfile());
+  }, []);
   const Tab = createBottomTabNavigator<HomeTabParamList>();
   return (
     <Tab.Navigator

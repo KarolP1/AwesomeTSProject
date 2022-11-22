@@ -10,7 +10,7 @@ export interface ICartItemChange {
 
 export interface ICartItemItem {
   itemId: string;
-  changes?: ICartItemChange[];
+  changes: ICartItemChange[];
   item: IMenuItem;
   index: string;
 }
@@ -74,7 +74,7 @@ export const ShoppingCartSlice = createSlice({
     deleteShoppingListsByIndex: (state, {payload}: PayloadAction<string[]>) => {
       const toDelete = state.cartItems?.filter(item => {
         const items = item.orderItems.filter(
-          orderItem => !payload.includes(orderItem.index),
+          orderItem => !payload?.includes(orderItem.index),
         );
         item.orderItems = items;
         if (item.orderItems.length !== 0) return item;
