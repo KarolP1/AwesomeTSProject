@@ -399,6 +399,7 @@ const Restaurants = () => {
           </MapView>
 
           <EstablishmentsView
+            type="restaurant"
             setCoordinates={setCoordinates}
             coordinates={coordinates}
             isOpen={isOpen}

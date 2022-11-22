@@ -22,7 +22,7 @@ const NerbayEstablishmentSlice = createSlice({
   name: 'myProfile',
   initialState,
   reducers: {
-    cleanUpEstablishment: state => {
+    cleanFindNerbayEstablishmentSlice: state => {
       state.data = initialState.data;
       state.message = initialState.message;
       state.isLoading = initialState.isLoading;
@@ -94,5 +94,6 @@ const NerbayEstablishmentSlice = createSlice({
 
 export const getMyRecipesError = () =>
   useAppSelector(state => state.findNerbayEstablishment.error);
-export const {cleanUpEstablishment} = NerbayEstablishmentSlice.actions;
+export const {cleanFindNerbayEstablishmentSlice} =
+  NerbayEstablishmentSlice.actions;
 export default NerbayEstablishmentSlice.reducer;

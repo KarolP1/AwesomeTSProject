@@ -24,6 +24,7 @@ const EstablishmentsView = ({
   setIsOpen,
   coordinates,
   setCoordinates,
+  type,
 }: {
   coordinates: GeolocationResponse | null;
   isOpen: boolean;
@@ -31,6 +32,7 @@ const EstablishmentsView = ({
   setCoordinates: React.Dispatch<
     React.SetStateAction<GeolocationResponse | null>
   >;
+  type: 'shop' | 'restaurant' | 'foodtruck' | 'localCook';
 }) => {
   const animationHeight = useSharedValue(10);
   const animationRotatey = useSharedValue(180);
@@ -39,9 +41,6 @@ const EstablishmentsView = ({
   const {data} = useAppSelector(state => state.findNerbayEstablishment);
 
   const filters = useAppSelector(state => state.App.orderFilters);
-  useEffect(() => {
-    console.log({filters});
-  }, [filters]);
 
   const animationStyle = useAnimatedStyle(() => {
     return {
@@ -73,9 +72,9 @@ const EstablishmentsView = ({
           },
         });
       }
-      dispatch(GetNerbayEstablishment({...filters, type: 'restaurant'}));
+      dispatch(GetNerbayEstablishment({...filters, type: type}));
     } else {
-      dispatch(GetNerbayEstablishment({type: 'restaurant'}));
+      dispatch(GetNerbayEstablishment({type: type}));
     }
   }, [filters]);
 

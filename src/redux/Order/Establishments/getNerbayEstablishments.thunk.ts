@@ -27,7 +27,7 @@ export const GetNerbayEstablishment = createAsyncThunk<
     const tokens = await getTokensKeychain();
     let params = constructParamsString(state);
     const res = await instance
-      .get(`/order/establishment/find?${params}`, {
+      .get(`/order/establishment/find?type=${state?.type}&${params}`, {
         headers: {Authorization: 'Bearer ' + tokens?.access_token},
       })
       .then(response => {
@@ -56,7 +56,7 @@ export interface IResponseGetNerbayEstablishment {
 }
 
 const constructParamsString = (params: FilterInterface | undefined): string => {
-  console.log(params?.type);
+  if (params === undefined) return '';
   let paramsString = '';
   if (params) {
     if (checkStringNullOrUndefined(params.distance))
@@ -77,16 +77,12 @@ const constructParamsString = (params: FilterInterface | undefined): string => {
       paramsString += 'postcode=' + params.postcode + '&';
     if (checkStringNullOrUndefined(params.street))
       paramsString += 'street=' + params.street + '&';
-    if (checkStringNullOrUndefined(params.type))
-      paramsString += 'type=' + params.type + '&';
     if (typeof params.isHalal === 'boolean' && params.isHalal === true)
       paramsString += 'isHalal=' + params.isHalal + '&';
     if (typeof params.isKosher === 'boolean' && params.isKosher === true)
       paramsString += 'isKosher=' + params.isKosher + '&';
     if (typeof params.isVegan === 'boolean' && params.isVegan === true)
       paramsString += 'isVegan=' + params.isVegan + '&';
-
-    console.log({paramsString});
   }
 
   return paramsString;

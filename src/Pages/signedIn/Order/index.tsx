@@ -8,15 +8,17 @@ import {
 import React, {useRef, useState} from 'react';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
 import MenuSquareCartContainerOrder from '../../../components/Order/menuContainer';
-import {useAppSelector} from '../../../redux/hooks';
+import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {MenuItemButton} from '../../../components/Order/MenuItemButton';
 import {MenuOrderNavigation} from '../../../navigation/order/types';
+import {setFiltersState} from '../../../redux/App/setup.sicle';
+import {cleanFindNerbayEstablishmentSlice} from '../../../redux/Order/Establishments/getNerbayEstablishments.slice';
 
 const OrderMenu = () => {
   const {cartItems} = useAppSelector(state => state.ShoppingCart);
@@ -43,6 +45,13 @@ const OrderMenu = () => {
       right: withTiming(animationSide.value, {duration: 200}),
     };
   });
+  const dispatch = useAppDispatch();
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(setFiltersState());
+      dispatch(cleanFindNerbayEstablishmentSlice());
+    }, []),
+  );
 
   const extraMenuRef = useRef(null);
 
