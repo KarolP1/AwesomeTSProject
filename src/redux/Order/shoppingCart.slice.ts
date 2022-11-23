@@ -6,6 +6,7 @@ import {uniqueId} from 'lodash';
 export interface ICartItemChange {
   ingredientId: string;
   qtt: string;
+  _id?: string;
 }
 
 export interface ICartItemItem {

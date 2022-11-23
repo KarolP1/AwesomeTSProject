@@ -37,6 +37,7 @@ export interface ITextInput {
   onFocus?: (ev: FocusEvent) => void;
   type?: 'string' | 'array';
   disabled?: boolean;
+  multiline?: boolean;
 }
 export interface ITextInputArray {
   placeholder: string;
@@ -59,6 +60,7 @@ const TextInputProfile = ({
   value,
   disabled,
   type,
+  multiline,
 }: ITextInput) => {
   return (
     <DropShadow
@@ -84,6 +86,7 @@ const TextInputProfile = ({
           paddingHorizontal: 5,
         }}>
         <TextInput
+          multiline={multiline && multiline}
           editable={!disabled ? true : false}
           placeholder={placeholder}
           onChangeText={text => {

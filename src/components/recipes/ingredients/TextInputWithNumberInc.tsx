@@ -5,8 +5,8 @@ const TextInputWithNumberInc = ({
   qtt,
   setQtt,
 }: {
-  qtt: number;
-  setQtt: React.Dispatch<number>;
+  qtt: string;
+  setQtt: React.Dispatch<string>;
 }) => {
   return (
     <View
@@ -22,14 +22,14 @@ const TextInputWithNumberInc = ({
       <TouchableOpacity
         style={styles.buttonInc}
         onPress={() => {
-          if (qtt > 0) setQtt(qtt - 1);
+          if (parseFloat(qtt) > 0) setQtt((parseFloat(qtt) - 1).toString());
         }}>
         <Text style={styles.textButotn}>{'<'}</Text>
       </TouchableOpacity>
       <Text style={styles.text}>{qtt}</Text>
       <TouchableOpacity
         style={styles.buttonInc}
-        onPress={() => setQtt(qtt + 1)}>
+        onPress={() => setQtt((parseFloat(qtt) + 1).toString())}>
         <Text style={styles.textButotn}>{'>'}</Text>
       </TouchableOpacity>
     </View>

@@ -12,6 +12,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {getMyProfile} from '../../redux/Profile/core/profileCore.thunk';
 import SimpleSection from './Sections/infoScetion/SimpleSection';
 import {ICounter} from '../../redux/recipes/types';
+import InvoicesSection from './Sections/Invoices';
 
 const EstablishmentContent = ({
   profileInfo,
@@ -40,6 +41,15 @@ const EstablishmentContent = ({
 
       case 1:
         return <RecipesSection />;
+      case 2:
+        return (
+          <InvoicesSection
+            isEstablishment={
+              userInfo?.userRole !== 'End User' &&
+              userInfo?.userRole !== 'Student'
+            }
+          />
+        );
       case 3:
         return <MainComponents />;
 

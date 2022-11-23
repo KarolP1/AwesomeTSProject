@@ -129,18 +129,18 @@ const ProfileNavigationAddMenuItemsPage = (
         style={{
           padding: 10,
           backgroundColor: 'rgba(255,255,255,.1)',
-          borderRadius: 50,
+          borderRadius: 500,
           marginVertical: 10,
         }}>
         {!itemImage ? (
           <Image
-            style={{width: 200, height: 200}}
+            style={{width: 150, height: 150, margin: 20}}
             source={require('../../../assets/utilityIcons/addImage.png')}
           />
         ) : (
           <>
             <Image
-              style={{width: 200, height: 200, borderRadius: 50}}
+              style={{width: 200, height: 200, borderRadius: 500}}
               source={{uri: itemImage.path}}
             />
           </>
@@ -156,6 +156,7 @@ const ProfileNavigationAddMenuItemsPage = (
       />
       <Text style={styles.title}>Description</Text>
       <TextInputProfile
+        multiline
         placeholder={'Dish Description'}
         onChange={setNewMenuItemState}
         name={'dishDescription'}
@@ -220,6 +221,7 @@ const ProfileNavigationAddMenuItemsPage = (
             dishIngredients: ingredients,
           });
         }}
+        currency={newMenuItemState.currency}
       />
       <SubmitButton
         title="Submit new Item"

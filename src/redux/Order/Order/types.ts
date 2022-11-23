@@ -60,3 +60,17 @@ export interface IRequestOrder {
   address: IGetAddress;
   orderItems: IRequestOrderItem[];
 }
+
+export interface IResponseSlice<T> {
+  data: T;
+  error: any;
+  message: string | null;
+  isLoading: boolean;
+  succes: boolean;
+}
+
+export interface IResponseOrderItem {
+  itemId: string;
+  changes: IReqChange[];
+  _id: string;
+}

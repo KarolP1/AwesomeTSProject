@@ -26,7 +26,6 @@ import {useStripe, ApplePayButton} from '@stripe/stripe-react-native';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
 import {deleteShoppingListsByIndex} from '../../../redux/Order/shoppingCart.slice';
 import {AddNewOrder} from '../../../redux/Order/Order/UserPlaceOrder.thunk';
-import {getMyProfile} from '../../../redux/Profile/core/profileCore.thunk';
 import {IGetAddress} from '../../../redux/Profile/types';
 
 const PaymentPage = () => {
@@ -34,10 +33,23 @@ const PaymentPage = () => {
   const atoken = useAppSelector(state => state.login.data?.access_token);
   const addressFromDb = useAppSelector(state => state.profile.data?.address);
   const {params} = useRoute<IPaymentPageStackProps>();
-  const orderItems = params.items;
+  const orderItems = params.items; //TODO: cunt price per ingredients g=from here
   const orderWhere = params.orderWhere;
   const navigation = useNavigation<IOrderNavigation>();
   let currency = '';
+
+  const priceMap = orderItems.map(item => {
+    const ingredientsFromChanges = item.changes.map(ingredient => {
+      const ingredientQtt = ingredient.qtt;
+      const pricePerIngredient = ingredient.ingredientId;
+      console.log(ingredient);
+    });
+    return {
+      itemPrice: item.item.price,
+      currency: item.item.currency,
+      ingredientsPrice: null,
+    };
+  });
 
   const orderitemsids = orderItems.map(item => item.index);
   const totalCosts = orderItems.reduce((accumulator, currentValue) => {

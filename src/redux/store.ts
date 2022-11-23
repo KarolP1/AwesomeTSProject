@@ -26,8 +26,9 @@ import EmployeesListSlice from './Order/tables/employees/GetEmployeeList.slice';
 import EmployeesAcceptSlice from './Order/tables/employees/establishmentEmployees.slice';
 import MyEstabishmentMenus from './Profile/establishmentMenus/EstablishmentMenu.slice';
 import ShoppingListSlice from './recipes/shoppingList/shoppinList.slice';
-import FindNerbayEstablishmentSlice from './Order/Establishments/getNerbayEstablishments.slice';
 import MyEstablishmentSlice from './Order/MyEstablishment/editEsablishment.slice';
+import FindNerbayEstablishmentSlice from './Order/Establishments/getNerbayEstablishments.slice';
+import PurchasesSlice from './Order/Purchases/index.slice';
 
 import getProfileSlice from './Profile/profileCore.slice';
 import {ShoppingCartSlice} from './Order/shoppingCart.slice';
@@ -76,6 +77,7 @@ const rootReducer = combineReducers({
   findNerbayEstablishment: FindNerbayEstablishmentSlice,
   MyEstablishment: MyEstablishmentSlice,
   ShoppingCart: ShoppingCartSlice.reducer,
+  Purchases: PurchasesSlice,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({

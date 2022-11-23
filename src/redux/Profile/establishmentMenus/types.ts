@@ -15,6 +15,7 @@ export interface IIngredientEstablishment {
   name: string;
   isIngredientVisible: boolean;
   isIngredientEditable: boolean;
+  pricePerIngredient: string;
 }
 
 interface IImageInterFace {

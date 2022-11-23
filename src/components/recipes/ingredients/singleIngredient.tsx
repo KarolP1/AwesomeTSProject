@@ -15,7 +15,7 @@ const SingleIngredient = ({
   shoppingList: IIngredient[];
 }) => {
   const [isSelected, setIsSelected] = useState<boolean>(false);
-  const [qtt, setQtt] = useState<number>(ingredient.qtt);
+  const [qtt, setQtt] = useState<string>(ingredient.qtt);
   const [unit, setUnit] = useState<string>(ingredient.unit);
   useEffect(() => {
     if (isSelected) {

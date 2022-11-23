@@ -14,7 +14,7 @@ const CartItem = (props: {
 }) => {
   const {changes, item, itemId} = props.item;
   const ids = changes?.flatMap(item => item.ingredientId);
-  const notChangedIngredients = item.dishIngredients.filter(item => {
+  const changedIngredients = item.dishIngredients.filter(item => {
     if (item.isIngredientVisible) return ids?.indexOf(item._id) !== -1;
   });
 
@@ -113,7 +113,7 @@ const CartItem = (props: {
         </View>
       </View>
 
-      {notChangedIngredients.length > 0 && (
+      {changedIngredients.length > 0 && (
         <Text
           style={{
             marginVertical: 10,
@@ -125,18 +125,35 @@ const CartItem = (props: {
           Changes:
         </Text>
       )}
-      {notChangedIngredients.map((ingredientEdited, index) => (
-        <Text
-          style={{
-            fontFamily: 'Handlee-Regular',
-            maxWidth: width - 50,
-            fontSize: 14,
-            color: '#4d4d4d',
-          }}
-          key={ingredientEdited._id}>
-          {index + 1}: {ingredientEdited.name}
-        </Text>
-      ))}
+      {changedIngredients.map((ingredientEdited, index) => {
+        const ingredientFromChanges = changes.filter(
+          item => item.ingredientId === ingredientEdited._id,
+        )[0];
+        const difference =
+          parseFloat(ingredientFromChanges.qtt) - ingredientEdited.qtt;
+        const totalPerIngredient =
+          ingredientEdited.pricePerIngredient *
+          (difference > 0 ? difference : 0);
+        return (
+          <Text
+            style={{
+              fontFamily: 'Handlee-Regular',
+              maxWidth: width - 50,
+              fontSize: 14,
+              color: '#4d4d4d',
+            }}
+            key={ingredientEdited._id}>
+            {index + 1}:{' '}
+            {difference > 0
+              ? `${difference} ${ingredientEdited.unit} extra of `
+              : `${Math.abs(difference)} ${ingredientEdited.unit}  less of `}
+            {ingredientEdited.name} {totalPerIngredient} {item.currency}{' '}
+            {difference > 0
+              ? `( ${ingredientEdited.pricePerIngredient} ${item.currency} per ingredient )`
+              : ''}
+          </Text>
+        );
+      })}
     </View>
   );
 };

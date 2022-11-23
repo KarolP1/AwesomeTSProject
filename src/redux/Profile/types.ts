@@ -134,6 +134,7 @@ export interface IIngredient {
   name: string;
   isIngredientVisible: boolean;
   isIngredientEditable: boolean;
+  pricePerIngredient: number;
 }
 
 export interface IMenuItem {

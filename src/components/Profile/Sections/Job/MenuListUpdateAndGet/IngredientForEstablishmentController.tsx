@@ -15,9 +15,11 @@ import SubmitButton from '../../../../touchables/SubmitButton';
 const IngredientForEstablishmentController = ({
   ingredients,
   setIngredients,
+  currency,
 }: {
   ingredients?: IIngredientEstablishment[];
   setIngredients: (ingredients: IIngredientEstablishment[]) => void;
+  currency?: string;
 }) => {
   const initialBooleans = [
     {name: 'is Ingredient Visible', value: false},
@@ -28,6 +30,7 @@ const IngredientForEstablishmentController = ({
     qtt: '',
     unit: '',
     name: '',
+    pricePerIngredient: '',
     isIngredientVisible: false,
     isIngredientEditable: false,
   };
@@ -50,14 +53,45 @@ const IngredientForEstablishmentController = ({
             {ingredients.map((ingredient, index) => (
               <View key={index} style={{position: 'relative'}}>
                 {ingredient && (
-                  <TextInputProfile
-                    key={index}
-                    name={ingredient?.name}
-                    disabled={true}
-                    onChange={() => {}}
-                    placeholder=""
-                    value={`${ingredient?.name} ${ingredient?.qtt} ${ingredient?.unit}`}
-                  />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      backgroundColor: '#00000010',
+                      paddingVertical: 15,
+                      paddingHorizontal: 10,
+                      borderRadius: 5,
+                      marginVertical: 5,
+                    }}
+                    key={index}>
+                    <Text style={[styles.text, {marginRight: 10, flex: 1}]}>
+                      {ingredient?.name}
+                    </Text>
+                    <Text style={[styles.text, {marginRight: 10}]}>
+                      {ingredient?.qtt} {ingredient?.unit}
+                    </Text>
+                    <Text style={[styles.text, {marginRight: 10}]}>
+                      {ingredient?.pricePerIngredient} {currency}
+                    </Text>
+                    <View style={{flexDirection: 'row', marginRight: 30}}>
+                      <Image
+                        style={{height: 20, width: 20, marginRight: 10}}
+                        source={
+                          ingredient.isIngredientEditable
+                            ? require('../../../../../assets/utilityIcons/ingredientproperties/visible.png')
+                            : require('../../../../../assets/utilityIcons/ingredientproperties/notvisible.png')
+                        }
+                      />
+                      <Image
+                        style={{height: 20, width: 20, marginRight: 10}}
+                        source={
+                          ingredient.isIngredientEditable
+                            ? require('../../../../../assets/utilityIcons/ingredientproperties/editable.png')
+                            : require('../../../../../assets/utilityIcons/ingredientproperties/noteditable.png')
+                        }
+                      />
+                    </View>
+                  </View>
                 )}
                 <TouchableOpacity
                   onPress={() => {
@@ -115,6 +149,13 @@ const IngredientForEstablishmentController = ({
         value={newIngredient.name}
         onChange={setNewIngredient}
         name={'name'}
+        state={newIngredient}
+      />
+      <TextInputProfile
+        placeholder="price per ingredient"
+        value={newIngredient.pricePerIngredient}
+        onChange={setNewIngredient}
+        name={'pricePerIngredient'}
         state={newIngredient}
       />
       <View style={{width: '100%'}}>
@@ -186,6 +227,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Handlee-Regular',
     fontSize: 20,
+    marginTop: 5,
+  },
+  text: {
+    color: '#fff',
+    fontFamily: 'Handlee-Regular',
     marginTop: 5,
   },
 });
