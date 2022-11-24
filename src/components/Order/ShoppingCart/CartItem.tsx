@@ -1,5 +1,5 @@
 import {Image, StyleSheet, Text, useWindowDimensions, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ICartItemItem} from '../../../redux/Order/shoppingCart.slice';
 import DropShadow from 'react-native-drop-shadow';
 import {ShadowStyle} from '../../backgrounds/menuSquareCartContainerRecipes';
@@ -18,7 +18,30 @@ const CartItem = (props: {
     if (item.isIngredientVisible) return ids?.indexOf(item._id) !== -1;
   });
 
+  const [totalIngredient, setTotalIngredient] = useState(0);
+
   const {width} = useWindowDimensions();
+
+  const totalOfAllIngredients = changes
+    .map(change => {
+      const ingerdient = item.dishIngredients.filter(
+        ing => ing._id === change.ingredientId,
+      )[0];
+
+      const difference = parseFloat(change.qtt) - ingerdient.qtt;
+      const totalPerIngredient =
+        ingerdient.pricePerIngredient * (difference > 0 ? difference : 0);
+      return totalPerIngredient;
+    })
+    .reduce((prev, sum) => prev + sum, 0);
+  console.log({total: totalOfAllIngredients + item.price});
+
+  useEffect(() => {
+    setTotalIngredient(parseFloat(item.price) + totalOfAllIngredients);
+  }, [item]);
+
+  console.log({totalIngredientstate: totalIngredient});
+
   return (
     <View
       style={{
@@ -134,6 +157,7 @@ const CartItem = (props: {
         const totalPerIngredient =
           ingredientEdited.pricePerIngredient *
           (difference > 0 ? difference : 0);
+
         return (
           <Text
             style={{
@@ -154,10 +178,21 @@ const CartItem = (props: {
           </Text>
         );
       })}
+      <Text style={styles.text}>
+        Sum: {totalIngredient} {item.currency}
+      </Text>
     </View>
   );
 };
 
 export default CartItem;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  text: {
+    color: '#fff',
+    textAlign: 'right',
+    marginVertical: 10,
+    fontSize: 20,
+    fontFamily: 'Handlee-Regular',
+  },
+});
