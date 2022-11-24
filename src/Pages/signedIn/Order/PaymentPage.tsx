@@ -38,19 +38,6 @@ const PaymentPage = () => {
   const navigation = useNavigation<IOrderNavigation>();
   let currency = '';
 
-  const priceMap = orderItems.map(item => {
-    const ingredientsFromChanges = item.changes.map(ingredient => {
-      const ingredientQtt = ingredient.qtt;
-      const pricePerIngredient = ingredient.ingredientId;
-      console.log(ingredient);
-    });
-    return {
-      itemPrice: item.item.price,
-      currency: item.item.currency,
-      ingredientsPrice: null,
-    };
-  });
-
   const orderitemsids = orderItems.map(item => item.index);
   const totalCosts = orderItems.reduce((accumulator, currentValue) => {
     currency = currentValue.item.currency;
@@ -77,10 +64,30 @@ const PaymentPage = () => {
   } = useStripe();
   const [loading, setLoading] = useState(false);
 
+  const [totalPriceArray, setTotalPriceArray] = useState<
+    {
+      totalAmount: number;
+      itemId: string;
+    }[]
+  >([]);
+
+  const [totalPriceSum, settotalPriceSum] = useState(0);
+
+  useEffect(() => {
+    const newSum = totalPriceArray.reduce((sum, current) => {
+      return current.totalAmount + sum;
+    }, 0);
+    settotalPriceSum(newSum);
+  }, [totalPriceArray]);
+
+  useEffect(() => {
+    console.log({totalPrice: totalPriceArray});
+  }, [totalPriceArray]);
+
   const fetchPaymentSheetParams = async () => {
     const response = await instance.post(
       `/order/payment/payment-sheet`,
-      {totalCosts: totalCosts, currency: 'usd'},
+      {totalCosts: totalPriceSum, currency: 'usd'},
       {
         headers: {Authorization: 'Bearer ' + atoken},
       },
@@ -162,7 +169,15 @@ const PaymentPage = () => {
       <Text style={[TextStyles.defaultText]}>Your products:</Text>
       <ScrollView style={{width: '100%'}}>
         {orderItems.map((item, index) => {
-          return <SingleOrderItem index={index} item={item} key={item.index} />;
+          return (
+            <SingleOrderItem
+              index={index}
+              item={item}
+              key={item.index}
+              setTotalPrice={setTotalPriceArray}
+              totalPrice={totalPriceArray}
+            />
+          );
         })}
         <SubmitButton
           onPress={() => {
@@ -178,10 +193,10 @@ const PaymentPage = () => {
             marginHorizontal: 30,
           }}>
           <Text style={[TextStyles.defaultText, {fontSize: 16}]}>
-            Total cost: {currency} {totalCosts.toFixed(2)}
+            Total cost: {currency} {totalPriceSum.toFixed(2)}
           </Text>
           <Text style={[TextStyles.defaultText, {fontSize: 16}]}>
-            Tax included: {currency} {(totalCosts * 0.23).toFixed(2)}
+            Tax included: {currency} {(totalPriceSum * 0.23).toFixed(2)}
           </Text>
         </View>
         {addressFromDb &&

@@ -1,15 +1,75 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ICartItemItem} from '../../../redux/Order/shoppingCart.slice';
 import {TextStyles} from '../../../Pages/signedIn/Order/PaymentPage';
 
 const SingleOrderItem = ({
   item,
   index,
+  setTotalPrice,
+  totalPrice,
 }: {
   item: ICartItemItem;
   index: number;
+  setTotalPrice: React.Dispatch<
+    React.SetStateAction<
+      {
+        totalAmount: number;
+        itemId: string;
+      }[]
+    >
+  >;
+  totalPrice: {
+    totalAmount: number;
+    itemId: string;
+  }[];
 }) => {
+  const [sumPerMenuItem, setSumPerMenuItem] = useState(0);
+  useEffect(() => {
+    const singleItem = item.item;
+    setSumPerMenuItem(sum => sum + parseFloat(singleItem.price));
+  }, [item.item]);
+
+  useEffect(() => {
+    item.changes?.length !== 0 &&
+      item.changes?.forEach((change, index) => {
+        const singleIngredient = item.item.dishIngredients.filter(
+          ingredient => ingredient._id === change.ingredientId,
+        )[0];
+        const ingredientFromChanges = item.changes.filter(
+          item => item.ingredientId === singleIngredient._id,
+        )[0];
+        const difference =
+          parseFloat(ingredientFromChanges.qtt) - singleIngredient.qtt;
+        const totalPerIngredient =
+          singleIngredient.pricePerIngredient *
+          (difference > 0 ? difference : 0);
+        setSumPerMenuItem(sum => sum + totalPerIngredient);
+      });
+  }, []);
+
+  useEffect(() => {
+    const check = totalPrice.filter(
+      priceObject => priceObject.itemId === item.item._id,
+    );
+    if (check.length === 0) {
+      setTotalPrice([
+        ...totalPrice,
+        {itemId: item.item._id, totalAmount: sumPerMenuItem},
+      ]);
+    } else {
+      const newTotalPrice = totalPrice.map(price =>
+        price.itemId !== item.item._id
+          ? price
+          : {
+              ...price,
+              totalAmount: sumPerMenuItem,
+            },
+      );
+      setTotalPrice(newTotalPrice);
+    }
+  }, [sumPerMenuItem]);
+
   return (
     <View
       key={item.index}
@@ -41,6 +101,15 @@ const SingleOrderItem = ({
           const singleIngredient = item.item.dishIngredients.filter(
             ingredient => ingredient._id === change.ingredientId,
           )[0];
+          const ingredientFromChanges = item.changes.filter(
+            item => item.ingredientId === singleIngredient._id,
+          )[0];
+          const difference =
+            parseFloat(ingredientFromChanges.qtt) - singleIngredient.qtt;
+          const totalPerIngredient =
+            singleIngredient.pricePerIngredient *
+            (difference > 0 ? difference : 0);
+
           return (
             <View key={index} style={{flexDirection: 'row'}}>
               <Text
@@ -48,7 +117,11 @@ const SingleOrderItem = ({
                   TextStyles.defaultText,
                   {fontSize: 14, paddingLeft: 40, color: '#EA365195'},
                 ]}>
-                {index + 1}. {change.qtt} {singleIngredient.unit}{' '}
+                {difference > 0
+                  ? `${difference} ${singleIngredient.unit} extra of `
+                  : `${Math.abs(difference)} ${
+                      singleIngredient.unit
+                    }  less of `}
                 {singleIngredient.name}
               </Text>
               <Text
@@ -65,9 +138,19 @@ const SingleOrderItem = ({
                 ]}>
                 ....................................................................................................................................................................................................................................................................................................................................................................................................................................
               </Text>
+              <Text
+                style={[
+                  TextStyles.defaultText,
+                  {fontSize: 14, paddingLeft: 40, color: '#EA365195'},
+                ]}>
+                {totalPerIngredient} {item.item.currency}
+              </Text>
             </View>
           );
         })}
+      <Text style={[TextStyles.defaultText, {alignSelf: 'flex-end'}]}>
+        Sum: {sumPerMenuItem} {item.item.currency}
+      </Text>
     </View>
   );
 };
