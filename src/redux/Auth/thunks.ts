@@ -1,3 +1,4 @@
+import {WEBCONST} from './../../constants/webConstants';
 import {
   getTokensKeychain,
   logout,
@@ -15,38 +16,44 @@ import axios from 'axios';
 import * as Keychain from 'react-native-keychain';
 import {instance} from '../interceptors';
 import {setAuthState, setAuthStatus} from './loginReducer';
-axios.defaults.baseURL = 'http://146.59.13.245:3000/api/v1';
+axios.defaults.baseURL = `http://localhost:3000/api/v1`;
 
 export const loginThunk = createAsyncThunk<IResponseLogin, ILoginForm, {}>(
   'user/login',
   async (state, {rejectWithValue}) => {
+    console.warn(state);
     try {
       if (state.email === '' || state.password === '') {
-        return rejectWithValue({
-          data: null,
-          error: null,
-          message: 'no data provided',
-        });
+        throw new Error('no data provided');
       }
+
+      const restest = await axios.post('/user/login', {
+        login: state.email,
+        password: state.password,
+      });
+      console.log({restest});
+      return restest;
+
       const res = await axios
         .post('/user/login', {
           login: state.email,
           password: state.password,
         })
         .then(async response => {
+          console.log({response: response.data});
           const tokens = JSON.stringify(response.data.data);
           await Keychain.setGenericPassword('token', tokens);
           return response.data;
         })
         .catch(error => {
+          console.error(error.response);
           return rejectWithValue(error.response.data);
         });
-
-      if (state.email !== undefined && state.password !== undefined) {
-      }
+      console.log({res});
 
       return res;
     } catch (error: any) {
+      console.log(error.response);
       return rejectWithValue({
         message: error.message,
         error: 'login failed',

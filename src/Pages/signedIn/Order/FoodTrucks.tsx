@@ -31,7 +31,7 @@ import {GetNerbayEstablishment} from '../../../redux/Order/Establishments/getNer
 import {IEstablishment} from '../../../redux/Profile/types';
 import FastCheckoutEstablishment from '../../../components/Order/FastCheckoutEstablishment';
 import {MenuOrderNavigation} from '../../../navigation/order/types';
-import {setFiltersState} from '../../../redux/App/setup.sicle';
+import {setFiltersState} from '../../../redux/App/setup.slice';
 
 Geolocation.setRNConfiguration({skipPermissionRequests: false});
 

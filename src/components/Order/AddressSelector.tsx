@@ -15,7 +15,7 @@ import Geolocation, {
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {GOOGLE_API_KEY_PLACES} from '../../../enviroments';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
-import {setFiltersState} from '../../redux/App/setup.sicle';
+import {setFiltersState} from '../../redux/App/setup.slice';
 
 const AddressSelector = ({
   addressState,

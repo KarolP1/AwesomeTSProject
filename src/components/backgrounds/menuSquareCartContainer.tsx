@@ -4,7 +4,7 @@ import DropShadow from 'react-native-drop-shadow';
 import {useNavigation} from '@react-navigation/native';
 import {HomePageScreenProp} from '../../navigation/types';
 import {useAppDispatch} from '../../redux/hooks';
-import {setLastNavigationDirection} from '../../redux/App/setup.sicle';
+import {setLastNavigationDirection} from '../../redux/App/setup.slice';
 
 const MenuSquareCartContainer = (props: {
   name: 'Order' | 'Recipes' | 'Profile' | 'Coming soon';

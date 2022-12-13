@@ -16,7 +16,7 @@ import {GeolocationResponse} from '@react-native-community/geolocation';
 import AddressSelector from '../../../components/Order/AddressSelector';
 import SubmitButton from '../../../components/touchables/SubmitButton';
 import {useDispatch} from 'react-redux';
-import {setFiltersState} from '../../../redux/App/setup.sicle';
+import {setFiltersState} from '../../../redux/App/setup.slice';
 import {useNavigation} from '@react-navigation/native';
 import {useAppSelector} from '../../../redux/hooks';
 

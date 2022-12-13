@@ -1,3 +1,4 @@
+import {WEBCONST} from './../constants/webConstants';
 import {AppDispatch} from './store';
 import {useAppDispatch} from './hooks';
 import {setTokensToStorage, logout} from './../utils/localStorage/index';
@@ -6,7 +7,7 @@ import {getTokensKeychain} from '../utils/localStorage';
 import {setAuthState} from './Auth/loginReducer';
 
 export const instance = axios.create({
-  baseURL: 'http://146.59.13.245:3000/api/v1/',
+  baseURL: `${WEBCONST().APIURL}/api/v1/`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -15,7 +16,7 @@ export const instance = axios.create({
 instance.interceptors.request.use(
   async config => {
     const token = await getTokensKeychain();
-    if (token) {
+    if (token && config) {
       config.headers['Authorization'] = 'Bearer ' + token.access_token; // for Spring Boot back-end
       config.headers['x-access-token'] = token.access_token; // for Node.js Express back-end
     }

@@ -15,7 +15,7 @@ import {logout} from '../../utils/localStorage';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {cleanUpLogin, setAuthState} from '../../redux/Auth/loginReducer';
 import {useNavigation} from '@react-navigation/native';
-import {setScrollPosition} from '../../redux/App/setup.sicle';
+import {setScrollPosition} from '../../redux/App/setup.slice';
 
 const LoggedInBackground = ({
   children,

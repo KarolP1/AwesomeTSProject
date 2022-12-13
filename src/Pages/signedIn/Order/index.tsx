@@ -17,7 +17,7 @@ import Animated, {
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {MenuItemButton} from '../../../components/Order/MenuItemButton';
 import {MenuOrderNavigation} from '../../../navigation/order/types';
-import {setFiltersState} from '../../../redux/App/setup.sicle';
+import {setFiltersState} from '../../../redux/App/setup.slice';
 import {cleanFindNerbayEstablishmentSlice} from '../../../redux/Order/Establishments/getNerbayEstablishments.slice';
 
 const OrderMenu = () => {

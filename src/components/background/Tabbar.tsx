@@ -13,7 +13,7 @@ import {useAppDispatch} from '../../redux/hooks';
 import {
   setAppbarHeightState,
   setLastNavigationDirection,
-} from '../../redux/App/setup.sicle';
+} from '../../redux/App/setup.slice';
 
 const Tabbar = ({state, descriptors, navigation}: BottomTabBarProps) => {
   const dipsatch = useAppDispatch();
