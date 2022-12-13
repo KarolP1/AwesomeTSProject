@@ -16,7 +16,7 @@ import axios from 'axios';
 import * as Keychain from 'react-native-keychain';
 import {instance} from '../interceptors';
 import {setAuthState, setAuthStatus} from './loginReducer';
-axios.defaults.baseURL = `http://localhost:3000/api/v1`;
+axios.defaults.baseURL = `${WEBCONST().APIURL}/api/v1`;
 
 export const loginThunk = createAsyncThunk<IResponseLogin, ILoginForm, {}>(
   'user/login',
@@ -26,13 +26,6 @@ export const loginThunk = createAsyncThunk<IResponseLogin, ILoginForm, {}>(
       if (state.email === '' || state.password === '') {
         throw new Error('no data provided');
       }
-
-      const restest = await axios.post('/user/login', {
-        login: state.email,
-        password: state.password,
-      });
-      console.log({restest});
-      return restest;
 
       const res = await axios
         .post('/user/login', {
