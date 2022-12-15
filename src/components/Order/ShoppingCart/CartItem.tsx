@@ -34,13 +34,10 @@ const CartItem = (props: {
       return totalPerIngredient;
     })
     .reduce((prev, sum) => prev + sum, 0);
-  console.log({total: totalOfAllIngredients + item.price});
 
   useEffect(() => {
     setTotalIngredient(parseFloat(item.price) + totalOfAllIngredients);
   }, [item]);
-
-  console.log({totalIngredientstate: totalIngredient});
 
   return (
     <View

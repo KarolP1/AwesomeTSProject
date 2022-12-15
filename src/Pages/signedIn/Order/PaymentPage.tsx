@@ -81,18 +81,21 @@ const PaymentPage = () => {
   }, [totalPriceArray]);
 
   useEffect(() => {
-    console.log({totalPrice: totalPriceArray});
-  }, [totalPriceArray]);
+    console.log(totalPriceSum);
+  }, [totalPriceSum]);
 
   const fetchPaymentSheetParams = async () => {
-    const response = await instance.post(
-      `/order/payment/payment-sheet`,
-      {totalCosts: totalPriceSum, currency: 'usd'},
-      {
-        headers: {Authorization: 'Bearer ' + atoken},
-      },
-    );
-    const {paymentIntent, ephemeralKey, customer} = await response.data;
+    const response = await instance
+      .post(
+        `/order/payment/payment-sheet`,
+        {totalCosts: totalPriceSum, currency: 'usd'},
+        {
+          headers: {Authorization: 'Bearer ' + atoken},
+        },
+      )
+      .then(response => response.data);
+    console.log({response});
+    const {paymentIntent, ephemeralKey, customer} = await response;
 
     return {
       paymentIntent,
@@ -139,8 +142,8 @@ const PaymentPage = () => {
   };
 
   useEffect(() => {
-    initializePaymentSheet();
-  }, []);
+    if (totalPriceSum) initializePaymentSheet();
+  }, [totalPriceSum]);
 
   const pay = async () => {
     if (!isApplePaySupported) return;

@@ -5,7 +5,6 @@ import {HomePageProp} from '../../navigation/types';
 
 const LinkingPage = () => {
   const route = useRoute<HomePageProp['route']>();
-  console.log({route: route.path});
   return (
     <View>
       <Text>LinkingPage</Text>
