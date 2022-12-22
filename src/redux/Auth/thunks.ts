@@ -16,12 +16,11 @@ import axios from 'axios';
 import * as Keychain from 'react-native-keychain';
 import {instance} from '../interceptors';
 import {setAuthState, setAuthStatus} from './loginReducer';
-axios.defaults.baseURL = `${WEBCONST().APIURL}/api/v1`;
+axios.defaults.baseURL = `${WEBCONST().APIURL}:${WEBCONST().PORT}/api/v1`;
 
 export const loginThunk = createAsyncThunk<IResponseLogin, ILoginForm, {}>(
   'user/login',
   async (state, {rejectWithValue}) => {
-    console.warn(state);
     try {
       if (state.email === '' || state.password === '') {
         throw new Error('no data provided');
@@ -33,13 +32,11 @@ export const loginThunk = createAsyncThunk<IResponseLogin, ILoginForm, {}>(
           password: state.password,
         })
         .then(async response => {
-          console.log({response: response.data});
           const tokens = JSON.stringify(response.data.data);
           await Keychain.setGenericPassword('token', tokens);
           return response.data;
         })
         .catch(error => {
-          console.error(error.response);
           return rejectWithValue(error.response.data);
         });
       console.log({res});

@@ -7,7 +7,7 @@ import {getTokensKeychain} from '../utils/localStorage';
 import {setAuthState} from './Auth/loginReducer';
 
 export const instance = axios.create({
-  baseURL: `${WEBCONST().APIURL}/api/v1/`,
+  baseURL: `${WEBCONST().APIURL}:${WEBCONST().PORT}/api/v1/`,
   headers: {
     'Content-Type': 'application/json',
   },
