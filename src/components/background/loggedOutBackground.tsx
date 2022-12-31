@@ -7,12 +7,14 @@ import {
   Image,
   KeyboardAvoidingView,
   ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import React, {ReactNode} from 'react';
 
 const LoggedOutBackground = ({children}: {children?: ReactNode}) => {
+  const {height} = useWindowDimensions();
   return (
-    <View style={styles.mainContainer}>
+    <View style={[styles.mainContainer, {height}]}>
       <ImageBackground
         style={styles.loggedOutBackground}
         source={require('../../../src/assets/background.png')}>

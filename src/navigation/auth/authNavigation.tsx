@@ -17,16 +17,11 @@ import RNBootSplash from 'react-native-bootsplash';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import LinkingPage from '../../Pages/signedIn/LinkingPage';
 import {getMyProfile} from '../../redux/Profile/core/profileCore.thunk';
+import ForgotPasswordPage from '../../Pages/signedOut/registerPage/forgotPasswordPage';
 
 const AuthNavigation = ({isAuth}: {isAuth: boolean}) => {
   const Stack = createNativeStackNavigator<HomeStackParamList>();
   const Stack2 = createNativeStackNavigator<RootStackParamList>();
-
-  const {data, error, succes} = useAppSelector(state => state.login);
-  const dispatch = useAppDispatch();
-  function _handleOpenUrl(event: any) {
-    console.log('handleOpenUrl', event.url);
-  }
 
   useEffect(() => {
     // declare the data fetching function
@@ -43,7 +38,6 @@ const AuthNavigation = ({isAuth}: {isAuth: boolean}) => {
           initialRouteName="HugeMenu2x2">
           <Stack.Screen name="HugeMenu2x2" component={HugeMenu} />
           <Stack.Screen name="HomePage" component={BottomTabNavigator} />
-          <Stack.Screen name="Linking" component={LinkingPage} />
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -51,6 +45,7 @@ const AuthNavigation = ({isAuth}: {isAuth: boolean}) => {
     return (
       <NavigationContainer linking={linkingLoggedOut}>
         <Stack2.Navigator screenOptions={StackDefaultOptions}>
+          <Stack2.Screen name="ForgotPassword" component={ForgotPasswordPage} />
           <Stack2.Screen name="Login" component={LoginPage} />
           <Stack2.Screen name="Register" component={RegisterPage} />
         </Stack2.Navigator>

@@ -85,7 +85,11 @@ const LoginPage = () => {
             value={loginForm.password}
           />
           {errors && <Text>{errors}</Text>}
-          <TouchableOpacity style={styles.forgotButton}>
+          <TouchableOpacity
+            style={styles.forgotButton}
+            onPress={() => {
+              navigation.navigate('ForgotPassword');
+            }}>
             <Text style={styles.textButton}>
               Forgot your password? Click there.
             </Text>

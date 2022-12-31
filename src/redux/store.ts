@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import authSlice from './rootReducer';
 import loginSlice from './Auth/loginReducer';
 import registerSlice from './Auth/registerReducer';
+import registerStripeSlice from './Auth/registerStripeReducer';
 import recipesSlice from './recipes';
 import recipesByTagSlice from './recipes/searchByTag';
 import addRecipeSlice from './recipes/addRecipe/addRecipe';
@@ -63,6 +64,7 @@ const rootReducer = combineReducers({
   auth: authSlice,
   login: loginSlice,
   register: registerSlice,
+  stripe: registerStripeSlice,
   recipes: recipesSlice,
   recipesByTag: recipesByTagSlice,
   addRecipe: addRecipeSlice,

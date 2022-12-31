@@ -314,6 +314,7 @@ const ModalAddMenuItem = () => {
                   } = {
                     orderItems: {
                       itemId: menuItem._id,
+                      // @ts-ignore
                       changes: changes && changes,
                       item: menuItem,
                       index: uuid.v4().toString(),

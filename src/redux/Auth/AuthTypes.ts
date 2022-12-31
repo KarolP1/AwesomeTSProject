@@ -71,6 +71,16 @@ export interface IRegisterForm {
   address: addressType;
   birth_year: string;
   userRole: string;
+  stripe: IStripeDetails;
+}
+
+export interface IStripeDetails {
+  stripe_country: string;
+  stripe_currency: string;
+  stripe_company_name: string;
+  stripe_routing_number?: string;
+  stripe_account_number: string;
+  ssn_last4?: string;
 }
 
 export const initialAddress = {
@@ -86,12 +96,20 @@ export const initialRegosterForm: IRegisterForm = {
   last_name: 'platek',
   email: 'platek549@gmail.com',
   name: 'stary',
-  phone_number: '783835385',
+  phone_number: '000000000',
   password: '123456',
   confirmPassword: '123456',
   address: initialAddress,
   birth_year: '17-10-1997',
   userRole: '',
+  stripe: {
+    stripe_country: 'PL',
+    stripe_account_number: 'PL61109010140000071219812874',
+    stripe_currency: 'PLN',
+    stripe_company_name: 'KPCOMPANY',
+    stripe_routing_number: '110000000',
+    ssn_last4: '0000',
+  },
 };
 
 export interface IResponseRecipeDelete {
@@ -100,4 +118,29 @@ export interface IResponseRecipeDelete {
   error?: any;
   data?: IRecipe[];
   succes: boolean;
+}
+
+export interface IStripeRegister {
+  //
+  country: string;
+  currency: string;
+  account_number: string;
+  email: string;
+  address: {
+    line1: string;
+    city: string;
+    state: string;
+    postal_code: string;
+    country: string;
+  };
+  dob: {
+    day: string;
+    month: string;
+    year: string;
+  };
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  ssn_last_4?: string;
+  routing_number?: string;
 }

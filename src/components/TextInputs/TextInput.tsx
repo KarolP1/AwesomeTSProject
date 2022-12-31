@@ -4,6 +4,7 @@ import {
   addressType,
   ILoginForm,
   IRegisterForm,
+  IStripeDetails,
 } from '../../redux/Auth/AuthTypes';
 
 export interface ITextInput {
@@ -11,8 +12,9 @@ export interface ITextInput {
   isSecure?: boolean;
   onChange: any;
   name: string;
-  state?: ILoginForm | IRegisterForm | addressType;
+  state?: ILoginForm | IRegisterForm | addressType | IStripeDetails;
   value: string | undefined;
+  disabled?: boolean;
 }
 
 const TextInputCustom = ({
@@ -22,6 +24,7 @@ const TextInputCustom = ({
   name,
   state,
   value,
+  disabled,
 }: ITextInput) => {
   return (
     <View
@@ -33,6 +36,7 @@ const TextInputCustom = ({
         borderRadius: 5,
       }}>
       <TextInput
+        editable={disabled ? false : true}
         placeholder={placeholder}
         onChangeText={text => {
           onChange({...state, [name]: text});

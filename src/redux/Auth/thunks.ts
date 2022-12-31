@@ -112,11 +112,14 @@ export const registerThunk = createAsyncThunk<
         return response.data.data;
       })
       .catch(error => {
+        console.error(error.response.data);
+
         return rejectWithValue(error.response.data.message);
       });
 
     return res;
   } catch (error: any) {
+    console.error(error);
     return rejectWithValue({
       message: error.message,
       error: 'login failed',
@@ -124,8 +127,3 @@ export const registerThunk = createAsyncThunk<
     });
   }
 });
-
-/**
- *
- * eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzI3YjI5NDFiNmFjN2M4ZDQ4YTljZWMiLCJpYXQiOjE2NjM1ODUyODYsImV4cCI6MTY2MzU4NTU4Nn0.9yhtA00MwARjaW9imJwYsCwncMmgiSKMzppbwguJBwo
- */

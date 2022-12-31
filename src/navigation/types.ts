@@ -22,6 +22,7 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Subscription: undefined;
+  ForgotPassword: undefined;
 };
 export type AuthScreenProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -30,9 +31,12 @@ export type AuthScreenProp = NativeStackNavigationProp<
 
 export type HomeStackParamList = {
   HugeMenu2x2: undefined;
-  Linking: undefined;
   HomePage: NavigatorScreenParams<HomeTabParamList>;
 };
+export type ForgotPasswordNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'ForgotPassword'
+>;
 export type HomePageScreenProp = NativeStackNavigationProp<
   HomeStackParamList,
   'HugeMenu2x2'
