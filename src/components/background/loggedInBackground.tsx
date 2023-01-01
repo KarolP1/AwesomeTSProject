@@ -10,12 +10,11 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import React, {ReactNode, useEffect, useState} from 'react';
+import React, {ReactNode} from 'react';
 import {logout} from '../../utils/localStorage';
-import {useAppDispatch, useAppSelector} from '../../redux/hooks';
+import {useAppDispatch} from '../../redux/hooks';
 import {cleanUpLogin, setAuthState} from '../../redux/Auth/loginReducer';
 import {useNavigation} from '@react-navigation/native';
-import {setScrollPosition} from '../../redux/App/setup.slice';
 
 const LoggedInBackground = ({
   children,
@@ -28,11 +27,6 @@ const LoggedInBackground = ({
 }) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const [pos, setPos] = useState(0);
-  useEffect(() => {
-    dispatch(setScrollPosition(pos));
-  }, [pos]);
-  const APPBARHEIGHT = useAppSelector(state => state.App.APPBARHEIGHT);
 
   return (
     <ImageBackground

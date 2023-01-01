@@ -18,6 +18,7 @@ import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import LinkingPage from '../../Pages/signedIn/LinkingPage';
 import {getMyProfile} from '../../redux/Profile/core/profileCore.thunk';
 import ForgotPasswordPage from '../../Pages/signedOut/registerPage/forgotPasswordPage';
+import ResetPasswordPage from '../../Pages/signedOut/registerPage/ResetPasswordPage';
 
 const AuthNavigation = ({isAuth}: {isAuth: boolean}) => {
   const Stack = createNativeStackNavigator<HomeStackParamList>();
@@ -45,8 +46,9 @@ const AuthNavigation = ({isAuth}: {isAuth: boolean}) => {
     return (
       <NavigationContainer linking={linkingLoggedOut}>
         <Stack2.Navigator screenOptions={StackDefaultOptions}>
-          <Stack2.Screen name="ForgotPassword" component={ForgotPasswordPage} />
           <Stack2.Screen name="Login" component={LoginPage} />
+          <Stack2.Screen name="ForgotPassword" component={ForgotPasswordPage} />
+          <Stack2.Screen name="ResetPassword" component={ResetPasswordPage} />
           <Stack2.Screen name="Register" component={RegisterPage} />
         </Stack2.Navigator>
       </NavigationContainer>

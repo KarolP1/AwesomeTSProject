@@ -29,7 +29,7 @@ export default SubmitButton;
 const styles = StyleSheet.create({
   BodyContainer: {
     backgroundColor: '#EA3651',
-    paddingVertical: 15,
+    paddingVertical: 10,
     paddingHorizontal: 25,
     borderRadius: 5,
     alignSelf: 'flex-end',
@@ -38,5 +38,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 13,
     fontWeight: '600',
+    fontFamily: 'Handlee-Regular',
   },
 });

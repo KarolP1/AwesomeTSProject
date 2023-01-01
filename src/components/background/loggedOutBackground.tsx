@@ -8,11 +8,24 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   useWindowDimensions,
+  ViewStyle,
+  TouchableOpacity,
 } from 'react-native';
 import React, {ReactNode} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {AuthScreenProp} from '../../navigation/types';
 
-const LoggedOutBackground = ({children}: {children?: ReactNode}) => {
+const LoggedOutBackground = ({
+  children,
+  style,
+  backButton,
+}: {
+  children?: ReactNode;
+  style?: ViewStyle;
+  backButton?: boolean;
+}) => {
   const {height} = useWindowDimensions();
+  const navigation = useNavigation<AuthScreenProp>();
   return (
     <View style={[styles.mainContainer, {height}]}>
       <ImageBackground
@@ -22,9 +35,27 @@ const LoggedOutBackground = ({children}: {children?: ReactNode}) => {
           style={styles.logoFull}
           source={require('../../assets/BLINKFIX.png')}
         />
-        <KeyboardAvoidingView style={styles.innerContainer}>
+
+        {backButton && (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Login');
+            }}
+            style={{zIndex: 100, position: 'absolute', top: 50, left: 10}}>
+            <Image
+              style={{height: 40, width: 40}}
+              source={require('../../assets/utilityIcons/BackArrow.png')}
+            />
+          </TouchableOpacity>
+        )}
+        <KeyboardAvoidingView style={[styles.innerContainer, style]}>
           <ScrollView
-            contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
+            style={{width: '100%'}}
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: 'center',
+              width: '100%',
+            }}>
             {children ? children : <Text>hello</Text>}
           </ScrollView>
         </KeyboardAvoidingView>
@@ -46,6 +77,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     justifyContent: 'center',
+    position: 'relative',
   },
   logoFull: {
     width: '70%',

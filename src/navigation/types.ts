@@ -23,6 +23,7 @@ export type RootStackParamList = {
   Register: undefined;
   Subscription: undefined;
   ForgotPassword: undefined;
+  ResetPassword: undefined;
 };
 export type AuthScreenProp = NativeStackNavigationProp<
   RootStackParamList,
