@@ -4,6 +4,7 @@ import {
   View,
   TextInput,
   KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import LoggedOutBackground from '../../../components/background/loggedOutBackground';
@@ -59,9 +60,9 @@ const ResetPasswordPage = () => {
             width: '100%',
             justifyContent: 'space-between',
           }}>
-          <View>
+          <ScrollView>
             <Text style={[styles.title, {}]}>Forgot password?</Text>
-            <View style={{}}>
+            <ScrollView style={{maxHeight: '80%'}}>
               <Text style={styles.text}>Reset Code</Text>
               <View
                 style={{
@@ -278,13 +279,13 @@ const ResetPasswordPage = () => {
                   }}
                 />
               </View>
-            </View>
+            </ScrollView>
             {!isPasswordsMatch() ? (
               <Text style={styles.text}>passwords must match</Text>
             ) : (
               <Text style={styles.text}></Text>
             )}
-          </View>
+          </ScrollView>
           <SubmitButton title="Change password" onPress={() => {}} />
         </View>
       </LoggedOutBackground>
