@@ -52,7 +52,7 @@ const ResetPasswordPage = () => {
   }, [codeArray]);
 
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView scrollEnabled={false}>
       <LoggedOutBackground style={{maxHeight: '50%'}} backButton>
         <View
           style={{
