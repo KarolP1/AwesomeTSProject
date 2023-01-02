@@ -1,19 +1,33 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import LoggedOutBackground from '../../../components/background/loggedOutBackground';
 import {TextInput} from 'react-native-gesture-handler';
 import SubmitButton from '../../../components/touchables/SubmitButton';
 import {useNavigation} from '@react-navigation/native';
 import {AuthScreenProp} from '../../../navigation/types';
+import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
+import {requestResetPassword} from '../../../redux/Auth/resetPasswordReducer';
 
 const ForgotPasswordPage = () => {
   const navigation = useNavigation<AuthScreenProp>();
+  const dispatch = useAppDispatch();
+
+  const emailref = useRef<TextInput>(null);
 
   const regex = new RegExp(
     "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
   );
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [email, setEmail] = useState('');
+
+  const {succes, data, error} = useAppSelector(state => state.forgot);
+
+  useEffect(() => {
+    if (succes) {
+      navigation.push('ResetPassword');
+      console.log(data);
+    }
+  }, [succes]);
   return (
     <LoggedOutBackground style={{maxHeight: '50%'}} backButton>
       <View
@@ -36,6 +50,8 @@ const ForgotPasswordPage = () => {
                 borderWidth: 1,
               }}>
               <TextInput
+                value={email}
+                ref={emailref}
                 placeholder="type your email address"
                 style={{
                   fontFamily: 'Handlee-Regular',
@@ -43,8 +59,8 @@ const ForgotPasswordPage = () => {
                   fontSize: 17,
                 }}
                 onChangeText={text => {
+                  setEmail(text);
                   const test = regex.test(text);
-                  setEmail(email);
                   setIsEmailValid(test);
                 }}
               />
@@ -54,8 +70,13 @@ const ForgotPasswordPage = () => {
         <SubmitButton
           title="Send Reset Password Request"
           onPress={() => {
-            if (isEmailValid) {
-              navigation.push('ResetPassword');
+            console.log(email.length);
+            if (email.length !== 0 && isEmailValid) {
+              console.log('first');
+              dispatch(requestResetPassword(email));
+              // navigation.push('ResetPassword');
+            } else {
+              if (emailref) emailref.current?.focus();
             }
           }}
         />

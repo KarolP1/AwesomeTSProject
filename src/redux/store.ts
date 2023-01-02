@@ -30,6 +30,7 @@ import ShoppingListSlice from './recipes/shoppingList/shoppinList.slice';
 import MyEstablishmentSlice from './Order/MyEstablishment/editEsablishment.slice';
 import FindNerbayEstablishmentSlice from './Order/Establishments/getNerbayEstablishments.slice';
 import PurchasesSlice from './Order/Purchases/index.slice';
+import forgotSlice from './Auth/resetPasswordReducer';
 
 import getProfileSlice from './Profile/profileCore.slice';
 import {ShoppingCartSlice} from './Order/shoppingCart.slice';
@@ -62,6 +63,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   App: AppSetupSlice,
   auth: authSlice,
+  forgot: forgotSlice,
   login: loginSlice,
   register: registerSlice,
   stripe: registerStripeSlice,
