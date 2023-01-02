@@ -5,6 +5,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ScrollView,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import LoggedOutBackground from '../../../components/background/loggedOutBackground';
@@ -12,6 +13,8 @@ import SubmitButton from '../../../components/touchables/SubmitButton';
 import {useNavigation} from '@react-navigation/native';
 import {AuthScreenProp} from '../../../navigation/types';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
+import {responseResetPassword} from '../../../redux/Auth/resetPasswordReducer';
 
 const ResetPasswordPage = () => {
   const navigation = useNavigation<AuthScreenProp>();
@@ -44,6 +47,12 @@ const ResetPasswordPage = () => {
     '',
   ]);
 
+  const [resetPasswordForm, setResetPasswordForm] = useState({
+    resetCode: '',
+    password: '',
+    confirmPassword: '',
+  });
+
   const [stringCode, setStringCode] = useState<string>('');
   useEffect(() => {
     const joined = codeArray.join('');
@@ -51,6 +60,26 @@ const ResetPasswordPage = () => {
     console.log(stringCode);
   }, [codeArray]);
 
+  useEffect(() => {
+    setResetPasswordForm({
+      ...resetPasswordForm,
+      resetCode: stringCode,
+      password: passwordsForm.password,
+      confirmPassword: passwordsForm.confirmPassword,
+    });
+    console.log(resetPasswordForm);
+  }, [stringCode, passwordsForm]);
+  const dispatch = useAppDispatch();
+
+  const {data, succes, error, message} = useAppSelector(state => state.forgot);
+
+  useEffect(() => {
+    console.log({data, succes, error, message});
+    if (message === 'Password changed successfully') {
+      Alert.alert('success', 'Password changed successfully');
+      navigation.navigate('Login');
+    }
+  }, [data, succes, error, message]);
   return (
     <KeyboardAwareScrollView scrollEnabled={false}>
       <LoggedOutBackground style={{maxHeight: '50%'}} backButton>
@@ -286,7 +315,12 @@ const ResetPasswordPage = () => {
               <Text style={styles.text}></Text>
             )}
           </ScrollView>
-          <SubmitButton title="Change password" onPress={() => {}} />
+          <SubmitButton
+            title="Change password"
+            onPress={() => {
+              dispatch(responseResetPassword(resetPasswordForm));
+            }}
+          />
         </View>
       </LoggedOutBackground>
     </KeyboardAwareScrollView>

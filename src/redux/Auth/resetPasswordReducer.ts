@@ -55,6 +55,22 @@ const registerStripeSlice = createSlice({
       state.isLoading = true;
       state.succes = false;
     });
+    //
+    builder.addCase(responseResetPassword.rejected, (state, {payload}) => {
+      state.isLoading = false;
+      state.error = payload;
+      state.succes = false;
+    });
+    builder.addCase(responseResetPassword.fulfilled, (state, {payload}) => {
+      state.data = payload.data;
+      state.message = payload.message;
+      state.isLoading = false;
+      state.succes = true;
+    });
+    builder.addCase(responseResetPassword.pending, (state, action) => {
+      state.isLoading = true;
+      state.succes = false;
+    });
   },
 });
 
@@ -65,6 +81,33 @@ export const requestResetPassword = createAsyncThunk<
   try {
     const res = await axios
       .post('/user/resetrequest', {email: state.toLowerCase()})
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        console.error(error.response.data);
+
+        return rejectWithValue(error.response.data.message);
+      });
+
+    return res;
+  } catch (error: any) {
+    console.error(error);
+    return rejectWithValue({
+      message: error.message,
+      error: JSON.stringify(error),
+      data: null,
+    });
+  }
+});
+
+export const responseResetPassword = createAsyncThunk<
+  IResquestResetPassword,
+  {resetCode: string; password: string; confirmPassword: string}
+>('user/resetPasswordres', async (state, {rejectWithValue}) => {
+  try {
+    const res = await axios
+      .post('/user/resetresponse', state)
       .then(response => {
         return response.data;
       })

@@ -6,7 +6,10 @@ import SubmitButton from '../../../components/touchables/SubmitButton';
 import {useNavigation} from '@react-navigation/native';
 import {AuthScreenProp} from '../../../navigation/types';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
-import {requestResetPassword} from '../../../redux/Auth/resetPasswordReducer';
+import {
+  cleanUpResetPasswordrequest,
+  requestResetPassword,
+} from '../../../redux/Auth/resetPasswordReducer';
 
 const ForgotPasswordPage = () => {
   const navigation = useNavigation<AuthScreenProp>();
@@ -26,6 +29,7 @@ const ForgotPasswordPage = () => {
     if (succes) {
       navigation.push('ResetPassword');
       console.log(data);
+      dispatch(cleanUpResetPasswordrequest());
     }
   }, [succes]);
   return (
@@ -52,6 +56,7 @@ const ForgotPasswordPage = () => {
               <TextInput
                 value={email}
                 ref={emailref}
+                textContentType="emailAddress"
                 placeholder="type your email address"
                 style={{
                   fontFamily: 'Handlee-Regular',
@@ -74,7 +79,6 @@ const ForgotPasswordPage = () => {
             if (email.length !== 0 && isEmailValid) {
               console.log('first');
               dispatch(requestResetPassword(email));
-              // navigation.push('ResetPassword');
             } else {
               if (emailref) emailref.current?.focus();
             }
