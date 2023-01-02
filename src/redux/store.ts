@@ -56,7 +56,6 @@ const persistConfig = {
     'shoppingList',
     'findNerbayEstablishment',
     'MyEstablishment',
-    // 'ShoppingCart',
   ], //blacklisting a store attribute name, will not persist that store attribute.
 };
 

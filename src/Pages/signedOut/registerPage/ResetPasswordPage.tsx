@@ -14,7 +14,10 @@ import {useNavigation} from '@react-navigation/native';
 import {AuthScreenProp} from '../../../navigation/types';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useAppDispatch, useAppSelector} from '../../../redux/hooks';
-import {responseResetPassword} from '../../../redux/Auth/resetPasswordReducer';
+import {
+  cleanUpResetPasswordrequest,
+  responseResetPassword,
+} from '../../../redux/Auth/resetPasswordReducer';
 
 const ResetPasswordPage = () => {
   const navigation = useNavigation<AuthScreenProp>();
@@ -77,6 +80,7 @@ const ResetPasswordPage = () => {
     console.log({data, succes, error, message});
     if (message === 'Password changed successfully') {
       Alert.alert('success', 'Password changed successfully');
+      dispatch(cleanUpResetPasswordrequest());
       navigation.navigate('Login');
     }
   }, [data, succes, error, message]);
