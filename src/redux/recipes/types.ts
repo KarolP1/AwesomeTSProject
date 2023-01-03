@@ -59,10 +59,13 @@ export interface ICounter {
 }
 
 export interface IIngredient {
-  qtt: string;
+  _id: string;
+  qtt: number;
+  pricePerIngredient: number;
   unit: string;
   name: string;
-  _id: string;
+  isIngredientVisible: boolean;
+  isIngredientEditable: boolean;
 }
 
 interface OwnerInterface {

@@ -1,45 +1,166 @@
-import {View, Text, Image} from 'react-native';
-import React from 'react';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {IInvoice} from '../../../../redux/Order/Purchases/getMyPurchases.thunk';
 import {WEBCONST} from '../../../../constants/webConstants';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 type Props = {
   data?: IInvoice[] | undefined;
 };
 
 const InvoicesList = (props: Props) => {
+  const offset = useSharedValue(0);
+
+  const [lastIdClicked, setLastIdClicked] = useState<string | null>(null);
+
+  useEffect(() => {
+    offset.value = -150;
+  }, [lastIdClicked]);
+
   return (
     <View>
-      {props.data?.map(invoice => (
-        <View key={invoice._id}>
-          <Text>
-            {new Date(invoice.orderDate).toLocaleDateString()}{' '}
-            {new Date(invoice.orderDate).toLocaleTimeString()}
-          </Text>
-          <Text>
-            {new Date(invoice.orderUpdateDate).toLocaleDateString()}{' '}
-            {new Date(invoice.orderUpdateDate).toLocaleDateString()}
-          </Text>
-          <Text>{invoice.orderWhere.name}</Text>
-          <Text>
-            {`${WEBCONST().APIURL}${
-              invoice.orderWhere.owner?.images?.profileImage?.image
-            }`}
-          </Text>
-          <Image
-            style={{width: 50, height: 50}}
-            source={{
-              uri: `${WEBCONST().APIURL}${
-                invoice.orderWhere.owner?.images?.profileImage?.path
-              }`,
-            }}
-          />
-          {/* <Text>{invoice.}</Text> */}
-        </View>
-      ))}
-      <Text>{JSON.stringify(props.data)}</Text>
+      {props.data?.map(invoice => {
+        // single invoice
+        const {orderItems, ...rest} = invoice;
+
+        const active = orderItems.filter(
+          orderItem => orderItem.itemId !== undefined,
+        );
+
+        const fullprice = active.reduce(
+          (accumulator, currentValue) =>
+            accumulator + parseFloat(currentValue.itemId.price),
+          0,
+        );
+
+        const ingredients = active
+          .map(items =>
+            items.changes.map(change => change.ingredientId.pricePerIngredient),
+          )
+          .flat();
+
+        const ingredientsPrice = ingredients.reduce((acc, currentValue) => {
+          return acc + currentValue;
+        }, 0);
+
+        const currency = active.reduce(
+          (accumulator, currentValue) =>
+            (accumulator = currentValue.itemId.currency),
+          '',
+        );
+        const animatedStyles = useAnimatedStyle(() => {
+          return {
+            transform: [
+              {
+                translateX:
+                  lastIdClicked === invoice._id
+                    ? withTiming(offset.value, {duration: 100})
+                    : withTiming(0, {duration: 100}),
+              },
+            ],
+          };
+        });
+        return (
+          <TouchableOpacity
+            key={invoice._id}
+            activeOpacity={0.5}
+            onPress={() => {
+              setLastIdClicked(invoice._id);
+              if (lastIdClicked === invoice._id) {
+                setLastIdClicked(null);
+              }
+            }}>
+            <Animated.View style={[styles.container, animatedStyles]}>
+              <Image
+                style={{width: 50, height: 50, borderRadius: 50}}
+                source={{
+                  uri: `${WEBCONST().APIURL}${
+                    invoice.orderWhere.owner?.images?.profileImage?.path
+                  }`,
+                }}
+              />
+              <Text style={styles.text}>{invoice.orderWhere.name}</Text>
+              <Text style={styles.text}>
+                {currency} {(fullprice + ingredientsPrice).toFixed(2)}
+              </Text>
+              <View>
+                <Text style={styles.text}>
+                  {new Date(invoice.orderDate).toLocaleDateString()}
+                </Text>
+                <Text style={styles.text}>
+                  {new Date(invoice.orderDate).toLocaleTimeString()}
+                </Text>
+              </View>
+              <Animated.View
+                style={{
+                  flex: 1,
+                  height: '100%',
+                  width: 150,
+                  right: offset.value,
+                  position: 'absolute',
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                }}>
+                <TouchableOpacity>
+                  <View
+                    style={{
+                      backgroundColor: '#00000015',
+                      paddingVertical: 5,
+                      paddingHorizontal: 10,
+                      borderRadius: 5,
+                    }}>
+                    <Text style={styles.text}>view</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <View
+                    style={{
+                      backgroundColor: '#00000015',
+                      paddingVertical: 5,
+                      paddingHorizontal: 10,
+                      borderRadius: 5,
+                    }}>
+                    <Text style={styles.text}>download</Text>
+                  </View>
+                </TouchableOpacity>
+              </Animated.View>
+            </Animated.View>
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 2,
+    paddingVertical: 5,
+    alignItems: 'center',
+    position: 'relative',
+  },
+  text: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textTransform: 'capitalize',
+    fontFamily: 'Handlee-Regular',
+  },
+});
 
 export default InvoicesList;
