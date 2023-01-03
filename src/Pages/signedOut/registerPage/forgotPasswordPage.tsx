@@ -84,6 +84,14 @@ const ForgotPasswordPage = () => {
             }
           }}
         />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('ResetPassword');
+          }}>
+          <Text style={[styles.text, {alignSelf: 'center'}]}>
+            I Already have code
+          </Text>
+        </TouchableOpacity>
       </View>
     </LoggedOutBackground>
   );
