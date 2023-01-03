@@ -28,10 +28,10 @@ const ForgotPasswordPage = () => {
   useEffect(() => {
     if (succes) {
       navigation.push('ResetPassword');
-      console.log(data);
       dispatch(cleanUpResetPasswordrequest());
     }
   }, [succes]);
+
   return (
     <LoggedOutBackground style={{maxHeight: '50%'}} backButton>
       <View
@@ -75,9 +75,7 @@ const ForgotPasswordPage = () => {
         <SubmitButton
           title="Send Reset Password Request"
           onPress={() => {
-            console.log(email.length);
             if (email.length !== 0 && isEmailValid) {
-              console.log('first');
               dispatch(requestResetPassword(email));
             } else {
               if (emailref) emailref.current?.focus();

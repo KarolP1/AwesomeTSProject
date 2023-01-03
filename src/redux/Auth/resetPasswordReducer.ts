@@ -85,14 +85,11 @@ export const requestResetPassword = createAsyncThunk<
         return response.data;
       })
       .catch(error => {
-        console.error(error.response.data);
-
         return rejectWithValue(error.response.data.message);
       });
 
     return res;
   } catch (error: any) {
-    console.error(error);
     return rejectWithValue({
       message: error.message,
       error: JSON.stringify(error),
@@ -112,14 +109,11 @@ export const responseResetPassword = createAsyncThunk<
         return response.data;
       })
       .catch(error => {
-        console.error(error.response.data);
-
         return rejectWithValue(error.response.data.message);
       });
 
     return res;
   } catch (error: any) {
-    console.error(error);
     return rejectWithValue({
       message: error.message,
       error: JSON.stringify(error),

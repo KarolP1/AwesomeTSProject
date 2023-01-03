@@ -60,7 +60,6 @@ const ResetPasswordPage = () => {
   useEffect(() => {
     const joined = codeArray.join('');
     setStringCode(joined);
-    console.log(stringCode);
   }, [codeArray]);
 
   useEffect(() => {
@@ -70,20 +69,40 @@ const ResetPasswordPage = () => {
       password: passwordsForm.password,
       confirmPassword: passwordsForm.confirmPassword,
     });
-    console.log(resetPasswordForm);
   }, [stringCode, passwordsForm]);
   const dispatch = useAppDispatch();
 
   const {data, succes, error, message} = useAppSelector(state => state.forgot);
 
   useEffect(() => {
-    console.log({data, succes, error, message});
     if (message === 'Password changed successfully') {
       Alert.alert('success', 'Password changed successfully');
       dispatch(cleanUpResetPasswordrequest());
       navigation.navigate('Login');
     }
-  }, [data, succes, error, message]);
+  }, [data, succes, message]);
+
+  const cleanAndNavigate = () => {
+    dispatch(cleanUpResetPasswordrequest());
+    navigation.navigate('ForgotPassword');
+  };
+  useEffect(() => {
+    if (error) {
+      if (error === 'resetCodeFromDb undefined does not exist') {
+        Alert.alert('error', 'Reset code is not up to date', [
+          {text: 'OK', onPress: () => cleanAndNavigate()},
+        ]);
+      } else {
+        Alert.alert('error', error, [
+          {
+            onPress: () => {
+              dispatch(cleanUpResetPasswordrequest());
+            },
+          },
+        ]);
+      }
+    }
+  }, [error]);
   return (
     <KeyboardAwareScrollView scrollEnabled={false}>
       <LoggedOutBackground style={{maxHeight: '50%'}} backButton>
