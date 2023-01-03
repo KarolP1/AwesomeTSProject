@@ -43,7 +43,7 @@ const UserDataSection = ({
         )}>
         <View style={{width: '100%', flex: 1}}>
           <TextInputProfile
-            disabled={isEditModeEnabled}
+            disabled={!isEditModeEnabled}
             name="first_name"
             onChange={setUpdateUserState}
             placeholder="First name"
@@ -51,7 +51,7 @@ const UserDataSection = ({
             state={updateUserState}
           />
           <TextInputProfile
-            disabled={isEditModeEnabled}
+            disabled={!isEditModeEnabled}
             name="last_name"
             onChange={setUpdateUserState}
             placeholder="Last name"
@@ -59,7 +59,7 @@ const UserDataSection = ({
             state={updateUserState}
           />
           <TextInputProfile
-            disabled={isEditModeEnabled}
+            disabled={!isEditModeEnabled}
             name="name"
             onChange={setUpdateUserState}
             placeholder="Your in app name"
@@ -67,7 +67,7 @@ const UserDataSection = ({
             state={updateUserState}
           />
           <TextInputProfile
-            disabled={isEditModeEnabled}
+            disabled={!isEditModeEnabled}
             name="email"
             onChange={setUpdateUserState}
             placeholder="Email Address"
@@ -75,7 +75,7 @@ const UserDataSection = ({
             state={updateUserState}
           />
           <TextInputProfile
-            disabled={isEditModeEnabled}
+            disabled={!isEditModeEnabled}
             name="phone_number"
             onChange={setUpdateUserState}
             placeholder="First name"
@@ -83,7 +83,7 @@ const UserDataSection = ({
             state={updateUserState}
           />
           <TextInputProfile
-            disabled={isEditModeEnabled}
+            disabled={!isEditModeEnabled}
             name="first_name"
             onChange={setUpdateUserState}
             placeholder="First name"
