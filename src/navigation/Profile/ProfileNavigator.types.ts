@@ -6,6 +6,7 @@ import {
 import {IMenuItem} from './../../redux/Profile/establishmentMenus/types';
 import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 import {IWorkspaceEmployeeList} from '../../redux/Order/tables/employees/GetEmployeeList.thunk';
+import {IInvoice} from '../../redux/Order/Purchases/getMyPurchases.thunk';
 
 export type ProfileParamList = {
   SingleEmployee: {employee: IWorkspaceEmployeeList};
@@ -25,6 +26,9 @@ export type ProfileParamList = {
   SingleShoppingListFromProfile: {
     list: ShoppingListItemGet;
   };
+  SingleInvoiceFromProfile: {
+    invoice: IInvoice;
+  };
 };
 
 export type ProfileNavigation = StackNavigationProp<
@@ -39,6 +43,10 @@ export type ProfileNavigationProps = StackScreenProps<
 export type ProfileAddRecipeNavigationProps = StackScreenProps<
   ProfileParamList,
   'AddRecipeFromProfile'
+>;
+export type ProfileSingleInvoiceProps = StackScreenProps<
+  ProfileParamList,
+  'SingleInvoiceFromProfile'
 >;
 
 export type ProfileSingleRecipeNavigationProps = StackScreenProps<

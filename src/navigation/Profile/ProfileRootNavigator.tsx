@@ -10,6 +10,7 @@ import Recipesadd from '../../Pages/signedIn/recipes/Recipesadd';
 import SingleRecipe from '../../Pages/signedIn/recipes/SingleRecipe';
 import RecipeAddToShoppingList from '../../Pages/signedIn/recipes/recipeAddToShoppingList';
 import RecipesShoppinglists from '../../Pages/signedIn/recipes/ShoppingList';
+import Singleinvoice from '../../Pages/signedIn/Profile/singleinvoice';
 
 export const ProfileNavigationContainer = () => {
   const Stack = createNativeStackNavigator<ProfileParamList>();
@@ -38,6 +39,7 @@ export const ProfileNavigationContainer = () => {
         name="ShoppingListsFromProfile"
         component={RecipesShoppinglists}
       />
+      <Stack.Screen name="SingleInvoiceFromProfile" component={Singleinvoice} />
       {/* <Stack.Screen
         name="SingleShoppingListFromProfile"
         component={SingleShoppingListEdit}

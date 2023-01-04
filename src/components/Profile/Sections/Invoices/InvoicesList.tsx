@@ -14,12 +14,15 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import {useNavigation} from '@react-navigation/native';
+import {ProfileNavigation} from '../../../../navigation/Profile/ProfileNavigator.types';
 
 type Props = {
   data?: IInvoice[] | undefined;
 };
 
 const InvoicesList = (props: Props) => {
+  const navigation = useNavigation<ProfileNavigation>();
   const offset = useSharedValue(0);
 
   const [lastIdClicked, setLastIdClicked] = useState<string | null>(null);
@@ -113,7 +116,11 @@ const InvoicesList = (props: Props) => {
                   justifyContent: 'space-around',
                   alignItems: 'center',
                 }}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setLastIdClicked(null);
+                    navigation.navigate('SingleInvoiceFromProfile', {invoice});
+                  }}>
                   <View
                     style={{
                       backgroundColor: '#00000015',
