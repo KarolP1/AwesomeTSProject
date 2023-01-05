@@ -41,15 +41,15 @@ const InvoicesList = (props: Props) => {
           orderItem => orderItem.itemId !== undefined,
         );
 
-        const fullprice = active.reduce(
-          (accumulator, currentValue) =>
-            accumulator + parseFloat(currentValue.itemId.price),
-          0,
-        );
+        const fullprice = active.reduce((accumulator, currentValue) => {
+          return accumulator + parseFloat(currentValue.itemId.price);
+        }, 0);
 
         const ingredients = active
           .map(items =>
-            items.changes.map(change => change.ingredientId.pricePerIngredient),
+            items.changes.map(
+              change => change.qtt * change.ingredientId.pricePerIngredient,
+            ),
           )
           .flat();
 

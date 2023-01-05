@@ -1,6 +1,6 @@
 import {IIngredient} from './../../recipes/types';
 import {checkStringNull} from './../../recipes/editRecipe/functions';
-import {IEstablishment, IMenuItem} from './../../Profile/types';
+import {IEstablishment, IGetAddress, IMenuItem} from './../../Profile/types';
 import {getTokensKeychain} from './../../../utils/localStorage/index';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {instance} from '../../interceptors';
@@ -25,6 +25,9 @@ export interface IInvoice {
   orderBy: string;
   orderWhere: IEstablishment;
   orderItems: orderItemItems[];
+  orderStatus: string;
+  isCompleted: boolean;
+  address: IGetAddress;
 }
 
 export const GetMyPurchases = createAsyncThunk<IResponseSlice<IInvoice[]>>(
