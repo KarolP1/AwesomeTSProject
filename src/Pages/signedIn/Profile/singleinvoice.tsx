@@ -12,8 +12,7 @@ const Singleinvoice = () => {
   const updateDate = new Date(invoice.orderUpdateDate);
 
   const itemsPrice = invoice.orderItems.reduce((acc, item) => {
-    console.log(item.itemId.price);
-    return acc + parseFloat(item.itemId.price);
+    return item?.itemId?.price ? acc + parseFloat(item.itemId.price) : 0;
   }, 0);
   const ingredientsPrice = invoice.orderItems.reduce((acc, item) => {
     const changes = item.changes.reduce((acc, change) => {
@@ -23,7 +22,7 @@ const Singleinvoice = () => {
   }, 0);
 
   const currency = invoice.orderItems.reduce((acc, item) => {
-    return item.itemId.currency;
+    return item?.itemId?.currency ? item.itemId.currency : '';
   }, '');
   return (
     <LoggedInBackground>
