@@ -435,6 +435,8 @@ PODS:
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
+  - RNFS (2.20.0):
+    - React-Core
   - RNGestureHandler (2.7.0):
     - React-Core
   - RNImageCropPicker (0.38.0):
@@ -600,6 +602,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
+  - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
@@ -734,6 +737,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-masked-view/masked-view"
   RNFastImage:
     :path: "../node_modules/react-native-fast-image"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
@@ -814,6 +819,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 0c357f3156fcb16c8589ede67cc036330b6698ca
   RNCMaskedView: cb9670ea9239998340eaab21df13fa12a1f9de15
   RNFastImage: 3207b9eb17c2425d574ca40db35185db6e324f4e
+  RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 7673697e7c0e9391adefae4faa087442bc04af33
   RNImageCropPicker: ffbba608264885c241cbf3a8f78eb7aeeb978241
   RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
@@ -836,6 +842,6 @@ SPEC CHECKSUMS:
   Yoga: 043f8eb97345d0171f27fead4d1849cacf0472a5
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: e5aebc9dcc91de50edd15592b52c9a169cda7512
+PODFILE CHECKSUM: cddf02246471f9fccfba151b1ad53b3a47f999bb
 
 COCOAPODS: 1.11.3

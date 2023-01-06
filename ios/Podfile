@@ -13,6 +13,7 @@ target 'AwesomeTSProject' do
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path
   pod 'React-RCTLinking', :path => '../node_modules/react-native/Libraries/LinkingIOS'
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
 
   use_react_native!(
     :path => config[:reactNativePath],

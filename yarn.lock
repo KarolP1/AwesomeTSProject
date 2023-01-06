@@ -2019,6 +2019,11 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
+"@types/react-native-pdf-lib@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.npmjs.org/@types/react-native-pdf-lib/-/react-native-pdf-lib-0.2.1.tgz"
+  integrity sha512-IH1B0WugCLlF97z+RBBIA/TLlxP40OCPfhtOl7NKj8PXmpkW+MEuF5mKCS1KOJIZd+J9QJCXB7eLXwV64v8c0w==
+
 "@types/react-native-vector-icons@^6.4.5":
   version "6.4.12"
   resolved "https://registry.npmjs.org/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.12.tgz"
@@ -2577,10 +2582,23 @@ babel-plugin-polyfill-regenerator@^0.4.0, babel-plugin-polyfill-regenerator@^0.4
   dependencies:
     "@babel/helper-define-polyfill-provider" "^0.3.3"
 
+babel-plugin-syntax-flow@^6.18.0:
+  version "6.18.0"
+  resolved "https://registry.npmjs.org/babel-plugin-syntax-flow/-/babel-plugin-syntax-flow-6.18.0.tgz"
+  integrity sha512-HbTDIoG1A1op7Tl/wIFQPULIBA61tsJ8Ntq2FAhLwuijrzosM/92kAfgU1Q3Kc7DH/cprJg5vDfuTY4QUL4rDA==
+
 babel-plugin-syntax-trailing-function-commas@^7.0.0-beta.0:
   version "7.0.0-beta.0"
   resolved "https://registry.npmjs.org/babel-plugin-syntax-trailing-function-commas/-/babel-plugin-syntax-trailing-function-commas-7.0.0-beta.0.tgz"
   integrity sha512-Xj9XuRuz3nTSbaTXWv3itLOcxyF4oPD8douBBmj7U9BBC6nEBYfyOJYQMf/8PJAFotC62UY5dFfIGEPr7WswzQ==
+
+babel-plugin-transform-flow-strip-types@^6.22.0:
+  version "6.22.0"
+  resolved "https://registry.npmjs.org/babel-plugin-transform-flow-strip-types/-/babel-plugin-transform-flow-strip-types-6.22.0.tgz"
+  integrity sha512-TxIM0ZWNw9oYsoTthL3lvAK3+eTujzktoXJg4ubGvICGbVuXVYv5hHv0XXpz8fbqlJaGYY4q5SVzaSmsg3t4Fg==
+  dependencies:
+    babel-plugin-syntax-flow "^6.18.0"
+    babel-runtime "^6.22.0"
 
 babel-preset-current-node-syntax@^1.0.0:
   version "1.0.1"
@@ -2633,6 +2651,13 @@ babel-preset-fbjs@^3.4.0:
     "@babel/plugin-transform-template-literals" "^7.0.0"
     babel-plugin-syntax-trailing-function-commas "^7.0.0-beta.0"
 
+babel-preset-flow@^6.23.0:
+  version "6.23.0"
+  resolved "https://registry.npmjs.org/babel-preset-flow/-/babel-preset-flow-6.23.0.tgz"
+  integrity sha512-PQZFJXnM3d80Vq4O67OE6EMVKIw2Vmzy8UXovqulNogCtblWU8rzP7Sm5YgHiCg4uejUxzCkHfNXQ4Z6GI+Dhw==
+  dependencies:
+    babel-plugin-transform-flow-strip-types "^6.22.0"
+
 babel-preset-jest@^26.6.2:
   version "26.6.2"
   resolved "https://registry.npmjs.org/babel-preset-jest/-/babel-preset-jest-26.6.2.tgz"
@@ -2641,10 +2666,23 @@ babel-preset-jest@^26.6.2:
     babel-plugin-jest-hoist "^26.6.2"
     babel-preset-current-node-syntax "^1.0.0"
 
+babel-runtime@^6.22.0:
+  version "6.26.0"
+  resolved "https://registry.npmjs.org/babel-runtime/-/babel-runtime-6.26.0.tgz"
+  integrity sha512-ITKNuq2wKlW1fJg9sSW52eepoYgZBggvOAHC0u/CYu/qxQ9EVzThCgR69BnSXLHjy2f7SY5zaQ4yt7H9ZVxY2g==
+  dependencies:
+    core-js "^2.4.0"
+    regenerator-runtime "^0.11.0"
+
 balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
+
+base-64@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/base-64/-/base-64-0.1.0.tgz"
+  integrity sha512-Y5gU45svrR5tI2Vt/X9GPd3L0HNIKzGu202EjxrXMpuc2V2CiKgemAbUUsqYmZJvPtCXoUKjNZwBJzsNScUbXA==
 
 base@^0.11.1:
   version "0.11.2"
@@ -3057,6 +3095,11 @@ core-js-compat@^3.21.0, core-js-compat@^3.25.1:
   version "3.25.2"
   dependencies:
     browserslist "^4.21.4"
+
+core-js@^2.4.0:
+  version "2.6.12"
+  resolved "https://registry.npmjs.org/core-js/-/core-js-2.6.12.tgz"
+  integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
 
 core-util-is@~1.0.0:
   version "1.0.3"
@@ -6751,6 +6794,14 @@ react-native-flip-card@^3.5.6:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-fs@^2.0.1-rc.2:
+  version "2.0.1-rc.2"
+  resolved "https://registry.npmjs.org/react-native-fs/-/react-native-fs-2.0.1-rc.2.tgz"
+  integrity sha512-JJKM+72ps4GdJ90L4Os+slReEfMamN36s+aLybleV4qcuESQ4Aw25mfw8AYrTCBlXlfUpo71d2XqMSjFs8FaeA==
+  dependencies:
+    base-64 "^0.1.0"
+    utf8 "^2.1.1"
+
 react-native-gesture-handler@^2.7.0, "react-native-gesture-handler@>= 1.0.0":
   version "2.7.0"
   dependencies:
@@ -6834,6 +6885,13 @@ react-native-maps@^1.3.2:
   integrity sha512-NB7HGRZOgxxXCWzrhIVucx/bsrEWANvk3DLci1ov4P9MQnEVQYQCCkTxsnaEvO191GeBOCRDyYn6jckqbfMtmg==
   dependencies:
     "@types/geojson" "^7946.0.8"
+
+react-native-pdf-lib@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/react-native-pdf-lib/-/react-native-pdf-lib-1.0.0.tgz"
+  integrity sha512-XJ8d9gWbpVYLeS9kC/h/MY+lLKVWZfPiGJBrE9lz4pnVWiFwbH76LA3lGVurKlPxgcm/FZNzaXSKAcSYeDs+BA==
+  dependencies:
+    babel-preset-flow "^6.23.0"
 
 react-native-progress@^5.0.0:
   version "5.0.0"
@@ -7076,6 +7134,11 @@ regenerate@^1.4.2:
   version "1.4.2"
   resolved "https://registry.npmjs.org/regenerate/-/regenerate-1.4.2.tgz"
   integrity sha512-zrceR/XhGYU/d/opr2EKO7aRHUeiBI8qjtfHqADTwZd6Szfy16la6kqD0MIUs5z5hx6AaKa+PixpPrR289+I0A==
+
+regenerator-runtime@^0.11.0:
+  version "0.11.1"
+  resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz"
+  integrity sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
 
 regenerator-runtime@^0.13.2, regenerator-runtime@^0.13.3, regenerator-runtime@^0.13.4:
   version "0.13.9"
@@ -8154,6 +8217,11 @@ use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.npmjs.org/use/-/use-3.1.1.tgz"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
+
+utf8@^2.1.1:
+  version "2.1.2"
+  resolved "https://registry.npmjs.org/utf8/-/utf8-2.1.2.tgz"
+  integrity sha512-QXo+O/QkLP/x1nyi54uQiG0XrODxdysuQvE5dtVqv7F5K2Qb6FsN+qbr6KhF5wQ20tfcV3VQp0/2x1e1MRSPWg==
 
 utif@^2.0.1:
   version "2.0.1"

@@ -1,8 +1,9 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {useRoute} from '@react-navigation/native';
 import {ProfileSingleInvoiceProps} from '../../../navigation/Profile/ProfileNavigator.types';
 import LoggedInBackground from '../../../components/background/loggedInBackground';
+import PDFLib, {PDFDocument, PDFPage} from 'react-native-pdf-lib';
 
 const Singleinvoice = () => {
   const route = useRoute<ProfileSingleInvoiceProps['route']>();
@@ -24,6 +25,7 @@ const Singleinvoice = () => {
   const currency = invoice.orderItems.reduce((acc, item) => {
     return item?.itemId?.currency ? item.itemId.currency : '';
   }, '');
+
   return (
     <LoggedInBackground>
       <Text style={styles.text}>invoice: {invoice._id}</Text>
@@ -64,14 +66,15 @@ const Singleinvoice = () => {
               <Text style={styles.text}>
                 {item.itemId?.dishName ? item.itemId?.dishName : ''}
               </Text>
-              <Text
-                ellipsizeMode="tail"
-                style={{flex: 1, color: '#fff'}}
-                numberOfLines={1}>
-                {' '}
-                ......................................................
-                ......................................................
-              </Text>
+              {item.itemId?.dishName && (
+                <Text
+                  ellipsizeMode="tail"
+                  style={{flex: 1, color: '#fff'}}
+                  numberOfLines={1}>
+                  {' '}
+                  ............................................................................................................
+                </Text>
+              )}
               <Text style={styles.text}>
                 {' '}
                 {item.itemId?.currency ? item.itemId?.currency : ''}{' '}
